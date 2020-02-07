@@ -2,8 +2,8 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
-  - build-gcc
-  - build-clang
+  - build-GCC
+  - build-Clang
   - test
   - docs
 

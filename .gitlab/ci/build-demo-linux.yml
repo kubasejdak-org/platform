@@ -11,25 +11,23 @@
     - mkdir ${CI_JOB_NAME}
     - cd ${CI_JOB_NAME}
 
-    - pwd
-    - ls
     # Build application.
-    #    - ../build/${Script}.sh
-    #- make
+    - ../tools/build/${Script}.sh
+    - make
 
 .Build_Demo_Linux_GCC:
   extends: .Build_Demo_Linux
-  stage: build-gcc
+  stage: build-GCC
   image: kubasejdak/gcc:latest
 
 .Build_Demo_Linux_ARM_GCC:
   extends: .Build_Demo_Linux
-  stage: build-gcc
+  stage: build-GCC
   image: kubasejdak/arm-linux-gnueabihf-gcc:latest
 
 .Build_Demo_Linux_Clang:
   extends: .Build_Demo_Linux
-  stage: build-clang
+  stage: build-Clang
   image: kubasejdak/clang:latest
 
 Linux_ARM_Clang_Debug_Build:
