@@ -21,19 +21,19 @@
 Baremetal_GCC_Debug_Build:
   extends: .Build_Demo_Baremetal
   variables:
-    Script: "baremetal-gcc-debug"
+    Script: "baremetal-arm-gcc-debug"
 
 Baremetal_GCC_Release_Build:
   extends: .Build_Demo_Baremetal
   variables:
-    Script: "baremetal-gcc-release"
+    Script: "baremetal-arm-gcc-release"
 
 FreeRTOS_GCC_Debug_Build:
   extends: .Build_Demo_Baremetal
   variables:
-    Script: "freertos-gcc-debug"
+    Script: "freertos-arm-gcc-debug"
 
 FreeRTOS_GCC_Release_Build:
   extends: .Build_Demo_Baremetal
   variables:
-    Script: "freertos-gcc-release"
+    Script: "freertos-arm-gcc-release"
