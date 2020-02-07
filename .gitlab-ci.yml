@@ -4,11 +4,9 @@ variables:
 stages:
   - build-GCC
   - build-Clang
-  - test
-  - docs
+  - quality
 
 include:
   - ".gitlab/ci/build-demo-baremetal.yml"
   - ".gitlab/ci/build-demo-linux.yml"
-    #  - "/ci/demo-linux.yml"
-    #  - "/ci/demo-sysbios.yml"
+  - ".gitlab/ci/quality.yml"

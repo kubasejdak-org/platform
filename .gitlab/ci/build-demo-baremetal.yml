@@ -18,22 +18,22 @@
     - make
     - make platform-demo.bin
 
-Baremetal_GCC_Debug_Build:
+Baremetal_ARM_GCC_Debug_Build:
   extends: .Build_Demo_Baremetal
   variables:
     Script: "baremetal-arm-gcc-debug"
 
-Baremetal_GCC_Release_Build:
+Baremetal_ARM_GCC_Release_Build:
   extends: .Build_Demo_Baremetal
   variables:
     Script: "baremetal-arm-gcc-release"
 
-FreeRTOS_GCC_Debug_Build:
+FreeRTOS_ARM_GCC_Debug_Build:
   extends: .Build_Demo_Baremetal
   variables:
     Script: "freertos-arm-gcc-debug"
 
-FreeRTOS_GCC_Release_Build:
+FreeRTOS_ARM_GCC_Release_Build:
   extends: .Build_Demo_Baremetal
   variables:
     Script: "freertos-arm-gcc-release"
