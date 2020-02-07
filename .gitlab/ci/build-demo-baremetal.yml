@@ -23,7 +23,7 @@ Baremetal_GCC_Debug_Build:
   variables:
     Script: "baremetal-gcc-debug"
 
-    Baremetal_GCC_Release_Build:
+Baremetal_GCC_Release_Build:
   extends: .Build_Demo_Baremetal
   variables:
     Script: "baremetal-gcc-release"
