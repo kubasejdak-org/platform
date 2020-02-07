@@ -8,6 +8,7 @@ stages:
   - docs
 
 include:
+  - ".gitlab/ci/build-demo-baremetal.yml"
   - ".gitlab/ci/build-demo-linux.yml"
     #  - "/ci/demo-linux.yml"
     #  - "/ci/demo-sysbios.yml"
