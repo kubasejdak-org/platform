@@ -1,0 +1,13 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+stages:
+  - build-gcc
+  - build-clang
+  - test
+  - docs
+
+include:
+  - ".gitlab/ci/build-demo-linux.yml"
+    #  - "/ci/demo-linux.yml"
+    #  - "/ci/demo-sysbios.yml"
