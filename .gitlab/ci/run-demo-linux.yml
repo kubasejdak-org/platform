@@ -23,5 +23,5 @@ Linux_ARM_Demo:
     - raspberrypi
   dependencies:
     - Linux_ARM_GCC_Debug_Build
-    variables:
-      AppArtifact: "Linux_ARM_GCC_Debug_Build"
+  variables:
+    AppArtifact: "Linux_ARM_GCC_Debug_Build"
