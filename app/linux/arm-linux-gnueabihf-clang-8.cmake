@@ -13,7 +13,8 @@ set(CMAKE_RANLIB                    llvm-ranlib-8${EXE_EXTENSION} CACHE INTERNAL
 set(CMAKE_SIZE_UTIL                 llvm-size-8${EXE_EXTENSION} CACHE INTERNAL "")
 set(CMAKE_STRIP                     llvm-strip-8${EXE_EXTENSION} CACHE INTERNAL "")
 
-set(CMAKE_C_FLAGS                   "${APP_C_FLAGS} -target arm-none-linux-gnueabihf --gcc-toolchain=${LINUX_ARM_TOOLCHAIN_9_PATH} --sysroot=${LINUX_ARM_TOOLCHAIN_9_PATH}/arm-none-linux-gnueabihf/libc" CACHE INTERNAL "")
+get_filename_component(PARENT_DIR ${LINUX_ARM_TOOLCHAIN_9_PATH} TOOLCHAIN_ROOT)
+set(CMAKE_C_FLAGS                   "${APP_C_FLAGS} -target arm-none-linux-gnueabihf --gcc-toolchain=${TOOLCHAIN_ROOT} --sysroot=${TOOLCHAIN_ROOT}/arm-none-linux-gnueabihf/libc" CACHE INTERNAL "")
 set(CMAKE_CXX_FLAGS                 "${APP_CXX_FLAGS} ${CMAKE_C_FLAGS}" CACHE INTERNAL "")
 
 set(CMAKE_C_FLAGS_DEBUG             "-O0 -g" CACHE INTERNAL "")
