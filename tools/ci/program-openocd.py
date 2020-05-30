@@ -1,10 +1,8 @@
 #!/usr/bin/python3
 
-# import daemon
 import subprocess
 import sys
 
-# with daemon.DaemonContext():
-cmd = '''openocd -f /usr/share/openocd/scripts/board/{}.cfg -c "program {} verify reset exit"'''.format(sys.argv[1], sys.argv[2])
-print(cmd)
-subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
+cmd = ["openocd", "-f", "/usr/share/openocd/scripts/board/{}.cfg".format(sys.argv[1]), "-c", "program {} verify reset exit".format(sys.argv[2])]
+print(" ".join(cmd))
+subprocess.Popen(cmd, stdout=subprocess.PIPE)
