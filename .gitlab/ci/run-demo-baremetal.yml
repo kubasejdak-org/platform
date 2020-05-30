@@ -4,7 +4,7 @@
     GIT_STRATEGY: none
   script:
     - cd ${AppArtifact}/bin
-    - openocd -f /usr/share/openocd/scripts/board/stm32f4discovery.cfg -c "program platform-demo verify exit"
+    - openocd -f /usr/share/openocd/scripts/board/stm32f4discovery.cfg -c "program platform-demo verify reset exit"
 
 Baremetal_ARM_Demo:
   extends: .Run_Demo_Baremetal
