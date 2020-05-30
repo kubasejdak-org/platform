@@ -1,0 +1,16 @@
+.Run_Demo_Baremetal:
+  stage: demo
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - cd ${AppArtifact}/bin
+    - openocd -f /usr/share/openocd/scripts/board/stm32f4discovery.cfg -c "program platform-demo verify exit"
+
+Baremetal_ARM_Demo:
+  extends: .Run_Demo_Baremetal
+  tags:
+    - stm32f4discovery
+  dependencies:
+    - Baremetal_ARM_GCC_Debug_Build
+  variables:
+    AppArtifact: "Baremetal_ARM_GCC_Debug_Build"
