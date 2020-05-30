@@ -15,7 +15,7 @@ class UartLogsReader:
         while True:
             line = self.uart.readline().rstrip()
             if not line:
-                print("Timeout")
+                print("ERROR: Timeout")
                 return 1
 
             line = str(line, "utf-8")
