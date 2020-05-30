@@ -3,7 +3,7 @@
 import serial
 import sys
 
-class UartLogs:
+class UartLogsReader:
     def __init__(self, device, baudrate):
         self.uart = serial.Serial(device, baudrate, timeout=30)
         self.uart.reset_input_buffer()
@@ -18,12 +18,13 @@ class UartLogs:
                 print("Timeout")
                 return 1
 
+            line = str(line, "utf-8")
             print(line)
             if line == "PASSED":
                 return 0
+            if line == "FAILED":
+                return 1
 
-            return 1
-
-server = UartLogs("/dev/serial0", 115200)
-code = server.run()
-sys.exit(code)
+reader = UartLogsReader("/dev/serial0", 115200)
+status = reader.run()
+sys.exit(status)
