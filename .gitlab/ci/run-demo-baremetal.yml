@@ -4,7 +4,7 @@
     GIT_STRATEGY: none
   script:
     - cd ${AppArtifact}/bin
-    - ci/program-stm32f4discovery.py
+    - ci/program-openocd.py stm32f4discovery platform-demo
     - ci/logs-reader.py
 
 Baremetal_ARM_Demo:
