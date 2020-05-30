@@ -6,4 +6,5 @@ import sys
 
 # with daemon.DaemonContext():
 cmd = '''openocd -f /usr/share/openocd/scripts/board/{}.cfg -c "program {} verify reset exit"'''.format(sys.argv[1], sys.argv[2])
+print(cmd)
 subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
