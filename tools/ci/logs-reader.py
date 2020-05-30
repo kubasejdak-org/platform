@@ -5,7 +5,7 @@ import sys
 
 class UartLogs:
     def __init__(self, device, baudrate):
-        self.uart = serial.Serial(device, baudrate, timeout=10)
+        self.uart = serial.Serial(device, baudrate, timeout=30)
         self.uart.reset_input_buffer()
         self.uart.reset_output_buffer()
 
