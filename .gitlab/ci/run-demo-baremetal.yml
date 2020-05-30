@@ -15,3 +15,12 @@ Baremetal_ARM_Demo:
     - Baremetal_ARM_GCC_Debug_Build
   variables:
     AppArtifact: "Baremetal_ARM_GCC_Debug_Build"
+
+FreeRTOS_ARM_Demo:
+  extends: .Run_Demo_Baremetal
+  tags:
+    - stm32f4discovery
+  dependencies:
+    - FreeRTOS_ARM_GCC_Debug_Build
+  variables:
+    AppArtifact: "FreeRTOS_ARM_GCC_Debug_Build"
