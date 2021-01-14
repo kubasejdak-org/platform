@@ -34,15 +34,16 @@
 
 #include <stm32f4xx.h>
 
-#include <cstddef>
 #include <cstdint>
+#include <type_traits>
 
+// NOLINTNEXTLINE(fuchsia-statically-constructed-objects,cppcoreguidelines-avoid-non-const-global-variables)
 UART_HandleTypeDef uart{};
 
 int consolePrint(const char* message, std::size_t size)
 {
     constexpr std::uint32_t cTimeout = 100;
-    auto result = HAL_UART_Transmit(&uart, (std::uint8_t*) message, size, cTimeout);
+    auto result = HAL_UART_Transmit(&uart, std::remove_const_t<std::uint8_t*>(message), size, cTimeout);
     return (result == HAL_OK) ? int(size) : 0;
 }
 
