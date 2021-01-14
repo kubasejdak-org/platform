@@ -39,6 +39,7 @@
 // NOLINTNEXTLINE
 int appMain(int argc, char* argv[])
 {
+    (void) argv;
     if (!platformInit())
         return EXIT_FAILURE;
 
