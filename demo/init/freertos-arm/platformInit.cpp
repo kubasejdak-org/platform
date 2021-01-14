@@ -77,6 +77,7 @@ static void consoleInitUart()
 
 bool platformInit()
 {
+    HAL_Init();
     consoleInitGpio();
     consoleInitUart();
 

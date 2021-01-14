@@ -4,6 +4,7 @@ add_library(stm32f4xx EXCLUDE_FROM_ALL
     startup_stm32f407xx.s
     system_stm32f4xx.c
     drivers/stm32f4xx_hal.c
+    drivers/stm32f4xx_hal_cortex.c
     drivers/stm32f4xx_hal_gpio.c
     drivers/stm32f4xx_hal_rcc.c
     drivers/stm32f4xx_hal_uart.c
