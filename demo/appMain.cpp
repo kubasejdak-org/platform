@@ -39,12 +39,11 @@
 // NOLINTNEXTLINE
 int appMain(int argc, char* argv[])
 {
-    (void) argv;
     if (!platformInit())
         return EXIT_FAILURE;
 
     for (int i = 0; i < argc; ++i)
-        fmt::print("argv[{}] = 'TEST'\n", i);
+        fmt::print("argv[{}] = '{}'\n", i, argv[0]);
 
     fmt::print("PASSED\n");
     return EXIT_SUCCESS;

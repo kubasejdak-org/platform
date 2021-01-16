@@ -40,14 +40,15 @@
 // NOLINTNEXTLINE(fuchsia-statically-constructed-objects,cppcoreguidelines-avoid-non-const-global-variables)
 UART_HandleTypeDef uart{};
 
-int consolePrint(const char* message, std::size_t size)
+extern "C" {
+
+void HAL_MspInit()
 {
-    constexpr std::uint32_t cTimeout = 100;
-    auto result = HAL_UART_Transmit(&uart, std::remove_const_t<std::uint8_t*>(message), size, cTimeout);
-    return (result == HAL_OK) ? int(size) : 0;
+    __HAL_RCC_SYSCFG_CLK_ENABLE(); // NOLINT
+    __HAL_RCC_PWR_CLK_ENABLE();    // NOLINT
 }
 
-static void consoleInitGpio()
+void HAL_UART_MspInit(UART_HandleTypeDef* /*unused*/)
 {
     __HAL_RCC_GPIOC_CLK_ENABLE(); // NOLINT
 
@@ -60,7 +61,16 @@ static void consoleInitGpio()
     HAL_GPIO_Init(GPIOC, &config); // NOLINT
 }
 
-static void consoleInitUart()
+} // extern "C"
+
+int consolePrint(const char* message, std::size_t size)
+{
+    constexpr std::uint32_t cTimeout = 1'000;
+    auto result = HAL_UART_Transmit(&uart, std::remove_const_t<std::uint8_t*>(message), size, cTimeout);
+    return (result == HAL_OK) ? int(size) : 0;
+}
+
+static bool consoleInitUart()
 {
     __HAL_RCC_UART4_CLK_ENABLE(); // NOLINT
 
@@ -73,14 +83,14 @@ static void consoleInitUart()
     uart.Init.Mode = UART_MODE_TX;
     uart.Init.HwFlowCtl = UART_HWCONTROL_NONE;
     uart.Init.OverSampling = UART_OVERSAMPLING_16;
-    HAL_UART_Init(&uart);
+    auto result = HAL_UART_Init(&uart);
+    return result == HAL_OK;
 }
 
 bool platformInit()
 {
-    HAL_Init();
-    consoleInitGpio();
-    consoleInitUart();
+    if (HAL_Init() != HAL_OK)
+        return false;
 
-    return true;
+    return consoleInitUart();
 }

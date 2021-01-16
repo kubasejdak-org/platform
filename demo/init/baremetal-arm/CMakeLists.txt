@@ -13,5 +13,5 @@ target_link_libraries(platform-init
 )
 
 target_link_options(platform-init
-    PUBLIC -T ${CMAKE_CURRENT_SOURCE_DIR}/stm32f4discovery.ld
+    PUBLIC -T ${CMAKE_CURRENT_SOURCE_DIR}/stm32f407vgtx.ld
 )
