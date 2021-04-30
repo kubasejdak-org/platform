@@ -39,7 +39,9 @@
 .Build_Demo_Linux_GCC:
   extends: .Build_Demo_Linux
   stage: build-GCC
-  image: kubasejdak/gcc:11
+  image:
+    name: kubasejdak/gcc:11
+    entrypoint: [ '/bin/sh', '-c' ]
   variables:
     Toolchain: "gcc-11"
 
