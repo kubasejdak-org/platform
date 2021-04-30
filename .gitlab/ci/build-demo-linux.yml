@@ -41,7 +41,7 @@
   stage: build-GCC
   image:
     name: kubasejdak/gcc:11
-    entrypoint: [ '/bin/sh', '-c' ]
+    entrypoint: [ '/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0' ]
   variables:
     Toolchain: "gcc-11"
 
