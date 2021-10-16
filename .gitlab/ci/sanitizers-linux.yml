@@ -1,6 +1,6 @@
 .Linux_Sanitizer:
   stage: sanitizers
-  image: kubasejdak/clang:12
+  image: embeddedlinux/clang:12
   tags:
     - cet_build
   needs: []

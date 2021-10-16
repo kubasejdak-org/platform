@@ -2,7 +2,7 @@ pages:
   stage: deploy
   only:
     - master
-  image: kubasejdak/gcc:latest
+  image: embeddedlinux/gcc:latest
   tags:
     - linux
   needs: []
