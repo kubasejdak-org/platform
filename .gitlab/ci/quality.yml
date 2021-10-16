@@ -1,6 +1,6 @@
 Clang_Format:
   stage: quality
-  image: kubasejdak/clang:latest
+  image: kubasejdak/clang:12
   tags:
     - linux
   needs: []
@@ -30,17 +30,17 @@ Clang_Format:
     - cd ${CI_JOB_NAME}
 
     # Check build.
-    - cmake .. -DTOOLCHAIN=${Toolchain}
+    - cmake .. -DPLATFORM=linux -DTOOLCHAIN=${Toolchain}
     - ../tools/check-clang-tidy.sh
 
 Clang_Tidy_Linux:
   extends: .Clang_Tidy
-  image: kubasejdak/clang:latest
+  image: kubasejdak/clang:12
   variables:
-    Toolchain: "clang"
+    Toolchain: "clang-12"
 
 Clang_Tidy_Linux_ARM:
   extends: .Clang_Tidy
-  image: kubasejdak/arm-linux-gnueabihf-clang:latest
+  image: kubasejdak/arm-linux-gnueabihf-clang:12
   variables:
-    Toolchain: "arm-linux-gnueabihf-clang"
+    Toolchain: "arm-linux-gnueabihf-clang-12"
