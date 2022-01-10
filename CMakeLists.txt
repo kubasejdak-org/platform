@@ -17,7 +17,7 @@ endif ()
 
 if (USE_CONAN)
     conan_init_profile()
-    conan_cmake_install(PATH_OR_REFERENCE ${CMAKE_SOURCE_DIR}/demo BUILD missing PROFILE_BUILD default PROFILE_HOST conan-profile)
+    conan_cmake_install(PATH_OR_REFERENCE ${CMAKE_SOURCE_DIR} BUILD missing PROFILE_BUILD default PROFILE_HOST conan-profile)
     conan_load_buildinfo()
     conan_basic_setup()
 endif ()
