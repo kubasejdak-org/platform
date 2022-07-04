@@ -3,7 +3,7 @@
   variables:
     GIT_STRATEGY: none
   script:
-    - ll /dev
+    - ls -al /dev
     - groups
     - cd ${AppArtifact}/bin
     - ./platform-demo
