@@ -1,0 +1,27 @@
+{
+    "name": "kubasejdak clang:18-24.04",
+    "image": "kubasejdak/clang:18-24.04",
+    "mounts": [
+        "source=${localEnv:HOME}/.gitconfig,target=/home/builder/.gitconfig,type=bind,consistency=cached",
+        "source=${localEnv:HOME}/.ssh,target=/home/builder/.ssh,type=bind,consistency=cached"
+    ],
+    "postCreateCommand": "sudo apt update && sudo apt install -y clang-format",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "github.copilot",
+                "github.vscode-github-actions",
+                "mads-hartmann.bash-ide-vscode",
+                "matepek.vscode-catch2-test-adapter",
+                "ms-vscode.cpptools-extension-pack",
+                "ms-vsliveshare.vsliveshare",
+                "waderyan.gitblame",
+                "xaver.clang-format",
+                "yzhang.markdown-all-in-one"
+            ]
+        }
+    },
+    "runArgs": [
+        "--network=host"
+    ]
+}
