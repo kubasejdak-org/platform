@@ -2,31 +2,27 @@
 ///
 /// @file
 /// @author Kuba Sejdak
-/// @copyright BSD 2-Clause License
+/// @copyright MIT License
 ///
-/// Copyright (c) 2017-2023, Kuba Sejdak <kuba.sejdak@gmail.com>
-/// All rights reserved.
+/// Copyright (c) 2017-2024 Kuba Sejdak (kuba.sejdak@gmail.com)
 ///
-/// Redistribution and use in source and binary forms, with or without
-/// modification, are permitted provided that the following conditions are met:
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to deal
+/// in the Software without restriction, including without limitation the rights
+/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+/// copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
 ///
-/// 1. Redistributions of source code must retain the above copyright notice, this
-///    list of conditions and the following disclaimer.
+/// The above copyright notice and this permission notice shall be included in all
+/// copies or substantial portions of the Software.
 ///
-/// 2. Redistributions in binary form must reproduce the above copyright notice,
-///    this list of conditions and the following disclaimer in the documentation
-///    and/or other materials provided with the distribution.
-///
-/// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-/// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-/// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-/// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-/// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-/// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-/// SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-/// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-/// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-/// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+/// SOFTWARE.
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -93,38 +89,45 @@ extern uint32_t SystemCoreClock; // NOLINT
 #define configMAX_API_CALL_INTERRUPT_PRIORITY   3
 
 /* Define to trap errors during development. */
-#define configASSERT(x) if ((x) == 0) vAssertCalled(__FILE__, __LINE__)
+#define configASSERT(x)                                                                                                \
+    if ((x) == 0)                                                                                                      \
+    vAssertCalled(__FILE__, __LINE__)
 
 /* FreeRTOS MPU specific definitions. */
 #define configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS 0
 
 /* Optional functions - most linkers will remove unused functions anyway. */
-#define INCLUDE_vTaskPrioritySet                1
-#define INCLUDE_uxTaskPriorityGet               1
-#define INCLUDE_vTaskDelete                     1
-#define INCLUDE_vTaskSuspend                    1
-#define INCLUDE_xResumeFromISR                  1
-#define INCLUDE_vTaskDelayUntil                 1
-#define INCLUDE_vTaskDelay                      1
-#define INCLUDE_xTaskGetSchedulerState          1
-#define INCLUDE_xTaskGetCurrentTaskHandle       1
-#define INCLUDE_uxTaskGetStackHighWaterMark     0
-#define INCLUDE_xTaskGetIdleTaskHandle          0
-#define INCLUDE_eTaskGetState                   0
-#define INCLUDE_xEventGroupSetBitFromISR        1
-#define INCLUDE_xTimerPendFunctionCall          0
-#define INCLUDE_xTaskAbortDelay                 0
-#define INCLUDE_xTaskGetHandle                  0
-#define INCLUDE_xTaskResumeFromISR              1
+#define INCLUDE_vTaskPrioritySet                               1
+#define INCLUDE_uxTaskPriorityGet                              1
+#define INCLUDE_vTaskDelete                                    1
+#define INCLUDE_vTaskSuspend                                   1
+#define INCLUDE_xResumeFromISR                                 1
+#define INCLUDE_vTaskDelayUntil                                1
+#define INCLUDE_vTaskDelay                                     1
+#define INCLUDE_xTaskGetSchedulerState                         1
+#define INCLUDE_xTaskGetCurrentTaskHandle                      1
+#define INCLUDE_uxTaskGetStackHighWaterMark                    0
+#define INCLUDE_xTaskGetIdleTaskHandle                         0
+#define INCLUDE_eTaskGetState                                  0
+#define INCLUDE_xEventGroupSetBitFromISR                       1
+#define INCLUDE_xTimerPendFunctionCall                         0
+#define INCLUDE_xTaskAbortDelay                                0
+#define INCLUDE_xTaskGetHandle                                 0
+#define INCLUDE_xTaskResumeFromISR                             1
 
 /* Definitions that map the FreeRTOS port interrupt handlers to their CMSIS standard names. */
-#define vPortSVCHandler                         SVC_Handler
-#define xPortPendSVHandler                      PendSV_Handler
-#define xPortSysTickHandler                     SysTick_Handler
+#define vPortSVCHandler                                        SVC_Handler
+#define xPortPendSVHandler                                     PendSV_Handler
+#define xPortSysTickHandler                                    SysTick_Handler
 
 #ifndef vAssertCalled
-  #define vAssertCalled(file, line)             { taskDISABLE_INTERRUPTS(); while(1); }
+    #define vAssertCalled(file, line)                                                                                  \
+        {                                                                                                              \
+            taskDISABLE_INTERRUPTS();                                                                                  \
+            while (1)                                                                                                  \
+                ;                                                                                                      \
+        }
 #endif
 
 /* Platform specific definitions. */
-#define APPMAIN_STACK_SIZE                      1024
+#define APPMAIN_STACK_SIZE 1024
