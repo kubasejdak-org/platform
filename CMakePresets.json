@@ -1,69 +1,99 @@
 {
-  "version": 6,
+  "version": 8,
   "cmakeMinimumRequired": {
     "major": 3,
-    "minor": 25,
-    "patch": 2
+    "minor": 29,
+    "patch": 0
   },
   "include": [
-    "cmake/presets-baremetal.json",
-    "cmake/presets-linux.json",
-    "cmake/presets-type.json"
+    "cmake/presets/app.json",
+    "cmake/presets/baremetal.json",
+    "cmake/presets/dependencies.json",
+    "cmake/presets/linux.json",
+    "cmake/presets/type.json"
   ],
   "configurePresets": [
     {
-      "name": "linux-gcc-debug",
+      "name": "linux-native-gcc-debug",
       "inherits": [
-        "linux-gcc",
+        "linux-native-gcc",
         "debug"
       ]
     },
     {
-      "name": "linux-gcc-release",
+      "name": "linux-native-gcc-release",
       "inherits": [
-        "linux-gcc",
+        "linux-native-gcc",
         "release"
       ]
     },
     {
-      "name": "linux-clang-debug",
+      "name": "linux-native-clang-debug",
       "inherits": [
-        "linux-clang",
+        "linux-native-clang",
         "debug"
       ]
     },
     {
-      "name": "linux-clang-release",
+      "name": "linux-native-clang-release",
       "inherits": [
-        "linux-clang",
+        "linux-native-clang",
         "release"
       ]
     },
     {
-      "name": "linux-arm-gcc-debug",
+      "name": "linux-arm64-gcc-debug",
       "inherits": [
-        "linux-arm-gcc",
+        "linux-arm64-gcc",
         "debug"
       ]
     },
     {
-      "name": "linux-arm-gcc-release",
+      "name": "linux-arm64-gcc-release",
       "inherits": [
-        "linux-arm-gcc",
+        "linux-arm64-gcc",
         "release"
       ]
     },
     {
-      "name": "linux-arm-clang-debug",
+      "name": "linux-arm64-clang-debug",
       "inherits": [
-        "linux-arm-clang",
+        "linux-arm64-clang",
         "debug"
       ]
     },
     {
-      "name": "linux-arm-clang-release",
+      "name": "linux-arm64-clang-release",
       "inherits": [
-        "linux-arm-clang",
+        "linux-arm64-clang",
+        "release"
+      ]
+    },
+    {
+      "name": "yocto-sdk-gcc-debug",
+      "inherits": [
+        "yocto-sdk-gcc",
+        "debug"
+      ]
+    },
+    {
+      "name": "yocto-sdk-gcc-release",
+      "inherits": [
+        "yocto-sdk-gcc",
+        "release"
+      ]
+    },
+    {
+      "name": "yocto-sdk-clang-debug",
+      "inherits": [
+        "yocto-sdk-clang",
+        "debug"
+      ]
+    },
+    {
+      "name": "yocto-sdk-clang-release",
+      "inherits": [
+        "yocto-sdk-clang",
         "release"
       ]
     },

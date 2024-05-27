@@ -1,0 +1,38 @@
+{
+  "version": 8,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 29,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "asan",
+      "hidden": true,
+      "cacheVariables": {
+        "USE_ASAN": "ON"
+      }
+    },
+    {
+      "name": "lsan",
+      "hidden": true,
+      "cacheVariables": {
+        "USE_LSAN": "ON"
+      }
+    },
+    {
+      "name": "tsan",
+      "hidden": true,
+      "cacheVariables": {
+        "USE_TSAN": "ON"
+      }
+    },
+    {
+      "name": "ubsan",
+      "hidden": true,
+      "cacheVariables": {
+        "USE_UBSAN": "ON"
+      }
+    }
+  ]
+}
