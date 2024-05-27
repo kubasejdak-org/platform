@@ -1,0 +1,72 @@
+{
+  "version": 8,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 29,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "linux",
+      "hidden": true,
+      "cacheVariables": {
+        "PLATFORM": "Linux"
+      }
+    },
+    {
+      "name": "linux-native-gcc",
+      "hidden": true,
+      "inherits": "linux",
+      "cacheVariables": {
+        "TOOLCHAIN": "gcc"
+      }
+    },
+    {
+      "name": "linux-native-clang",
+      "hidden": true,
+      "inherits": "linux",
+      "cacheVariables": {
+        "TOOLCHAIN": "clang"
+      }
+    },
+    {
+      "name": "linux-arm64",
+      "hidden": true,
+      "inherits": "linux",
+      "cacheVariables": {
+        "LINUX_ARM_TOOLCHAIN_PATH": "/opt/toolchains/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-linux-gnu"
+      }
+    },
+    {
+      "name": "linux-arm64-gcc",
+      "hidden": true,
+      "inherits": "linux-arm64",
+      "cacheVariables": {
+        "TOOLCHAIN": "aarch64-none-linux-gnu-gcc"
+      }
+    },
+    {
+      "name": "linux-arm64-clang",
+      "hidden": true,
+      "inherits": "linux-arm64",
+      "cacheVariables": {
+        "TOOLCHAIN": "aarch64-none-linux-gnu-clang"
+      }
+    },
+    {
+      "name": "yocto-sdk-gcc",
+      "hidden": true,
+      "inherits": "linux"
+    },
+    {
+      "name": "yocto-sdk-clang",
+      "hidden": true,
+      "inherits": "linux",
+      "environment": {
+        "CC": "$env{CLANGCC}",
+        "CPP": "$env{CLANGCPP}",
+        "CXX": "$env{CLANGCXX}"
+      }
+    }
+  ]
+}
