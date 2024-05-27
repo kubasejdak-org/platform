@@ -10,7 +10,7 @@
       "name": "linux",
       "hidden": true,
       "cacheVariables": {
-        "PLATFORM": "Linux"
+        "PLATFORM": "linux"
       }
     },
     {
