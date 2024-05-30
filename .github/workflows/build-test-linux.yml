@@ -13,7 +13,9 @@ jobs:
   build:
     name: ${{ matrix.PRESET }}
     runs-on: [self-hosted, build]
-    container: ${{ matrix.DOCKER_IMAGE }}
+    container:
+      image: ${{ matrix.DOCKER_IMAGE }}
+      options: --user root
     strategy:
       fail-fast: false
       matrix:
