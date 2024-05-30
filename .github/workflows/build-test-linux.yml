@@ -25,13 +25,13 @@ jobs:
       matrix:
         include:
           - PRESET: linux-native-gcc-debug
-            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+            DOCKER_IMAGE: ${{ env.DOCKER_IMAGE_LINUX_X64_GCC }}
           - PRESET: linux-native-gcc-release
-            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+            DOCKER_IMAGE: ${{ env.DOCKER_IMAGE_LINUX_X64_GCC }}
           - PRESET: linux-native-clang-debug
-            DOCKER_IMAGE: kubasejdak/clang:18-24.04
+            DOCKER_IMAGE: ${{ env.DOCKER_IMAGE_LINUX_X64_CLANG }}
           - PRESET: linux-native-clang-release
-            DOCKER_IMAGE: kubasejdak/clang:18-24.04
+            DOCKER_IMAGE: ${{ env.DOCKER_IMAGE_LINUX_X64_CLANG }}
     steps:
       - uses: actions/checkout@v4
       - name: build preset
@@ -53,13 +53,13 @@ jobs:
       matrix:
         include:
           - PRESET: linux-arm64-gcc-debug
-            DOCKER_IMAGE: kubasejdak/aarch64-none-linux-gnu-gcc:13-24.04
+            DOCKER_IMAGE: ${{ env.DOCKER_IMAGE_LINUX_ARM64_GCC }}
           - PRESET: linux-arm64-gcc-release
-            DOCKER_IMAGE: kubasejdak/aarch64-none-linux-gnu-gcc:13-24.04
+            DOCKER_IMAGE: ${{ env.DOCKER_IMAGE_LINUX_ARM64_GCC }}
           - PRESET: linux-arm64-clang-debug
-            DOCKER_IMAGE: kubasejdak/aarch64-none-linux-gnu-clang:18-24.04
+            DOCKER_IMAGE: ${{ env.DOCKER_IMAGE_LINUX_ARM64_CLANG }}
           - PRESET: linux-arm64-clang-release
-            DOCKER_IMAGE: kubasejdak/aarch64-none-linux-gnu-clang:18-24.04
+            DOCKER_IMAGE: ${{ env.DOCKER_IMAGE_LINUX_ARM64_CLANG }}
     steps:
       - uses: actions/checkout@v4
       - name: build preset
