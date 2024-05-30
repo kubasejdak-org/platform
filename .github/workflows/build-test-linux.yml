@@ -34,6 +34,10 @@ jobs:
           cd build
           cmake .. --preset ${{ matrix.PRESET }}
           make -j$(nproc)
+      - name: aaa
+        run: |
+          pwd
+          ls -al
       - uses: actions/upload-artifact@v4
         with:
           name: build-${{ matrix.PRESET }}
