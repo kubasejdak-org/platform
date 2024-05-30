@@ -6,12 +6,6 @@ on:
     - cron: "0 12 * * SAT"
   workflow_dispatch:
 
-env:
-  DOCKER_IMAGE_LINUX_X64_GCC: kubasejdak/gcc:13-24.04
-  DOCKER_IMAGE_LINUX_X64_CLANG: kubasejdak/clang:18-24.04
-  DOCKER_IMAGE_LINUX_ARM64_GCC: kubasejdak/aarch64-none-linux-gnu-gcc:13-24.04
-  DOCKER_IMAGE_LINUX_ARM64_CLANG: kubasejdak/aarch64-none-linux-gnu-clang:18-24.04
-
 jobs:
   build-x64:
     name: ${{ matrix.PRESET }}
@@ -25,13 +19,13 @@ jobs:
       matrix:
         include:
           - PRESET: linux-native-gcc-debug
-            DOCKER_IMAGE: ${DOCKER_IMAGE_LINUX_X64_GCC}
+            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
           - PRESET: linux-native-gcc-release
-            DOCKER_IMAGE: ${DOCKER_IMAGE_LINUX_X64_GCC}
+            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
           - PRESET: linux-native-clang-debug
-            DOCKER_IMAGE: ${DOCKER_IMAGE_LINUX_X64_CLANG}
+            DOCKER_IMAGE: kubasejdak/clang:18-24.04
           - PRESET: linux-native-clang-release
-            DOCKER_IMAGE: ${DOCKER_IMAGE_LINUX_X64_CLANG}
+            DOCKER_IMAGE: kubasejdak/clang:18-24.04
     steps:
       - uses: actions/checkout@v4
       - name: build preset
