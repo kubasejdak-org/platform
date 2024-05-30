@@ -1,0 +1,44 @@
+name: Build and test for Linux
+
+on:
+  push:
+  schedule:
+    - cron: "0 12 * * SAT"
+  workflow_dispatch:
+
+jobs:
+  build-x64:
+    name: ${{ matrix.PRESET }}
+    runs-on: [self-hosted, build]
+    needs: []
+    container:
+      image: ${{ matrix.DOCKER_IMAGE }}
+      options: --user root
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - PRESET: linux-native-gcc-debug
+            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+          - PRESET: linux-native-gcc-release
+            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+          - PRESET: linux-native-clang-debug
+            DOCKER_IMAGE: kubasejdak/clang:18-24.04
+          - PRESET: linux-native-clang-release
+            DOCKER_IMAGE: kubasejdak/clang:18-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: build preset
+        run: |
+          mkdir build
+          cd build
+          cmake .. --preset ${{ matrix.PRESET }}
+          make -j$(nproc)
+      - name: aaa
+        run: |
+          pwd
+          ls -al
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.PRESET }}
+          path: build/bin
