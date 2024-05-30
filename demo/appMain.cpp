@@ -29,8 +29,7 @@
 #include <platform/git.hpp>
 #include <platform/init.hpp>
 
-#include <fmt/printf.h>
-
+#include <cstdio>
 #include <cstdlib>
 
 // NOLINTNEXTLINE
@@ -39,16 +38,16 @@ int appMain(int argc, char* argv[])
     if (!platform::init())
         return EXIT_FAILURE;
 
-    fmt::print("Using platform:\n");
-    fmt::print("    git tag        : {}\n", platform::gitTag());
-    fmt::print("    git branch     : {}\n", platform::gitBranch());
-    fmt::print("    git commit     : {}\n", platform::gitCommit());
-    fmt::print("    git user name  : {}\n", platform::gitUserName());
-    fmt::print("    git user email : {}\n", platform::gitUserEmail());
+    std::printf("Using platform:\n");
+    std::printf("    git tag        : %s\n", platform::gitTag().data());
+    std::printf("    git branch     : %s\n", platform::gitBranch().data());
+    std::printf("    git commit     : %s\n", platform::gitCommit().data());
+    std::printf("    git user name  : %s\n", platform::gitUserName().data());
+    std::printf("    git user email : %s\n", platform::gitUserEmail().data());
 
     for (int i = 0; i < argc; ++i)
-        fmt::print("argv[{}] = '{}'\n", i, argv[0]);
+        std::printf("argv[%d] = '%s'\n", i, argv[0]);
 
-    fmt::print("PASSED\n");
+    std::printf("PASSED\n");
     return EXIT_SUCCESS;
 }
