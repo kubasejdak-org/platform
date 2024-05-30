@@ -1,0 +1,30 @@
+name: Build and test for Linux
+
+on:
+  push:
+  schedule:
+    - cron: "0 12 * * SAT"
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: base
+
+jobs:
+  build:
+    # name: build base
+    runs-on: [self-hosted, build]
+    container: ${{ matrix.DOCKER_IMAGE }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - PRESET: linux-native-gcc-debug
+            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: build preset
+        run: |
+          mkdir build
+          cd build
+          cmake .. --preset ${{ matrix.PRESET }}
+          make -j$(nproc)
