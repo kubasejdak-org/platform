@@ -22,6 +22,12 @@ jobs:
         include:
           - PRESET: linux-native-gcc-debug
             DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+          - PRESET: linux-native-gcc-release
+            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+          - PRESET: linux-native-clang-debug
+            DOCKER_IMAGE: kubasejdak/clang:18-24.04
+          - PRESET: linux-native-clang-release
+            DOCKER_IMAGE: kubasejdak/clang:18-24.04
     steps:
       - uses: actions/checkout@v4
       - name: build preset
