@@ -11,7 +11,7 @@ env:
 
 jobs:
   build:
-    # name: build base
+    name: ${{ matrix.PRESET }}
     runs-on: [self-hosted, build]
     container: ${{ matrix.DOCKER_IMAGE }}
     strategy:
