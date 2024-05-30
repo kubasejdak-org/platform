@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.29)
 
-include(demo/settings.cmake)
-
 include(cmake/conan.cmake)
 include(cmake/platform.cmake)
 include(cmake/sanitizers.cmake)
@@ -16,7 +14,6 @@ if (USE_CONAN)
     conan_basic_setup()
 endif ()
 
-# Project-wide compilation options.
 add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:C>:-std=c17> $<$<COMPILE_LANGUAGE:CXX>:-std=c++20>)
 
 if (USE_ASAN OR USE_LSAN OR USE_UBSAN)
@@ -24,6 +21,5 @@ if (USE_ASAN OR USE_LSAN OR USE_UBSAN)
 endif ()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
+add_subdirectory(examples)
 add_subdirectory(lib)
-add_subdirectory(demo)
