@@ -6,6 +6,12 @@ on:
     - cron: "0 12 * * SAT"
   workflow_dispatch:
 
+env:
+  DOCKER_IMAGE_LINUX_X64_GCC: kubasejdak/gcc:13-24.04
+  DOCKER_IMAGE_LINUX_X64_CLANG: kubasejdak/clang:18-24.04
+  DOCKER_IMAGE_LINUX_ARM64_GCC: kubasejdak/aarch64-none-linux-gnu-gcc:13-24.04
+  DOCKER_IMAGE_LINUX_ARM64_CLANG: kubasejdak/aarch64-none-linux-gnu-clang:18-24.04
+
 jobs:
   build-x64:
     name: ${{ matrix.PRESET }}
