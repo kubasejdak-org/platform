@@ -38,3 +38,10 @@ jobs:
         with:
           name: build-${{ matrix.PRESET }}
           path: build/bin
+
+  check-all:
+    runs-on: [self-hosted, build]
+    needs:
+      - build-x64
+    steps:
+      - run: echo "Success"
