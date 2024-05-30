@@ -21,5 +21,5 @@ if (USE_ASAN OR USE_LSAN OR USE_UBSAN)
 endif ()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-add_subdirectory(examples)
 add_subdirectory(lib)
+add_subdirectory(examples)
