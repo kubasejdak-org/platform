@@ -44,35 +44,3 @@ jobs:
         with:
           name: build-${{ matrix.PRESET }}
           path: build/bin
-
-#  build-arm64:
-#    name: ${{ matrix.PRESET }}
-#    runs-on: [self-hosted, build]
-#    needs: []
-#    container:
-#      image: ${{ matrix.DOCKER_IMAGE }}
-#      options: --user root
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        include:
-#          - PRESET: linux-arm64-gcc-debug
-#            DOCKER_IMAGE: ${{ env.DOCKER_IMAGE_LINUX_ARM64_GCC }}
-#          - PRESET: linux-arm64-gcc-release
-#            DOCKER_IMAGE: ${{ env.DOCKER_IMAGE_LINUX_ARM64_GCC }}
-#          - PRESET: linux-arm64-clang-debug
-#            DOCKER_IMAGE: ${{ env.DOCKER_IMAGE_LINUX_ARM64_CLANG }}
-#          - PRESET: linux-arm64-clang-release
-#            DOCKER_IMAGE: ${{ env.DOCKER_IMAGE_LINUX_ARM64_CLANG }}
-#    steps:
-#      - uses: actions/checkout@v4
-#      - name: build preset
-#        run: |
-#          mkdir build
-#          cd build
-#          cmake .. --preset ${{ matrix.PRESET }}
-#          make -j$(nproc)
-#      - uses: actions/upload-artifact@v4
-#        with:
-#          name: build-${{ matrix.PRESET }}
-#          path: build/bin
