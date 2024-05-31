@@ -71,10 +71,37 @@ jobs:
           name: build-${{ matrix.PRESET }}
           path: build/bin
 
+  test-x64:
+    name: ${{ matrix.APP }}
+    runs-on: [self-hosted, build]
+    needs: build-x64
+    container:
+      image: ${{ matrix.DOCKER_IMAGE }}
+      options: --user root
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - APP: platform-git-version
+            PRESET: linux-native-gcc-debug
+            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+          - APP: platform-hello-world
+            PRESET: linux-native-gcc-debug
+            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-${{ matrix.PRESET }}
+      - name: run tests
+        run: |
+          chmod +x ${{ matrix.APP }}
+          ./${{ matrix.APP }}
+
   check-all:
     runs-on: [self-hosted, build]
     needs:
       - build-x64
       - build-arm64
+      - test-x64
     steps:
       - run: echo "Success"

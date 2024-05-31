@@ -8,7 +8,6 @@
   "include": [
     "cmake/presets/app.json",
     "cmake/presets/baremetal.json",
-    "cmake/presets/dependencies.json",
     "cmake/presets/linux.json",
     "cmake/presets/type.json"
   ],
