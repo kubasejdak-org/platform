@@ -94,7 +94,7 @@ jobs:
           name: build-${{ matrix.PRESET }}
       - name: run tests
         run: |
-          ls -al
+          chmod +x ${{ matrix.APP }}
           ./${{ matrix.APP }}
 
   check-all:
