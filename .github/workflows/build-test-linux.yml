@@ -75,24 +75,27 @@ jobs:
     name: ${{ matrix.APP }}
     runs-on: [self-hosted, build]
     needs: build-x64
-    env:
-      PRESET: linux-native-gcc-debug
     container:
-      image: ${{ matrix. DOCKER_IMAGE }}
+      image: ${{ matrix.DOCKER_IMAGE }}
       options: --user root
     strategy:
       fail-fast: false
       matrix:
-        APP: [ platform-git-version, platform-hello-world]
-        DOCKER_IMAGE: [ kubasejdak/gcc:13-24.04 ]
+        include:
+          - APP: platform-git-version
+            PRESET: linux-native-gcc-debug
+            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+          - APP: platform-hello-world
+            PRESET: linux-native-gcc-debug
+            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: build-$PRESET
-      - name: build preset
+          name: build-${{ matrix.PRESET }}
+      - name: run tests
         run: |
-          cd build-$PRESET
-          .$APP
+          cd build-${{ matrix.PRESET }}
+          ./${{ matrix.APP }}
 
   check-all:
     runs-on: [self-hosted, build]
