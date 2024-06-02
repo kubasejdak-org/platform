@@ -73,7 +73,7 @@ jobs:
 
   test-x64:
     name: ${{ matrix.APP }}
-    runs-on: [self-hosted, ARM64]
+    runs-on: [self-hosted, X64]
     needs: build-x64
     container:
       image: kubasejdak/gcc:13-24.04
@@ -83,13 +83,13 @@ jobs:
       matrix:
         include:
           - APP: platform-git-version
-            PRESET: linux-native-gcc-debug
           - APP: platform-hello-world
-            PRESET: linux-native-gcc-debug
+    env:
+      PRESET: linux-native-gcc-debug
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: build-${{ matrix.PRESET }}
+          name: build-${{ env.PRESET }}
       - name: run tests
         run: |
           chmod +x ${{ matrix.APP }}
@@ -97,7 +97,7 @@ jobs:
  
   test-arm64:
     name: ${{ matrix.APP }}
-    runs-on: [self-hosted, build]
+    runs-on: [self-hosted, ARM64]
     needs: build-arm64
     container:
       image: kubasejdak/tests-sbc:13-24.04
