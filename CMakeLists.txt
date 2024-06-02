@@ -1,15 +1,13 @@
 cmake_minimum_required(VERSION 3.29)
 
-include(cmake/platform.cmake)
-include(cmake/sanitizers.cmake)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
+find_package(platform-toolchain REQUIRED)
 
 project(platform ASM C CXX)
 
-if (USE_ASAN OR USE_LSAN OR USE_UBSAN)
-    enable_sanitizers()
-endif ()
+include(cmake/sanitizers.cmake)
 
-add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:C>:-std=c17> $<$<COMPILE_LANGUAGE:CXX>:-std=c++20>)
+add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:C>:-std=c23> $<$<COMPILE_LANGUAGE:CXX>:-std=c++23>)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_subdirectory(lib)
