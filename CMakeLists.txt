@@ -5,9 +5,8 @@ find_package(platform-toolchain REQUIRED)
 
 project(platform ASM C CXX)
 
-include(cmake/sanitizers.cmake)
-
 add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:C>:-std=c23> $<$<COMPILE_LANGUAGE:CXX>:-std=c++23>)
+include(cmake/sanitizers.cmake)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_subdirectory(lib)
