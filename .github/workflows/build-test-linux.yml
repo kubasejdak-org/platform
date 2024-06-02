@@ -9,7 +9,7 @@ on:
 jobs:
   build-x64:
     name: ${{ matrix.PRESET }}
-    runs-on: [self-hosted, build]
+    runs-on: [self-hosted, X64, build]
     needs: []
     container:
       image: ${{ matrix.DOCKER_IMAGE }}
@@ -41,7 +41,7 @@ jobs:
  
   build-arm64:
     name: ${{ matrix.PRESET }}
-    runs-on: [self-hosted, build]
+    runs-on: [self-hosted, X64]
     needs: []
     container:
       image: ${{ matrix.DOCKER_IMAGE }}
@@ -73,10 +73,10 @@ jobs:
 
   test-x64:
     name: ${{ matrix.APP }}
-    runs-on: [self-hosted, build]
+    runs-on: [self-hosted, ARM64]
     needs: build-x64
     container:
-      image: ${{ matrix.DOCKER_IMAGE }}
+      image: kubasejdak/gcc:13-24.04
       options: --user root
     strategy:
       fail-fast: false
@@ -84,10 +84,31 @@ jobs:
         include:
           - APP: platform-git-version
             PRESET: linux-native-gcc-debug
-            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
           - APP: platform-hello-world
             PRESET: linux-native-gcc-debug
-            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-${{ matrix.PRESET }}
+      - name: run tests
+        run: |
+          chmod +x ${{ matrix.APP }}
+          ./${{ matrix.APP }}
+ 
+  test-arm64:
+    name: ${{ matrix.APP }}
+    runs-on: [self-hosted, build]
+    needs: build-arm64
+    container:
+      image: kubasejdak/tests-sbc:13-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - APP: platform-git-version
+            PRESET: linux-native-gcc-debug
+          - APP: platform-hello-world
+            PRESET: linux-native-gcc-debug
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -103,5 +124,6 @@ jobs:
       - build-x64
       - build-arm64
       - test-x64
+      - test-arm64
     steps:
       - run: echo "Success"
