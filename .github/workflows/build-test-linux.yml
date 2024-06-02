@@ -41,7 +41,7 @@ jobs:
  
   build-arm64:
     name: ${{ matrix.PRESET }}
-    runs-on: [self-hosted, X64]
+    runs-on: [self-hosted, X64, build]
     needs: []
     container:
       image: ${{ matrix.DOCKER_IMAGE }}
