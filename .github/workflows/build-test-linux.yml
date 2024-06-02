@@ -106,13 +106,13 @@ jobs:
       matrix:
         include:
           - APP: platform-git-version
-            PRESET: linux-native-gcc-debug
           - APP: platform-hello-world
-            PRESET: linux-native-gcc-debug
+    env:
+      PRESET: linux-arm64-gcc-debug
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: build-${{ matrix.PRESET }}
+          name: build-${{ env.PRESET }}
       - name: run tests
         run: |
           chmod +x ${{ matrix.APP }}
