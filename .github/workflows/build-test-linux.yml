@@ -28,7 +28,7 @@ jobs:
             DOCKER_IMAGE: kubasejdak/clang:18-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/templates/build-cmake-preset-action
+      - uses: kubasejdak-org/cmake-build-preset-action@main
         with:
           preset: ${{ matrix.PRESET }}
  
@@ -53,7 +53,7 @@ jobs:
             DOCKER_IMAGE: kubasejdak/aarch64-none-linux-gnu-clang:18-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/templates/build-cmake-preset-action
+      - uses: kubasejdak-org/cmake-build-preset-action@main
         with:
           preset: ${{ matrix.PRESET }}
 
