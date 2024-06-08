@@ -28,7 +28,7 @@ jobs:
             DOCKER_IMAGE: kubasejdak/clang:18-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/my-action
+      - uses: ./.github/build-cmake-preset-action
         with:
           preset: ${{ matrix.PRESET }}
       # - name: build preset
