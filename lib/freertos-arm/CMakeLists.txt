@@ -1,4 +1,4 @@
-set(OSAL_PLATFORM freertos PARENT_SCOPE)
+set(OSAL_PLATFORM freertos CACHE INTERNAL "")
 
 if (NOT DEFINED FREERTOS_VERSION)
     message(FATAL_ERROR "'FREERTOS_VERSION' is not defined!")
