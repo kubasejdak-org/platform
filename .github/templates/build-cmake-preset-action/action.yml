@@ -17,12 +17,12 @@ runs:
   using: composite
   steps:
     - name: build preset
-        run: |
-          mkdir build
-          cd build
-          cmake .. --preset ${{ inputs.preset }} ${{ inputs.extraBuildArgs }}
-          make -j$(nproc)
-      - uses: actions/upload-artifact@v4
-        with:
-          name: build-${{ inputs.preset }}
-          path: build/${{ inputs.bindir }}
+      run: |
+        mkdir build
+        cd build
+        cmake .. --preset ${{ inputs.preset }} ${{ inputs.extraBuildArgs }}
+        make -j$(nproc)
+    - uses: actions/upload-artifact@v4
+      with:
+        name: build-${{ inputs.preset }}
+        path: build/${{ inputs.bindir }}
