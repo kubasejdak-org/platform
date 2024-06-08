@@ -118,7 +118,7 @@ jobs:
           chmod +x ${{ matrix.APP }}
           ./${{ matrix.APP }}
 
-  valgrind:
+  valgrind-x64:
     name: ${{ matrix.APP }}
     runs-on: [self-hosted, X64]
     needs: build-x64
@@ -156,5 +156,6 @@ jobs:
       - build-arm64
       - test-x64
       - test-arm64
+      - valgrind-x64
     steps:
       - run: echo "Success"
