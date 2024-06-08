@@ -4,7 +4,6 @@ if (NOT DEFINED PLATFORM)
     message(FATAL_ERROR "'PLATFORM' is not defined!")
 endif ()
 
-# Project-wide compilation options.
 add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:C>:-std=c23> $<$<COMPILE_LANGUAGE:CXX>:-std=c++23> $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>)
 
 add_library(platform-main OBJECT EXCLUDE_FROM_ALL)
@@ -23,6 +22,3 @@ add_subdirectory(info)
 target_link_libraries(platform-main
     PUBLIC platform::info
 )
-
-# Make OSAL_PLATFORM visible in the application root directory.
-set(OSAL_PLATFORM ${OSAL_PLATFORM} PARENT_SCOPE)

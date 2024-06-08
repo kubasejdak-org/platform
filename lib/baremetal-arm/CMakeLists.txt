@@ -1,4 +1,4 @@
-set(OSAL_PLATFORM none PARENT_SCOPE)
+set(OSAL_PLATFORM none CACHE INTERNAL "")
 
 target_sources(platform-main PRIVATE
     main.cpp
