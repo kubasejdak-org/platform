@@ -117,7 +117,7 @@ jobs:
       PRESET: linux-native-gcc-debug
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/templates/binary-run-action
+      - uses: ./.github/templates/valgrind-run-action
         with:
           binary: ${{ matrix.APP }}
           artifact: ${{ env.PRESET }}
