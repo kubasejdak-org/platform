@@ -1,0 +1,34 @@
+name: Run valgrind on binary
+description: Run valgrind on binary
+
+inputs:
+  binary:
+    description: Binary to run
+    required: true
+  artifact:
+    description: Artifact to download
+    required: true
+  cmdArgs:
+    description: Cmomand line arguments passed to the binary
+    required: false
+  runEnv:
+    description: Environment variables to set for the binary
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/download-artifact@v4
+      with:
+        name: build-${{ inputs.artifact }}
+    - name: run valgrind
+      shell: bash
+      run: |
+        chmod +x ${{ inputs.binary }}
+        ${{ inputs.runEnv }} valgrind --leak-check=full \
+                   --show-leak-kinds=definite,indirect,possible \
+                   --fair-sched=yes \
+                   --track-origins=yes \
+                   --trace-children=yes \
+                   --error-markers=errstart,errend \
+                   ./${{ inputs.binary }} ${{ inputs.cmdArgs }}
