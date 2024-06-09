@@ -73,8 +73,7 @@ jobs:
     env:
       PRESET: linux-native-gcc-debug
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/templates/binary-run-action
+      - uses: kubasejdak-org/binary-run-action@main
         with:
           binary: ${{ matrix.APP }}
           artifact: ${{ env.PRESET }}
@@ -94,8 +93,7 @@ jobs:
     env:
       PRESET: linux-arm64-gcc-debug
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/templates/binary-run-action
+      - uses: kubasejdak-org/binary-run-action@main
         with:
           binary: ${{ matrix.APP }}
           artifact: ${{ env.PRESET }}
@@ -116,25 +114,10 @@ jobs:
     env:
       PRESET: linux-native-gcc-debug
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/templates/valgrind-run-action
+      - uses: kubasejdak-org/valgrind-run-action@main
         with:
           binary: ${{ matrix.APP }}
           artifact: ${{ env.PRESET }}
-      # - uses: actions/download-artifact@v4
-      #   with:
-      #     name: build-${{ env.PRESET }}
-      # - name: run valgrind
-      #   run: |
-      #     chmod +x ${{ matrix.APP }}
-      #     valgrind --leak-check=full \
-      #              --show-leak-kinds=definite,indirect,possible \
-      #              --fair-sched=yes \
-      #              --track-origins=yes \
-      #              --trace-children=yes \
-      #              --error-markers=errstart,errend \
-      #              ./${{ matrix.app }}
-      #     valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./${{ matrix.APP }}
 
   check-all:
     runs-on: [self-hosted, build]
