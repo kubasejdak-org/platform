@@ -78,13 +78,6 @@ jobs:
         with:
           binary: ${{ matrix.APP }}
           artifact: ${{ env.PRESET }}
-      #- uses: actions/download-artifact@v4
-      #  with:
-      #    name: build-${{ env.PRESET }}
-      #- name: run tests
-      #  run: |
-      #    chmod +x ${{ matrix.APP }}
-      #    ./${{ matrix.APP }}
  
   test-arm64:
     name: ${{ matrix.APP }}
@@ -101,13 +94,11 @@ jobs:
     env:
       PRESET: linux-arm64-gcc-debug
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v4
+      - uses: ./.github/templates/binary-run-action
         with:
-          name: build-${{ env.PRESET }}
-      - name: run tests
-        run: |
-          chmod +x ${{ matrix.APP }}
-          ./${{ matrix.APP }}
+          binary: ${{ matrix.APP }}
+          artifact: ${{ env.PRESET }}
 
   valgrind-x64:
     name: ${{ matrix.APP }}
