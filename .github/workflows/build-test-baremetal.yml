@@ -1,0 +1,63 @@
+name: Build and test for baremetal
+
+on:
+  push:
+  schedule:
+    - cron: "0 12 * * SAT"
+  workflow_dispatch:
+
+jobs:
+  build-stm32f4:
+    name: ${{ matrix.PRESET }}
+    runs-on: [self-hosted, X64, build]
+    needs: []
+    container:
+      image: ${{ matrix.DOCKER_IMAGE }}
+      options: --user root
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - PRESET: baremetal-arm-debug
+            DOCKER_IMAGE: kubasejdak/arm-none-eabi-gcc:13-24.04
+          - PRESET: baremetal-arm-release
+            DOCKER_IMAGE: kubasejdak/arm-none-eabi-gcc:13-24.04
+          - PRESET: freertos-arm-debug
+            DOCKER_IMAGE: kubasejdak/arm-none-eabi-gcc:13-24.04
+          - PRESET: freertos-arm-release
+            DOCKER_IMAGE: kubasejdak/arm-none-eabi-gcc:13-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: kubasejdak-org/cmake-build-preset-action@main
+        with:
+          preset: ${{ matrix.PRESET }}
+
+
+#   test-stm32f4:
+#     name: ${{ matrix.APP }}
+#     runs-on: [self-hosted, X64]
+#     needs: build-stm32f4
+#     container:
+#       image: kubasejdak/gcc:13-24.04
+#       options: --user root
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         include:
+#           - APP: platform-git-version
+#           - APP: platform-hello-world
+#     env:
+#       PRESET: linux-native-gcc-debug
+#     steps:
+#       - uses: kubasejdak-org/binary-run-action@main
+#         with:
+#           binary: ${{ matrix.APP }}
+#           artifact: ${{ env.PRESET }}
+
+  check-all:
+    runs-on: [self-hosted, build]
+    needs:
+      - build-stm32f4
+    #   - test-stm32f4
+    steps:
+      - run: echo "Success"
