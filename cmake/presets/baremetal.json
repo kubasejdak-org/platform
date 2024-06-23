@@ -12,9 +12,8 @@
       "cacheVariables": {
         "PLATFORM": "baremetal-arm",
         "BAREMETAL_ARM_TOOLCHAIN_PATH": "/opt/toolchains/gcc-arm-11.2-2022.02-x86_64-arm-none-eabi",
-        "APP_BAREMETAL_FLAGS": "-mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mthumb",
-        "APP_C_FLAGS": "${APP_BAREMETAL_FLAGS}",
-        "APP_CXX_FLAGS": "${APP_BAREMETAL_FLAGS}"
+        "APP_C_FLAGS": "-mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mthumb",
+        "APP_CXX_FLAGS": "-mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mthumb"
       }
     },
     {
