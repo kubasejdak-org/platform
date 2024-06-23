@@ -11,7 +11,7 @@
       "hidden": true,
       "cacheVariables": {
         "PLATFORM": "baremetal-arm",
-        "BAREMETAL_ARM_TOOLCHAIN_PATH": "/opt/toolchains/gcc-arm-11.2-2022.02-x86_64-arm-none-eabi",
+        "BAREMETAL_ARM_TOOLCHAIN_PATH": "/opt/toolchains/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi",
         "APP_C_FLAGS": "-mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mthumb",
         "APP_CXX_FLAGS": "-mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mthumb"
       }
@@ -21,10 +21,11 @@
       "hidden": true,
       "cacheVariables": {
         "PLATFORM": "freertos-arm",
-        "BAREMETAL_ARM_TOOLCHAIN_PATH": "/opt/toolchains/gcc-arm-11.2-2022.02-x86_64-arm-none-eabi",
+        "BAREMETAL_ARM_TOOLCHAIN_PATH": "/opt/toolchains/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi",
+        "APP_C_FLAGS": "-mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mthumb",
+        "APP_CXX_FLAGS": "-mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mthumb",
         "FREERTOS_VERSION": "freertos-10.2.1",
-        "FREERTOS_PORTABLE": "ARM_CM4F",
-        "APP_BAREMETAL_FLAGS": "-mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mthumb"
+        "FREERTOS_PORTABLE": "ARM_CM4F"
       }
     }
   ]
