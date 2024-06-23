@@ -5,7 +5,7 @@ find_package(platform-toolchain REQUIRED)
 
 project(platform ASM C CXX)
 
-add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:C>:-std=c23> $<$<COMPILE_LANGUAGE:CXX>:-std=c++23>)
+add_compile_options(-Wall -Wextra -Wpedantic -Werror "$<$<COMPILE_LANGUAGE:C>:-std=c17>" "$<$<COMPILE_LANGUAGE:CXX>:-std=c++23;-fno-exceptions>")
 include(cmake/sanitizers.cmake)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
