@@ -4,7 +4,7 @@ if (NOT DEFINED PLATFORM)
     message(FATAL_ERROR "'PLATFORM' is not defined!")
 endif ()
 
-add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:C>:-std=c23> $<$<COMPILE_LANGUAGE:CXX>:-std=c++23> $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>)
+add_compile_options(-Wall -Wextra -Wpedantic -Werror "$<$<COMPILE_LANGUAGE:C>:-std=c17>" "$<$<COMPILE_LANGUAGE:CXX>:-std=c++23;-fno-exceptions>")
 
 add_library(platform-main OBJECT EXCLUDE_FROM_ALL)
 add_library(platform::main ALIAS platform-main)

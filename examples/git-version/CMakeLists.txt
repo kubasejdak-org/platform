@@ -1,5 +1,3 @@
-include(settings.cmake)
-
 add_executable(platform-git-version
     main.cpp
 )
