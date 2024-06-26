@@ -33,31 +33,32 @@ jobs:
           preset: ${{ matrix.PRESET }}
 
 
-#   test-stm32f4:
-#     name: ${{ matrix.APP }}
-#     runs-on: [self-hosted, X64]
-#     needs: build-stm32f4
-#     container:
-#       image: kubasejdak/gcc:13-24.04
-#       options: --user root
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         include:
-#           - APP: platform-git-version
-#           - APP: platform-hello-world
-#     env:
-#       PRESET: linux-native-gcc-debug
-#     steps:
-#       - uses: kubasejdak-org/binary-run-action@main
-#         with:
-#           binary: ${{ matrix.APP }}
-#           artifact: ${{ env.PRESET }}
+  test-stm32f4:
+    name: ${{ matrix.APP }}
+    runs-on: [self-hosted, X64]
+    needs: build-stm32f4
+    container:
+      image: kubasejdak/tests-sbc:13-24.04
+      options: --user root
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - APP: platform-git-version
+          - APP: platform-hello-world
+    env:
+      PRESET: baremetal-arm-debug
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          ls -al
+          ci/program-openocd.py stm32f4discovery ${{ env.PRESET }}/bin/${{ matrix.APP }}
+          ci/logs-reader.py
 
   check-all:
     runs-on: [self-hosted, build]
     needs:
       - build-stm32f4
-    #   - test-stm32f4
+      - test-stm32f4
     steps:
       - run: echo "Success"
