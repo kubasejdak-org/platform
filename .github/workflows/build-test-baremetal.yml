@@ -35,7 +35,7 @@ jobs:
 
   test-stm32f4:
     name: ${{ matrix.APP }}
-    runs-on: [self-hosted, X64]
+    runs-on: [self-hosted, ARM64, stm32f4]
     needs: build-stm32f4
     container:
       image: kubasejdak/tests-sbc:13-24.04
