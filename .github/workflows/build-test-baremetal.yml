@@ -52,8 +52,6 @@ jobs:
       - uses: actions/checkout@v4
       - run: |
           ls -al
-          apt update
-          apt install -y openocd
           tools/ci/program-openocd.py stm32f4discovery ${{ env.PRESET }}/bin/${{ matrix.APP }}
           tools/ci/logs-reader.py
 
