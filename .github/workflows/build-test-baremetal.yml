@@ -39,7 +39,7 @@ jobs:
     needs: build-stm32f4
     container:
       image: kubasejdak/tests-sbc:13-24.04
-      options: --user root
+      options: --user root --device=/dev/ttyUSB0
     strategy:
       fail-fast: false
       matrix:
