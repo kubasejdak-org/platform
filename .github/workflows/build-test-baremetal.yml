@@ -39,7 +39,7 @@ jobs:
     needs: build-stm32f4
     container:
       image: kubasejdak/tests-sbc:13-24.04
-      options: --user root --device=/dev/ttyUSB0
+      options: --privileged
     strategy:
       fail-fast: false
       matrix:
@@ -51,7 +51,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          ls -al /dev
           tools/ci/program-openocd.py stm32f4discovery ${{ env.PRESET }}/bin/${{ matrix.APP }}
           tools/ci/logs-reader.py
 
