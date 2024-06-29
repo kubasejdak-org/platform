@@ -1,4 +1,4 @@
-name: Build and test for Linux
+name: Build and run examples for Linux
 
 on:
   push:
@@ -57,7 +57,7 @@ jobs:
         with:
           preset: ${{ matrix.PRESET }}
 
-  test-x64:
+  examples-x64:
     name: ${{ matrix.APP }}
     runs-on: [self-hosted, X64]
     needs: build-x64
@@ -78,7 +78,7 @@ jobs:
           binary: ${{ matrix.APP }}
           artifact: ${{ env.PRESET }}
  
-  test-arm64:
+  examples-arm64:
     name: ${{ matrix.APP }}
     runs-on: [self-hosted, ARM64]
     needs: build-arm64
@@ -124,8 +124,8 @@ jobs:
     needs:
       - build-x64
       - build-arm64
-      - test-x64
-      - test-arm64
+      - examples-x64
+      - examples-arm64
       - valgrind-x64
     steps:
       - run: echo "Success"
