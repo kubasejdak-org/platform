@@ -1,4 +1,4 @@
-name: Build and test for baremetal
+name: Build and run examples for baremetal
 
 on:
   push:
@@ -32,7 +32,7 @@ jobs:
         with:
           preset: ${{ matrix.PRESET }}
 
-  test-stm32f4:
+  examples-stm32f4:
     name: ${{ matrix.APP }}
     runs-on: [self-hosted, ARM64, stm32f4]
     needs: build-stm32f4
@@ -41,14 +41,18 @@ jobs:
       matrix:
         include:
           - APP: platform-git-version
+            PRESET: baremetal-arm-debug
           - APP: platform-hello-world
-    env:
-      PRESET: baremetal-arm-debug
+            PRESET: baremetal-arm-debug
+          - APP: platform-git-version
+            PRESET: freertos-arm-debug
+          - APP: platform-hello-world
+            PRESET: freertos-arm-debug
     steps:
       - uses: kubasejdak-org/openocd-run-action@main
         with:
           binary: ${{ matrix.APP }}
-          artifact: ${{ env.PRESET }}
+          artifact: ${{ matrix.PRESET }}
           board: stm32f4discovery
           serial: /dev/ttyUSB0
 
@@ -56,6 +60,6 @@ jobs:
     runs-on: [self-hosted, build]
     needs:
       - build-stm32f4
-      - test-stm32f4
+      - examples-stm32f4
     steps:
       - run: echo "Success"
