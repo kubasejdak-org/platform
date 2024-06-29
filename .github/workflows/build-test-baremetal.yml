@@ -37,9 +37,6 @@ jobs:
     name: ${{ matrix.APP }}
     runs-on: [self-hosted, ARM64, stm32f4]
     needs: build-stm32f4
-    container:
-      image: kubasejdak/tests-sbc:13-24.04
-      options: --privileged
     strategy:
       fail-fast: false
       matrix:
