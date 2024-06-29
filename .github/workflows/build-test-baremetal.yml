@@ -32,7 +32,6 @@ jobs:
         with:
           preset: ${{ matrix.PRESET }}
 
-
   test-stm32f4:
     name: ${{ matrix.APP }}
     runs-on: [self-hosted, ARM64, stm32f4]
@@ -46,13 +45,18 @@ jobs:
     env:
       PRESET: baremetal-arm-debug
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: kubasejdak-org/openocd-run-action@add-action
         with:
-          name: build-${{ env.PRESET }}
-      - run: |
-          tools/ci/program-openocd.py stm32f4discovery ${{ matrix.APP }}
-          tools/ci/logs-reader.py /dev/ttyUSB0
+          binary: ${{ matrix.APP }}
+          artifact: ${{ env.PRESET }}
+          board: stm32f4discovery
+      # - uses: actions/checkout@v4
+      # - uses: actions/download-artifact@v4
+      #   with:
+      #     name: build-${{ env.PRESET }}
+      # - run: |
+      #     tools/ci/program-openocd.py stm32f4discovery ${{ matrix.APP }}
+      #     tools/ci/logs-reader.py /dev/ttyUSB0
 
   check-all:
     runs-on: [self-hosted, build]
