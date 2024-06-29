@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 
+import shlex
 import subprocess
 import sys
 
-cmd = ["openocd", "-f", "/usr/share/openocd/scripts/board/{}.cfg".format(sys.argv[1]), "-c", "program {} verify reset exit".format(sys.argv[2])]
-print(" ".join(cmd))
+cmd = f"openocd -f /usr/share/openocd/scripts/board/{sys.argv[1]}.cfg -c program {sys.argv[2]} verify reset exit"
+print(cmd)
 
-subprocess.Popen(cmd, stdout=subprocess.PIPE)
+subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE)

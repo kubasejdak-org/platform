@@ -5,17 +5,17 @@ import sys
 import time
 
 class UartLogsReader:
-    timeoutSec = 120
+    TIMEOUT_SEC = 120
 
     def __init__(self, device, baudrate):
-        self.uart = serial.Serial(device, baudrate, timeout=self.timeoutSec)
+        self.uart = serial.Serial(device, baudrate, timeout=self.TIMEOUT_SEC)
         self.uart.reset_input_buffer()
         self.uart.reset_output_buffer()
 
     def run(self):
         print("Running UART logs reader on {} with speed {}".format(self.uart.port, self.uart.baudrate))
 
-        deadline = time.time() + self.timeoutSec
+        deadline = time.time() + self.TIMEOUT_SEC
         while True:
             line = self.uart.readline().rstrip()
             if not line and time.time() > deadline:
@@ -29,6 +29,6 @@ class UartLogsReader:
             if "FAILED" in line:
                 return 1
 
-reader = UartLogsReader("/dev/ttyUSB0", 115200)
+reader = UartLogsReader(sys.argv[1], 115200)
 status = reader.run()
 sys.exit(status)

@@ -51,9 +51,8 @@ jobs:
         with:
           name: build-${{ env.PRESET }}
       - run: |
-          ls -al
           tools/ci/program-openocd.py stm32f4discovery ${{ matrix.APP }}
-          tools/ci/logs-reader.py
+          tools/ci/logs-reader.py /dev/ttyUSB0
 
   check-all:
     runs-on: [self-hosted, build]
