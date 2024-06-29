@@ -45,7 +45,7 @@ jobs:
     env:
       PRESET: baremetal-arm-debug
     steps:
-      - uses: kubasejdak-org/openocd-run-action@add-action
+      - uses: kubasejdak-org/openocd-run-action@feature/add-action
         with:
           binary: ${{ matrix.APP }}
           artifact: ${{ env.PRESET }}
