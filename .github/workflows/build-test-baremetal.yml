@@ -46,7 +46,7 @@ jobs:
     env:
       PRESET: baremetal-arm-debug
     steps:
-      - run: rm -rf ${{ github.workspace }}
+      - run: rm -rf ${{ github.workspace }}/*
         name: clean workspace
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
