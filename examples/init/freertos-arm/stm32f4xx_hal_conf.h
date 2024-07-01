@@ -282,7 +282,7 @@
 #ifdef HAL_DMA_MODULE_ENABLED
   #include "stm32f4xx_hal_dma.h"
 #endif /* HAL_DMA_MODULE_ENABLED */
-
+   
 #ifdef HAL_CORTEX_MODULE_ENABLED
   #include "stm32f4xx_hal_cortex.h"
 #endif /* HAL_CORTEX_MODULE_ENABLED */
@@ -304,7 +304,7 @@
 #endif /* HAL_CRC_MODULE_ENABLED */
 
 #ifdef HAL_CRYP_MODULE_ENABLED
-  #include "stm32f4xx_hal_cryp.h"
+  #include "stm32f4xx_hal_cryp.h" 
 #endif /* HAL_CRYP_MODULE_ENABLED */
 
 #ifdef HAL_DMA2D_MODULE_ENABLED
@@ -323,10 +323,14 @@
   #include "stm32f4xx_hal_eth.h"
 #endif /* HAL_ETH_MODULE_ENABLED */
 
+#ifdef HAL_ETH_LEGACY_MODULE_ENABLED
+  #include "stm32f4xx_hal_eth_legacy.h"
+#endif /* HAL_ETH_LEGACY_MODULE_ENABLED */
+
 #ifdef HAL_FLASH_MODULE_ENABLED
   #include "stm32f4xx_hal_flash.h"
 #endif /* HAL_FLASH_MODULE_ENABLED */
-
+ 
 #ifdef HAL_SRAM_MODULE_ENABLED
   #include "stm32f4xx_hal_sram.h"
 #endif /* HAL_SRAM_MODULE_ENABLED */
@@ -341,8 +345,8 @@
 
 #ifdef HAL_PCCARD_MODULE_ENABLED
   #include "stm32f4xx_hal_pccard.h"
-#endif /* HAL_PCCARD_MODULE_ENABLED */
-
+#endif /* HAL_PCCARD_MODULE_ENABLED */ 
+  
 #ifdef HAL_SDRAM_MODULE_ENABLED
   #include "stm32f4xx_hal_sdram.h"
 #endif /* HAL_SDRAM_MODULE_ENABLED */
@@ -426,7 +430,7 @@
 #ifdef HAL_HCD_MODULE_ENABLED
  #include "stm32f4xx_hal_hcd.h"
 #endif /* HAL_HCD_MODULE_ENABLED */
-
+   
 #ifdef HAL_DSI_MODULE_ENABLED
  #include "stm32f4xx_hal_dsi.h"
 #endif /* HAL_DSI_MODULE_ENABLED */
@@ -442,6 +446,10 @@
 #ifdef HAL_FMPI2C_MODULE_ENABLED
  #include "stm32f4xx_hal_fmpi2c.h"
 #endif /* HAL_FMPI2C_MODULE_ENABLED */
+
+#ifdef HAL_FMPSMBUS_MODULE_ENABLED
+ #include "stm32f4xx_hal_fmpsmbus.h"
+#endif /* HAL_FMPSMBUS_MODULE_ENABLED */
 
 #ifdef HAL_SPDIFRX_MODULE_ENABLED
  #include "stm32f4xx_hal_spdifrx.h"
@@ -465,7 +473,7 @@
   * @brief  The assert_param macro is used for function's parameters check.
   * @param  expr If expr is false, it calls assert_failed function
   *         which reports the name of the source file and the source
-  *         line number of the call that failed.
+  *         line number of the call that failed. 
   *         If expr is true, it returns no value.
   * @retval None
   */
@@ -476,10 +484,12 @@
   #define assert_param(expr) ((void)0U)
 #endif /* USE_FULL_ASSERT */
 
+
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* __STM32F4xx_HAL_CONF_H */
+ 
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+
