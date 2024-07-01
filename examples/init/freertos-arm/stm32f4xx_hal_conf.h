@@ -165,6 +165,7 @@
 #define  USE_HAL_HCD_REGISTER_CALLBACKS         0U /* HCD register callback disabled       */
 #define  USE_HAL_I2C_REGISTER_CALLBACKS         0U /* I2C register callback disabled       */
 #define  USE_HAL_FMPI2C_REGISTER_CALLBACKS      0U /* FMPI2C register callback disabled    */
+#define  USE_HAL_FMPSMBUS_REGISTER_CALLBACKS    0U /* FMPSMBUS register callback disabled  */
 #define  USE_HAL_I2S_REGISTER_CALLBACKS         0U /* I2S register callback disabled       */
 #define  USE_HAL_IRDA_REGISTER_CALLBACKS        0U /* IRDA register callback disabled      */
 #define  USE_HAL_LPTIM_REGISTER_CALLBACKS       0U /* LPTIM register callback disabled     */
@@ -192,7 +193,7 @@
 
 /* ########################## Assert Selection ############################## */
 /**
-  * @brief Uncomment the line below to expanse the "assert_param" macro in the
+  * @brief Uncomment the line below to expanse the "assert_param" macro in the 
   *        HAL drivers code
   */
 /* #define USE_FULL_ASSERT    1U */
