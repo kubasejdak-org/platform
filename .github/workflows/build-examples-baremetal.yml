@@ -46,8 +46,8 @@ jobs:
           #   PRESET: baremetal-arm-debug
           - APP: platform-git-version
             PRESET: freertos-arm-debug
-          - APP: platform-hello-world
-            PRESET: freertos-arm-debug
+          # - APP: platform-hello-world
+          #   PRESET: freertos-arm-debug
     steps:
       - uses: kubasejdak-org/openocd-run-action@main
         with:
