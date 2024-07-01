@@ -9,7 +9,7 @@ on:
 jobs:
   build-x64:
     name: ${{ matrix.PRESET }}
-    runs-on: [self-hosted, X64, build]
+    runs-on: [self-hosted, X64, build, docker]
     needs: []
     container:
       image: ${{ matrix.DOCKER_IMAGE }}
@@ -34,7 +34,7 @@ jobs:
  
   build-arm64:
     name: ${{ matrix.PRESET }}
-    runs-on: [self-hosted, X64, build]
+    runs-on: [self-hosted, X64, build, docker]
     needs: []
     container:
       image: ${{ matrix.DOCKER_IMAGE }}
@@ -59,7 +59,7 @@ jobs:
 
   examples-x64:
     name: ${{ matrix.APP }}
-    runs-on: [self-hosted, X64]
+    runs-on: [self-hosted, X64, docker]
     needs: build-x64
     container:
       image: kubasejdak/gcc:13-24.04
@@ -80,7 +80,7 @@ jobs:
  
   examples-arm64:
     name: ${{ matrix.APP }}
-    runs-on: [self-hosted, ARM64]
+    runs-on: [self-hosted, ARM64, docker]
     needs: build-arm64
     container:
       image: kubasejdak/tests-sbc:13-24.04
@@ -100,7 +100,7 @@ jobs:
 
   valgrind-x64:
     name: ${{ matrix.APP }}
-    runs-on: [self-hosted, X64]
+    runs-on: [self-hosted, X64, docker]
     needs: build-x64
     container:
       image: kubasejdak/valgrind:24.04

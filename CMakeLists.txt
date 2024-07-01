@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.29)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
-find_package(platform-toolchain REQUIRED)
+list(APPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
+
+find_package(platform-toolchain)
 
 project(platform ASM C CXX)
 
