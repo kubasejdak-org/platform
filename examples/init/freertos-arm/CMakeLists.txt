@@ -1,7 +1,11 @@
-add_subdirectory(${CMAKE_SOURCE_DIR}/external/stm32f4xx ${CMAKE_BINARY_DIR}/external/stm32f4xx)
-
 target_sources(platform-init PRIVATE
     init.cpp
+)
+
+find_package(stm32f4xx)
+
+target_include_directories(stm32f4xx
+    PUBLIC .
 )
 
 target_link_libraries(platform-init

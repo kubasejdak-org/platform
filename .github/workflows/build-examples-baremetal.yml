@@ -9,7 +9,7 @@ on:
 jobs:
   build-stm32f4:
     name: ${{ matrix.PRESET }}
-    runs-on: [self-hosted, X64, build]
+    runs-on: [self-hosted, X64, build, docker]
     needs: []
     container:
       image: ${{ matrix.DOCKER_IMAGE }}
