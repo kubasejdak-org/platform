@@ -121,20 +121,20 @@
   * @brief External Low Speed oscillator (LSE) value.
   */
 #if !defined  (LSE_VALUE)
- #define LSE_VALUE  ((uint32_t)32768U)    /*!< Value of the External Low Speed oscillator in Hz */
+ #define LSE_VALUE               32768U    /*!< Value of the External Low Speed oscillator in Hz */
 #endif /* LSE_VALUE */
 
 #if !defined  (LSE_STARTUP_TIMEOUT)
-  #define LSE_STARTUP_TIMEOUT    ((uint32_t)5000U)   /*!< Time out for LSE start up, in ms */
+  #define LSE_STARTUP_TIMEOUT    5000U     /*!< Time out for LSE start up, in ms */
 #endif /* LSE_STARTUP_TIMEOUT */
 
 /**
   * @brief External clock source for I2S peripheral
-  *        This value is used by the I2S HAL module to compute the I2S clock source
-  *        frequency, this source is inserted directly through I2S_CKIN pad.
+  *        This value is used by the I2S HAL module to compute the I2S clock source 
+  *        frequency, this source is inserted directly through I2S_CKIN pad. 
   */
 #if !defined  (EXTERNAL_CLOCK_VALUE)
-  #define EXTERNAL_CLOCK_VALUE    ((uint32_t)12288000U) /*!< Value of the External audio frequency in Hz*/
+  #define EXTERNAL_CLOCK_VALUE     12288000U /*!< Value of the External oscillator in Hz*/
 #endif /* EXTERNAL_CLOCK_VALUE */
 
 /* Tip: To avoid modifying this file each time you need to use different HSE,
