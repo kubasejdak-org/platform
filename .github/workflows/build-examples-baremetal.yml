@@ -56,7 +56,7 @@ jobs:
           board: stm32f4discovery
           serial: /dev/ttyUSB0
 
-  check-all-linux:
+  check-all-baremetal:
     runs-on: [self-hosted, build]
     needs:
       - build-stm32f4
