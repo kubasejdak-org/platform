@@ -9,6 +9,8 @@ endif ()
 
 if (PLATFORM STREQUAL linux)
     set(OSAL_PLATFORM linux CACHE INTERNAL "")
+elseif (PLATFORM STREQUAL baremetal-arm)
+    set(OSAL_PLATFORM none CACHE INTERNAL "")
 elseif (PLATFORM STREQUAL freertos-arm)
     set(OSAL_PLATFORM freertos CACHE INTERNAL "")
 else ()
