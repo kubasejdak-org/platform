@@ -3,6 +3,7 @@ if (toolchain IN_LIST platform_FIND_COMPONENTS)
 endif ()
 
 if (main IN_LIST platform_FIND_COMPONENTS)
+    include(FetchContent)
     FetchContent_Declare(platform-main
         SOURCE_DIR      ${platform_SOURCE_DIR}
         SOURCE_SUBDIR   lib/main
