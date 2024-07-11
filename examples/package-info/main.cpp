@@ -26,8 +26,8 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <platform/git.hpp>
 #include <platform/init.hpp>
+#include <platform/package/git.hpp>
 
 #include <cstdio>
 #include <cstdlib>

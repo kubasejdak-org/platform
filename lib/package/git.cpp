@@ -26,7 +26,7 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include "platform/git.hpp"
+#include "platform/package/git.hpp"
 #if __has_include("git.h")
     #include "git.h"
 #else
