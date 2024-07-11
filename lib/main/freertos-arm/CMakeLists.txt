@@ -1,8 +1,16 @@
-set(OSAL_PLATFORM none CACHE INTERNAL "")
+if (NOT DEFINED FREERTOS_VERSION)
+    message(FATAL_ERROR "'FREERTOS_VERSION' is not defined!")
+endif ()
+
+add_subdirectory(${FREERTOS_VERSION})
 
 target_sources(platform-main PRIVATE
     main.cpp
     syscalls.cpp
+)
+
+target_link_libraries(platform-main
+    PRIVATE freertos
 )
 
 function (objcopy_generate_bin TARGET_NAME)
