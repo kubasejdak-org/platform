@@ -119,7 +119,7 @@ jobs:
           binary: ${{ matrix.APP }}
           artifact: ${{ env.PRESET }}
 
-  check-all:
+  check-all-baremetal:
     runs-on: [self-hosted, build]
     needs:
       - build-x64
