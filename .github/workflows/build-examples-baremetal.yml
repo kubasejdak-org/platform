@@ -40,11 +40,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - APP: platform-git-version
+          - APP: platform-package-info
             PRESET: baremetal-arm-debug
           - APP: platform-hello-world
             PRESET: baremetal-arm-debug
-          - APP: platform-git-version
+          - APP: platform-package-info
             PRESET: freertos-arm-debug
           - APP: platform-hello-world
             PRESET: freertos-arm-debug

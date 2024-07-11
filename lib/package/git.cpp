@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright MIT License
 ///
-/// Copyright (c) 2019-2024 Kuba Sejdak (kuba.sejdak@gmail.com)
+/// Copyright (c) 2023-2024 Kuba Sejdak (kuba.sejdak@gmail.com)
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -26,28 +26,42 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <platform/git.hpp>
-#include <platform/init.hpp>
+#include "platform/package/git.hpp"
+#if __has_include("git.h")
+    #include "git.h"
+#else
+    #define PLATFORM_GIT_TAG        "N/A" // NOLINT
+    #define PLATFORM_GIT_BRANCH     "N/A" // NOLINT
+    #define PLATFORM_GIT_COMMIT     "N/A" // NOLINT
+    #define PLATFORM_GIT_USER_NAME  "N/A" // NOLINT
+    #define PLATFORM_GIT_USER_EMAIL "N/A" // NOLINT
+#endif
 
-#include <cstdio>
-#include <cstdlib>
+namespace platform {
 
-// NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
+std::string_view gitTag()
 {
-    if (!platform::init())
-        return EXIT_FAILURE;
-
-    std::printf("Using platform:\n");
-    std::printf("    git tag        : %s\n", platform::gitTag().data());
-    std::printf("    git branch     : %s\n", platform::gitBranch().data());
-    std::printf("    git commit     : %s\n", platform::gitCommit().data());
-    std::printf("    git user name  : %s\n", platform::gitUserName().data());
-    std::printf("    git user email : %s\n", platform::gitUserEmail().data());
-
-    for (int i = 0; i < argc; ++i)
-        std::printf("argv[%d] = '%s'\n", i, argv[0]);
-
-    std::printf("PASSED\n");
-    return EXIT_SUCCESS;
+    return PLATFORM_GIT_TAG;
 }
+
+std::string_view gitBranch()
+{
+    return PLATFORM_GIT_BRANCH;
+}
+
+std::string_view gitCommit()
+{
+    return PLATFORM_GIT_COMMIT;
+}
+
+std::string_view gitUserName()
+{
+    return PLATFORM_GIT_USER_NAME;
+}
+
+std::string_view gitUserEmail()
+{
+    return PLATFORM_GIT_USER_EMAIL;
+}
+
+} // namespace platform
