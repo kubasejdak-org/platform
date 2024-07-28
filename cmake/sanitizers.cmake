@@ -31,7 +31,7 @@ function (enable_sanitizers)
         set(CMAKE_C_FLAGS       "${CMAKE_C_FLAGS} -g -O0" CACHE INTERNAL "")
         set(CMAKE_CXX_FLAGS     "${CMAKE_CXX_FLAGS} -g -O0" CACHE INTERNAL "")
     endif ()
-endfunction()
+endfunction ()
 
 if (USE_ASAN OR USE_LSAN OR USE_UBSAN)
     enable_sanitizers()
