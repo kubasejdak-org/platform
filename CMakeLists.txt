@@ -7,7 +7,6 @@ find_package(platform COMPONENTS toolchain)
 project(platform ASM C CXX)
 
 include(cmake/compilation-flags.cmake)
-include(cmake/sanitizers.cmake)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_subdirectory(examples)

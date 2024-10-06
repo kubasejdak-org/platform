@@ -10,7 +10,8 @@ target_sources(platform-main PRIVATE
 )
 
 target_link_libraries(platform-main
-    PRIVATE freertos
+    PRIVATE
+        freertos
 )
 
 function (objcopy_generate_bin TARGET_NAME)

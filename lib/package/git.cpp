@@ -27,8 +27,8 @@
 /////////////////////////////////////////////////////////////////////////////////////
 
 #include "platform/package/git.hpp"
-#if __has_include("git.h")
-    #include "git.h"
+#if __has_include("git.hpp")
+    #include "git.hpp"
 #else
     #define PLATFORM_GIT_TAG        "N/A" // NOLINT
     #define PLATFORM_GIT_BRANCH     "N/A" // NOLINT

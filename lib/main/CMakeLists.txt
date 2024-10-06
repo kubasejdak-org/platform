@@ -6,7 +6,8 @@ add_library(platform-main OBJECT EXCLUDE_FROM_ALL)
 add_library(platform::main ALIAS platform-main)
 
 target_include_directories(platform-main
-    PUBLIC include
+    PUBLIC
+        include
 )
 
 add_subdirectory(${PLATFORM})
