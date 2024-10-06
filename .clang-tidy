@@ -1,100 +1,55 @@
 ---
-Checks:                '*,
-                        -*-vararg,
-                        -altera-*,
-                        -bugprone-easily-swappable-parameters,
-                        -bugprone-implicit-widening-of-multiplication-result,
-                        -clang-analyzer-optin.cplusplus.UninitializedObject,
-                        -concurrency-mt-unsafe,
-                        -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
-                        -cppcoreguidelines-pro-bounds-constant-array-index,
-                        -cppcoreguidelines-pro-bounds-pointer-arithmetic,
-                        -fuchsia-*,
-                        -google-readability-casting,
-                        -google-runtime-references,
-                        -hicpp-no-array-decay,
-                        -llvm-header-guard,
-                        -llvmlibc-*,
-                        -modernize-use-trailing-return-type,
-                        -readability-function-cognitive-complexity,
-                        -readability-identifier-length,
-                        -readability-redundant-access-specifiers'
-WarningsAsErrors:      '*'
-HeaderFilterRegex:     ''
-AnalyzeTemporaryDtors: false
-FormatStyle:           file
-User:                  kuba
+Checks: '
+  *,
+  -altera-*,
+  -bugprone-easily-swappable-parameters,
+  -cppcoreguidelines-avoid-do-while,
+  -cppcoreguidelines-pro-bounds-constant-array-index,
+  -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+  -fuchsia-*,
+  -google-default-arguments,
+  -llvm-header-guard,
+  -llvm-include-order,
+  -llvmlibc-*,
+  -misc-const-correctness,
+  -modernize-use-trailing-return-type,
+  -performance-enum-size,
+  -readability-identifier-length,
+  -readability-redundant-access-specifiers
+'
+WarningsAsErrors: '*'
+FormatStyle: file
 CheckOptions:
-  - key:               bugprone-dangling-handle.HandleClasses
-    value:             'std::basic_string_view;std::experimental::basic_string_view'
-  - key:               google-readability-braces-around-statements.ShortStatementLines
-    value:             '2'
-  - key:               hicpp-braces-around-statements.ShortStatementLines
-    value:             '2'
-  - key:               misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
-    value:             '1'
-  - key:               readability-braces-around-statements.ShortStatementLines
-    value:             '2'
-  - key:               readability-identifier-naming.AbstractClassCase
-    value:             'CamelCase'
-  - key:               readability-identifier-naming.AbstractClassPrefix
-    value:             'I'
-  - key:               readability-identifier-naming.ClassCase
-    value:             'CamelCase'
-  - key:               readability-identifier-naming.ClassConstantCase
-    value:             'CamelCase'
-  - key:               readability-identifier-naming.ClassConstantPrefix
-    value:             'm_c'
-  - key:               readability-identifier-naming.ClassMemberCase
-    value:             'camelBack'
-  - key:               readability-identifier-naming.ClassMemberPrefix
-    value:             'm_'
-  - key:               readability-identifier-naming.ConstantCase
-    value:             'CamelCase'
-  - key:               readability-identifier-naming.ConstantPrefix
-    value:             'c'
-  - key:               readability-identifier-naming.ConstantMemberCase
-    value:             'CamelCase'
-  - key:               readability-identifier-naming.ConstantMemberPrefix
-    value:             'm_c'
-  - key:               readability-identifier-naming.ConstantParameterCase
-    value:             'CamelCase'
-  - key:               readability-identifier-naming.ConstantParameterPrefix
-    value:             'c'
-  - key:               readability-identifier-naming.EnumCase
-    value:             'CamelCase'
-  - key:               readability-identifier-naming.EnumConstantCase
-    value:             'CamelCase'
-  - key:               readability-identifier-naming.EnumConstantPrefix
-    value:             'e'
-  - key:               readability-identifier-naming.FunctionCase
-    value:             'camelBack'
-  - key:               readability-identifier-naming.NamespaceCase
-    value:             'lower_case'
-  - key:               readability-identifier-naming.ParameterCase
-    value:             'camelBack'
-  - key:               readability-identifier-naming.PrivateMemberCase
-    value:             'camelBack'
-  - key:               readability-identifier-naming.PrivateMemberPrefix
-    value:             'm_'
-  - key:               readability-identifier-naming.ProtectedMemberCase
-    value:             'camelBack'
-  - key:               readability-identifier-naming.ProtectedMemberPrefix
-    value:             'm_'
-  - key:               readability-identifier-naming.PublicMemberCase
-    value:             'camelBack'
-  - key:               readability-identifier-naming.TypeAliasCase
-    value:             'CamelCase'
-  - key:               readability-identifier-naming.TypedefCase
-    value:             'CamelCase'
-  - key:               readability-identifier-naming.UnionCase
-    value:             'CamelCase'
-  - key:               readability-identifier-naming.ValueTemplateParameterCase
-    value:             'CamelCase'
-  - key:               readability-identifier-naming.ValueTemplateParameterPrefix
-    value:             'c'
-  - key:               readability-identifier-naming.VariableCase
-    value:             'camelBack'
-  - key:               readability-inconsistent-declaration-parameter-name.Strict
-    value:             '1'
+  abseil-string-find-str-contains.StringLikeClasses: '::absl::string_view'
+  bugprone-dangling-handle.HandleClasses: 'std::basic_string_view;std::experimental::basic_string_view'
+  cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor: 'true'
+  google-readability-braces-around-statements.ShortStatementLines: '2'
+  hicpp-braces-around-statements.ShortStatementLines: '2'
+  hicpp-special-member-functions.AllowSoleDefaultDtor: 'true'
+  misc-include-cleaner.IgnoreHeaders: '/usr/include/.*;/opt/toolchains/.*;VerboseReporter.hpp'
+  misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic: 'true'
+  readability-braces-around-statements.ShortStatementLines: '2'
+  readability-function-cognitive-complexity.IgnoreMacros: 'true'
+  readability-identifier-naming.AbstractClassCase: 'CamelCase'
+  readability-identifier-naming.AbstractClassPrefix: 'I'
+  readability-identifier-naming.ClassCase: 'CamelCase'
+  readability-identifier-naming.EnumCase: 'CamelCase'
+  readability-identifier-naming.EnumConstantCase: 'CamelCase'
+  readability-identifier-naming.EnumConstantPrefix: 'e'
+  readability-identifier-naming.FunctionCase: 'camelBack'
+  readability-identifier-naming.MacroDefinitionCase : 'UPPER_CASE'
+  readability-identifier-naming.NamespaceCase: 'lower_case'
+  readability-identifier-naming.ParameterCase: 'camelBack'
+  readability-identifier-naming.PrivateMemberCase: 'camelBack'
+  readability-identifier-naming.PrivateMemberPrefix: 'm_'
+  readability-identifier-naming.ProtectedMemberCase: 'camelBack'
+  readability-identifier-naming.ProtectedMemberPrefix: 'm_'
+  readability-identifier-naming.PublicMemberCase: 'camelBack'
+  readability-identifier-naming.TemplateParameterCase: 'CamelCase'
+  readability-identifier-naming.TypeAliasCase: 'CamelCase'
+  readability-identifier-naming.TypedefCase: 'CamelCase'
+  readability-identifier-naming.UnionCase: 'CamelCase'
+  readability-identifier-naming.ValueTemplateParameterCase: 'camelBack'
+  readability-identifier-naming.VariableCase: 'camelBack'
+  readability-inconsistent-declaration-parameter-name.Strict: 'true'
 ...

@@ -91,9 +91,7 @@ constexpr int compilerPatch()
 inline std::string compiler()
 {
     if (compilerVendor() == "unsupported")
-    {
         return "unsupported";
-    }
 
     std::stringstream ss;
     ss << compilerVendor() << "-" << compilerMajor() << "." << compilerMinor() << "." << compilerPatch();
