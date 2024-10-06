@@ -33,16 +33,20 @@ add_library(stm32f4xx EXCLUDE_FROM_ALL
 )
 
 target_compile_definitions(stm32f4xx
-    PUBLIC STM32F407xx USE_HAL_DRIVER
+    PUBLIC
+        STM32F407xx
+        USE_HAL_DRIVER
 )
 
 target_include_directories(stm32f4xx
-    PUBLIC ${cmsis_5_SOURCE_DIR}/CMSIS/Core/Include
-           ${stm32f4xx_SOURCE_DIR}/Inc
-           ${stm32f4xx_SOURCE_DIR}/Inc/Legacy
-           ${cmsis_device_f4_SOURCE_DIR}/Include
+    PUBLIC
+        ${cmsis_5_SOURCE_DIR}/CMSIS/Core/Include
+        ${stm32f4xx_SOURCE_DIR}/Inc
+        ${stm32f4xx_SOURCE_DIR}/Inc/Legacy
+        ${cmsis_device_f4_SOURCE_DIR}/Include
 )
 
 target_compile_options(stm32f4xx
-    PRIVATE -w
+    PRIVATE
+        -w
 )

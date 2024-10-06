@@ -34,7 +34,7 @@
 #include <cstdint>
 #include <type_traits>
 
-// NOLINTNEXTLINE(fuchsia-statically-constructed-objects,cppcoreguidelines-avoid-non-const-global-variables)
+// NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
 UART_HandleTypeDef uart{};
 
 extern "C" {
@@ -62,7 +62,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* /*unused*/)
 
 int consolePrint(const char* message, std::size_t size)
 {
-    constexpr std::uint32_t cTimeout = 1'000;
+    constexpr std::uint32_t cTimeout = 1000;
     auto result = HAL_UART_Transmit(&uart, std::remove_const_t<std::uint8_t*>(message), size, cTimeout);
     return (result == HAL_OK) ? int(size) : 0;
 }

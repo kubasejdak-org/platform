@@ -27,6 +27,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 
 #include <platform/init.hpp>
+#include <platform/package/build.hpp>
 #include <platform/package/git.hpp>
 
 #include <cstdio>
@@ -37,6 +38,10 @@ int appMain(int argc, char* argv[])
 {
     if (!platform::init())
         return EXIT_FAILURE;
+
+    std::printf("Build info:\n");
+    std::printf("    compiler       : %s\n", platform::compiler().data());
+    std::printf("    build type     : %s\n", platform::buildType().data());
 
     std::printf("Using platform:\n");
     std::printf("    git tag        : %s\n", platform::gitTag().data());

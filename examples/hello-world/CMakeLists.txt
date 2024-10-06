@@ -5,10 +5,12 @@ add_executable(platform-hello-world
 find_package(platform COMPONENTS main)
 
 target_link_libraries(platform-hello-world
-    PRIVATE platform::init platform::main
+    PRIVATE
+        platform::init
+        platform::main
 )
 
-if (PLATFORM STREQUAL freertos-arm OR PLATFORM STREQUAL baremetal-arm)
+if (NOT UNIX)
     objcopy_generate_bin(platform-hello-world)
 endif ()
 

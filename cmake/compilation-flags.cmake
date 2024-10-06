@@ -1,1 +1,3 @@
-add_compile_options(-Wall -Wextra -Wpedantic -Werror "$<$<COMPILE_LANGUAGE:C>:-std=c17>" "$<$<COMPILE_LANGUAGE:CXX>:-std=c++23;-fno-exceptions>")
+add_compile_options(-Wall -Wextra -Wpedantic -Werror $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>)
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
