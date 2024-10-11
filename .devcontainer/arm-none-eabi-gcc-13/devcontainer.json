@@ -6,7 +6,6 @@
         "source=${localEnv:HOME}/.gitconfig-private,target=/home/ubuntu/.gitconfig-private,type=bind,consistency=cached",
         "source=${localEnv:HOME}/.ssh,target=/home/ubuntu/.ssh,type=bind,consistency=cached"
     ],
-    "postCreateCommand": "sudo apt update && sudo apt install -y clang-format",
     "customizations": {
         "vscode": {
             "extensions": [
