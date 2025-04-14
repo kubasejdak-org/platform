@@ -1,8 +1,8 @@
 include(FetchContent)
 
 FetchContent_Declare(CMSIS_5
-    GIT_REPOSITORY     https://github.com/ARM-software/CMSIS_5.git
-    GIT_TAG            5.9.0
+    GIT_REPOSITORY      https://github.com/ARM-software/CMSIS_5.git
+    GIT_TAG             5.9.0
     SYSTEM
 )
 
