@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright MIT License
 ///
-/// Copyright (c) 2019-2024 Kuba Sejdak (kuba.sejdak@gmail.com)
+/// Copyright (c) 2019-2025 Kuba Sejdak (kuba.sejdak@gmail.com)
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -33,8 +33,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-// NOLINTNEXTLINE
-int appMain(int argc, char* argv[])
+int appMain(int argc, char** argv)
 {
     if (!platform::init())
         return EXIT_FAILURE;

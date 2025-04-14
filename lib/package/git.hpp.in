@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright MIT License
 ///
-/// Copyright (c) 2023-2024 Kuba Sejdak (kuba.sejdak@gmail.com)
+/// Copyright (c) 2023-2025 Kuba Sejdak (kuba.sejdak@gmail.com)
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -28,8 +28,8 @@
 
 #pragma once
 
-#define @PACKAGE_NAME@_GIT_TAG        "@GIT_TAG@"
-#define @PACKAGE_NAME@_GIT_BRANCH     "@GIT_BRANCH@"
-#define @PACKAGE_NAME@_GIT_COMMIT     "@GIT_COMMIT@"
-#define @PACKAGE_NAME@_GIT_USER_NAME  "@GIT_USER_NAME@"
-#define @PACKAGE_NAME@_GIT_USER_EMAIL "@GIT_USER_EMAIL@"
+#define @PACKAGE_NAME @_GIT_TAG "@GIT_TAG@"
+#define @PACKAGE_NAME @_GIT_BRANCH "@GIT_BRANCH@"
+#define @PACKAGE_NAME @_GIT_COMMIT "@GIT_COMMIT@"
+#define @PACKAGE_NAME @_GIT_USER_NAME "@GIT_USER_NAME@"
+#define @PACKAGE_NAME @_GIT_USER_EMAIL "@GIT_USER_EMAIL@"

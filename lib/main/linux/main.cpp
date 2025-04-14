@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright MIT License
 ///
-/// Copyright (c) 2019-2024 Kuba Sejdak (kuba.sejdak@gmail.com)
+/// Copyright (c) 2019-2025 Kuba Sejdak (kuba.sejdak@gmail.com)
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -31,8 +31,7 @@
 /// @param argv         Array of commandline arguments containing argc strings.
 /// @return Exit code of the application.
 /// @note This function should be provided/implemented by the application.
-// NOLINTNEXTLINE
-extern int appMain(int argc, char* argv[]);
+extern int appMain(int argc, char** argv);
 
 /// Main executable entry point.
 /// @param argc         Number of the commandline arguments.
