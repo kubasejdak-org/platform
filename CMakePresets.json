@@ -41,6 +41,34 @@
       ]
     },
     {
+      "name": "linux-native-clang-debug-asan",
+      "inherits": [
+        "linux-native-clang-debug",
+        "asan"
+      ]
+    },
+    {
+      "name": "linux-native-clang-debug-lsan",
+      "inherits": [
+        "linux-native-clang-debug",
+        "lsan"
+      ]
+    },
+    {
+      "name": "linux-native-clang-debug-tsan",
+      "inherits": [
+        "linux-native-clang-debug",
+        "tsan"
+      ]
+    },
+    {
+      "name": "linux-native-clang-debug-ubsan",
+      "inherits": [
+        "linux-native-clang-debug",
+        "ubsan"
+      ]
+    },
+    {
       "name": "linux-arm64-gcc-debug",
       "inherits": [
         "linux-arm64-gcc",
