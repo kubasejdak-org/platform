@@ -32,5 +32,5 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
-include(${CMAKE_CURRENT_LIST_DIR}/../sanitizers.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/../coverage.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/sanitizers.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/coverage.cmake)
