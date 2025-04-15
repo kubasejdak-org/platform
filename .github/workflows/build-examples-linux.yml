@@ -26,6 +26,14 @@ jobs:
             DOCKER_IMAGE: kubasejdak/clang:18-24.04
           - PRESET: linux-native-clang-release
             DOCKER_IMAGE: kubasejdak/clang:18-24.04
+          - PRESET: linux-native-clang-debug-asan
+            DOCKER_IMAGE: kubasejdak/clang:18-24.04
+          - PRESET: linux-native-clang-debug-lsan
+            DOCKER_IMAGE: kubasejdak/clang:18-24.04
+          - PRESET: linux-native-clang-debug-tsan
+            DOCKER_IMAGE: kubasejdak/clang:18-24.04
+          - PRESET: linux-native-clang-debug-ubsan
+            DOCKER_IMAGE: kubasejdak/clang:18-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: kubasejdak-org/cmake-build-preset-action@main
@@ -119,6 +127,39 @@ jobs:
           binary: ${{ matrix.APP }}
           artifact: ${{ env.PRESET }}
 
+  sanitizers-x64:
+    name: ${{ matrix.APP }}
+    runs-on: [self-hosted, X64, docker]
+    needs: build-x64
+    container:
+      image: kubasejdak/gcc:13-24.04
+      options: --user root
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - APP: platform-package-info
+            PRESET: linux-native-clang-debug-asan
+          - APP: platform-package-info
+            PRESET: linux-native-clang-debug-lsan
+          - APP: platform-package-info
+            PRESET: linux-native-clang-debug-tsan
+          - APP: platform-package-info
+            PRESET: linux-native-clang-debug-ubsan
+          - APP: platform-hello-world
+            PRESET: linux-native-clang-debug-asan
+          - APP: platform-hello-world
+            PRESET: linux-native-clang-debug-lsan
+          - APP: platform-hello-world
+            PRESET: linux-native-clang-debug-tsan
+          - APP: platform-hello-world
+            PRESET: linux-native-clang-debug-ubsan
+    steps:
+      - uses: kubasejdak-org/binary-run-action@main
+        with:
+          binary: ${{ matrix.APP }}
+          artifact: ${{ matrix.PRESET }}
+
   check-all-linux:
     runs-on: [self-hosted, build]
     needs:
@@ -127,5 +168,6 @@ jobs:
       - examples-x64
       - examples-arm64
       - valgrind-x64
+      - sanitizers-x64
     steps:
       - run: echo "Success"
