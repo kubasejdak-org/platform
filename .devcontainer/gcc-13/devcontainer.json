@@ -9,10 +9,11 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "github.copilot",
-                "github.vscode-github-actions",
+                "bierner.markdown-mermaid",
+                "davidanson.vscode-markdownlint",
                 "mads-hartmann.bash-ide-vscode",
                 "matepek.vscode-catch2-test-adapter",
+                "ms-python.python",
                 "ms-vscode.cpptools-extension-pack",
                 "ms-vsliveshare.vsliveshare",
                 "waderyan.gitblame",
