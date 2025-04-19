@@ -30,28 +30,28 @@
 #include <platform/package/build.hpp>
 #include <platform/package/git.hpp>
 
-#include <cstdio>
 #include <cstdlib>
+#include <iostream>
 
 int appMain(int argc, char** argv)
 {
     if (!platform::init())
         return EXIT_FAILURE;
 
-    std::printf("Build info:\n");
-    std::printf("    compiler       : %s\n", platform::compiler().data());
-    std::printf("    build type     : %s\n", platform::buildType().data());
+    std::cout << "Build info:\n";
+    std::cout << "    compiler       : " << platform::compiler() << "\n";
+    std::cout << "    build type     : " << platform::buildType() << "\n";
 
-    std::printf("Using platform:\n");
-    std::printf("    git tag        : %s\n", platform::gitTag().data());
-    std::printf("    git branch     : %s\n", platform::gitBranch().data());
-    std::printf("    git commit     : %s\n", platform::gitCommit().data());
-    std::printf("    git user name  : %s\n", platform::gitUserName().data());
-    std::printf("    git user email : %s\n", platform::gitUserEmail().data());
+    std::cout << "Using platform:\n";
+    std::cout << "    git tag        : " << platform::gitTag() << "\n";
+    std::cout << "    git branch     : " << platform::gitBranch() << "\n";
+    std::cout << "    git commit     : " << platform::gitCommit() << "\n";
+    std::cout << "    git user name  : " << platform::gitUserName() << "\n";
+    std::cout << "    git user email : " << platform::gitUserEmail() << "\n";
 
     for (int i = 0; i < argc; ++i)
-        std::printf("argv[%d] = '%s'\n", i, argv[0]);
+        std::cout << "argv[" << i << "] = '" << argv[i] << "'\n";
 
-    std::printf("PASSED\n");
+    std::cout << "PASSED\n";
     return EXIT_SUCCESS;
 }

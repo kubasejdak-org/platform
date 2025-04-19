@@ -37,6 +37,8 @@
     #define PLATFORM_GIT_USER_EMAIL "N/A" // NOLINT
 #endif
 
+#include <string_view>
+
 namespace platform {
 
 std::string_view gitTag()

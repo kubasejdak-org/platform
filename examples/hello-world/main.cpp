@@ -28,15 +28,15 @@
 
 #include <platform/init.hpp>
 
-#include <cstdio>
 #include <cstdlib>
+#include <iostream>
 
 int appMain([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 {
     if (!platform::init())
         return EXIT_FAILURE;
 
-    std::printf("Hello world!\n");
-    std::printf("PASSED\n");
+    std::cout << "Hello world!\n";
+    std::cout << "PASSED\n";
     return EXIT_SUCCESS;
 }
