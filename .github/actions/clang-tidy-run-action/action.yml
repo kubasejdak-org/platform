@@ -21,12 +21,12 @@ runs:
 
         mkdir artifacts
         cp compile_commands.json artifacts
-        if [[ `wc -l < errors.yml` != "0" ]]; then
+        if [[ -f errors.yml && `wc -l < errors.yml` != "0" ]]; then
             cp errors.yml artifacts
             false
         fi
     - uses: actions/upload-artifact@v4
-      if: always()
+      if: failure()
       with:
         name: build-${{ inputs.preset }}
         path: artifacts
