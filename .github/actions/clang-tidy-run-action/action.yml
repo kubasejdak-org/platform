@@ -17,9 +17,11 @@ runs:
 
         cmake .. --preset ${{ inputs.preset }}
         python3 ../tools/adjust-compilation-db.py
-        ../tools/check-clang-tidy.sh || true
-
-        echo "Preparing artifacts"
+        ../tools/check-clang-tidy.sh
+    - name: copy artifacts
+      shell: bash
+      if: always()
+      run: |
         mkdir artifacts
         cp compile_commands.json artifacts
         if [[ `wc -l < errors.yml` != "0" ]]; then
