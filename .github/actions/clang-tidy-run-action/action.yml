@@ -23,6 +23,7 @@ runs:
       shell: bash
       if: always()
       run: |
+        cd ${{ inputs.preset }}
         pwd
         ls -al
         mkdir artifacts
@@ -35,4 +36,4 @@ runs:
       if: always()
       with:
         name: build-${{ inputs.preset }}
-        path: artifacts
+        path: ${{ inputs.preset }}/artifacts
