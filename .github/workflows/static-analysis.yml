@@ -19,7 +19,7 @@ jobs:
       - uses: ./.github/actions/clang-format-run-action
 
   linting:
-    name: ${{ matrix.PRESET }}
+    name: clang-tidy
     runs-on: [self-hosted, X64, build, docker]
     needs: []
     container:
