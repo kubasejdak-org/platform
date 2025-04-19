@@ -27,7 +27,6 @@ runs:
         if [[ `wc -l < errors.yml` != "0" ]]; then
             echo "Errors found"
             cp errors.yml artifacts
-            false
         fi
     - uses: actions/upload-artifact@v4
       if: always()
