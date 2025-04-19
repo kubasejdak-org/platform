@@ -19,9 +19,11 @@ runs:
         python3 ../tools/adjust-compilation-db.py
         ../tools/check-clang-tidy.sh || true
 
+        echo "Preparing artifacts"
         mkdir artifacts
         cp compile_commands.json artifacts
         if [[ `wc -l < errors.yml` != "0" ]]; then
+            echo "Errors found"
             cp errors.yml artifacts
             false
         fi
