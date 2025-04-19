@@ -14,6 +14,7 @@ runs:
       run: |
         mkdir ${{ inputs.preset }}
         cd ${{ inputs.preset }}
+        pwd
 
         cmake .. --preset ${{ inputs.preset }}
         python3 ../tools/adjust-compilation-db.py
@@ -22,6 +23,8 @@ runs:
       shell: bash
       if: always()
       run: |
+        pwd
+        ls -al
         mkdir artifacts
         cp compile_commands.json artifacts
         if [[ `wc -l < errors.yml` != "0" ]]; then
