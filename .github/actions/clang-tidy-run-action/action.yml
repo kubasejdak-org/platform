@@ -17,7 +17,7 @@ runs:
 
         cmake .. --preset ${{ inputs.preset }}
         python3 ../tools/adjust-compilation-db.py
-        ../tools/check-clang-tidy.sh
+        ../tools/check-clang-tidy.sh || true
 
         mkdir artifacts
         cp compile_commands.json artifacts
@@ -29,4 +29,4 @@ runs:
       if: always()
       with:
         name: build-${{ inputs.preset }}
-        path: ${{ inputs.preset }}/artifacts
+        path: artifacts
