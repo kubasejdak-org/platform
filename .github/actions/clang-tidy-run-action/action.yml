@@ -26,6 +26,7 @@ runs:
             false
         fi
     - uses: actions/upload-artifact@v4
+      if: always()
       with:
         name: build-${{ inputs.preset }}
         path: artifacts
