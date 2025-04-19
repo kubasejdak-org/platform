@@ -16,6 +16,7 @@ runs:
         pwd
         ls -al
         ${{ inputs.launchScriptPath }}
+        git status
 
         git diff --color > clang-format.patch
         if [[ `wc -l < clang-format.patch` != "0" ]]; then
