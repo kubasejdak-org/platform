@@ -7,6 +7,17 @@ on:
   workflow_dispatch:
 
 jobs:
+  formatting:
+    name: clang-format
+    runs-on: [self-hosted, X64, build, docker]
+    needs: []
+    container:
+      image: kubasejdak/clang:18-24.04
+      options: --user root
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/clang-format-run-action
+
   linting:
     name: ${{ matrix.PRESET }}
     runs-on: [self-hosted, X64, build, docker]
@@ -29,6 +40,7 @@ jobs:
   check-all:
     runs-on: [self-hosted, build]
     needs:
+      - formatting
       - linting
     steps:
       - run: echo "Success"

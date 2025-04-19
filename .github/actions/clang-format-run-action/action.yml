@@ -1,0 +1,23 @@
+name: Run clang-format
+description: Run clang-format
+
+inputs:
+  launchScriptPath:
+    description: Path to script that launches clang-format
+    required: false
+    default: tools/check-clang-format.sh
+
+runs:
+  using: composite
+  steps:
+    - name: run clang-format
+      shell: bash
+      run: |
+        ${{ inputs.launchScriptPath }}
+
+        git diff --color > clang-format.patch
+        if [[ `wc -l < clang-format.patch` != "0" ]]; then
+          cat clang-format.patch
+          git checkout -- .
+          false
+        fi
