@@ -1,0 +1,34 @@
+name: Run static analysis
+
+on:
+  push:
+  schedule:
+    - cron: "0 12 * * SAT"
+  workflow_dispatch:
+
+jobs:
+  linting:
+    name: ${{ matrix.PRESET }}
+    runs-on: [self-hosted, X64, build, docker]
+    needs: []
+    container:
+      image: ${{ matrix.DOCKER_IMAGE }}
+      options: --user root
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - PRESET: linux-native-clang-debug
+            DOCKER_IMAGE: kubasejdak/clang:18-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./github/actions/hello-world-bash
+        with:
+          preset: ${{ matrix.PRESET }}
+
+  check-all:
+    runs-on: [self-hosted, build]
+    needs:
+      - linting
+    steps:
+      - run: echo "Success"
