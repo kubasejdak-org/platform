@@ -13,6 +13,7 @@ runs:
     - name: run clang-format
       shell: bash
       run: |
+        echo "-- ${{ inputs.launchScriptPath }} --"
         ${{ inputs.launchScriptPath }}
 
         git diff --color > clang-format.patch
