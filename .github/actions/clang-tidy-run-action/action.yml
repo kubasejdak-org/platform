@@ -1,0 +1,31 @@
+name: Run clang-tidy
+description: Run clang-tidy
+
+inputs:
+  preset:
+    description: CMake preset to use
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: run clang-tidy
+      shell: bash
+      run: |
+        mkdir ${{ parameters.preset }}
+        cd ${{ parameters.preset }}
+
+        cmake .. --preset ${{ parameters.preset }}
+        python3 ../tools/adjust-compilation-db.py
+        ../tools/check-clang-tidy.sh
+
+        mkdir artifacts
+        cp compile_commands.json artifacts
+        if [[ `wc -l < errors.yml` != "0" ]]; then
+            cp errors.yml artifacts
+            false
+        fi
+    - uses: actions/upload-artifact@v4
+      with:
+        name: build-${{ inputs.preset }}
+        path: artifacts
