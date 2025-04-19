@@ -40,15 +40,15 @@ int appMain(int argc, char** argv)
         return EXIT_FAILURE;
 
     std::cout << "Build info:\n";
-    std::cout << std::format("    compiler       : {}\n", platform::compiler().data());
-    std::cout << std::format("    build type     : {}\n", platform::buildType().data());
+    std::cout << std::format("    compiler       : {}\n", platform::compiler());
+    std::cout << std::format("    build type     : {}\n", platform::buildType());
 
     std::cout << "Using platform:\n";
-    std::cout << std::format("    git tag        : {}\n", platform::gitTag().data());
-    std::cout << std::format("    git branch     : {}\n", platform::gitBranch().data());
-    std::cout << std::format("    git commit     : {}\n", platform::gitCommit().data());
-    std::cout << std::format("    git user name  : {}\n", platform::gitUserName().data());
-    std::cout << std::format("    git user email : {}\n", platform::gitUserEmail().data());
+    std::cout << std::format("    git tag        : {}\n", platform::gitTag());
+    std::cout << std::format("    git branch     : {}\n", platform::gitBranch());
+    std::cout << std::format("    git commit     : {}\n", platform::gitCommit());
+    std::cout << std::format("    git user name  : {}\n", platform::gitUserName());
+    std::cout << std::format("    git user email : {}\n", platform::gitUserEmail());
 
     for (int i = 0; i < argc; ++i)
         std::cout << std::format("argv[{}] = '{}'\n", i, argv[i]);
