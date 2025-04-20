@@ -10,17 +10,14 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: fix git permissions
+      shell: bash
+      run: git config --system --add safe.directory '*'
     - name: run clang-format
       shell: bash
       run: |
         git config --system --add safe.directory '*'
-        whoami
-        pwd
-        ls -al
         ${{ inputs.launchScriptPath }}
-        echo "==============================================="
-        git status
-        echo "==============================================="
 
         git diff --color > clang-format.patch
         if [[ `wc -l < clang-format.patch` != "0" ]]; then
