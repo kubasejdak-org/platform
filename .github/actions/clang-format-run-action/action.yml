@@ -13,6 +13,7 @@ runs:
     - name: run clang-format
       shell: bash
       run: |
+        whoami
         pwd
         ls -al
         ${{ inputs.launchScriptPath }}
