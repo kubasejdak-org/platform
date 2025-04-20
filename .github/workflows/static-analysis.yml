@@ -37,7 +37,7 @@ jobs:
         with:
           preset: ${{ matrix.PRESET }}
 
-  check-all:
+  check-all-static:
     runs-on: [self-hosted, build]
     needs:
       - formatting
