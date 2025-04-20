@@ -15,9 +15,10 @@ runs:
       run: git config --system --add safe.directory '*'
     - name: run clang-format
       shell: bash
+      run: ${{ inputs.launchScriptPath }}
+    - name: check for errors
+      shell: bash
       run: |
-        ${{ inputs.launchScriptPath }}
-
         git diff --color > clang-format.patch
         if [[ `wc -l < clang-format.patch` != "0" ]]; then
           cat clang-format.patch
