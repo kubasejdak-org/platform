@@ -16,7 +16,6 @@ runs:
     - name: run clang-format
       shell: bash
       run: |
-        git config --system --add safe.directory '*'
         ${{ inputs.launchScriptPath }}
 
         git diff --color > clang-format.patch
