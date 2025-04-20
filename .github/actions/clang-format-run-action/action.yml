@@ -13,6 +13,7 @@ runs:
     - name: run clang-format
       shell: bash
       run: |
+        git config --system --add safe.directory '*'
         whoami
         pwd
         ls -al
