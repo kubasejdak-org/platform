@@ -16,7 +16,7 @@ jobs:
       options: --user root
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/clang-format-run-action
+      - uses: kubasejdak-org/clang-format-run-action@main
 
   linting:
     name: clang-tidy
