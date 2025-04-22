@@ -1,3 +1,5 @@
+option(WITH_COVERAGE "Compile with coverage support" OFF)
+
 function (add_coverage_flags)
     set(COVERAGE_FLAGS              "--coverage -fprofile-update=atomic")
     string(REPLACE " " ";" COVERAGE_FLAGS_LIST ${COVERAGE_FLAGS})
