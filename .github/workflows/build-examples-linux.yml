@@ -175,10 +175,12 @@ jobs:
             DOCKER_IMAGE: kubasejdak/gcc:13-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: kubasejdak-org/cmake-build-preset-action@main
+      - uses: kubasejdak-org/cmake-build-preset-action@maintenance/add-paths-input
         with:
           preset: ${{ matrix.PRESET }}
           extraBuildArgs: -DWITH_COVERAGE=ON
+          artifactSuffix: -coverage
+          extraArtifactPaths: build/**/*.gcno
 
   check-all-linux:
     runs-on: [self-hosted, build]
