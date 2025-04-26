@@ -20,7 +20,7 @@ jobs:
           - PRESET: linux-native-gcc-debug
     steps:
       - uses: actions/checkout@v4
-      - uses: kubasejdak-org/cmake-build-preset-action/coverage@feature/add-coverage-subaction 
+      - uses: kubasejdak-org/cmake-build-preset-action/coverage@main
         with:
           preset: ${{ matrix.PRESET }}
 
