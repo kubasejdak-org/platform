@@ -175,12 +175,9 @@ jobs:
             DOCKER_IMAGE: kubasejdak/gcc:13-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: kubasejdak-org/cmake-build-preset-action@main
+      - uses: kubasejdak-org/cmake-build-preset-action/coverage@feature/add-coverage-subaction
         with:
           preset: ${{ matrix.PRESET }}
-          cmakeExtraArgs: -DWITH_COVERAGE=ON
-          artifactSuffix: -coverage
-          artifactExtraPaths: build/**/*.gcno
 
   check-all-linux:
     runs-on: [self-hosted, build]
