@@ -59,6 +59,8 @@ jobs:
       - run: |
           pwd
           ls -al
+          echo "----------"
+          ls -al dupadupa
 
           # apps=( \
           #   "AnalogSet1_Coverage_Linux_ARM" \
