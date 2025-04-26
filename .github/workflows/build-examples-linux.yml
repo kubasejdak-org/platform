@@ -154,24 +154,6 @@ jobs:
           binary: ${{ matrix.APP }}
           artifact: ${{ matrix.PRESET }}
 
-  build-coverage:
-    runs-on: [self-hosted, X64, build, docker]
-    needs: []
-    container:
-      image: ${{ matrix.DOCKER_IMAGE }}
-      options: --user root
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - PRESET: linux-native-gcc-debug
-            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
-    steps:
-      - uses: actions/checkout@v4
-      - uses: kubasejdak-org/cmake-build-preset-action/coverage@main
-        with:
-          preset: ${{ matrix.PRESET }}
-
   check-all-linux:
     runs-on: [self-hosted, build]
     needs:
@@ -181,6 +163,5 @@ jobs:
       - examples-arm64
       - valgrind-x64
       - sanitizers-x64
-      - build-coverage
     steps:
       - run: echo "Success"

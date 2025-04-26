@@ -1,0 +1,32 @@
+name: Check code coverage
+
+on:
+  push:
+  schedule:
+    - cron: "0 12 * * SAT"
+  workflow_dispatch:
+
+jobs:
+  build-x64:
+    runs-on: [self-hosted, X64, build, docker]
+    needs: []
+    container:
+      image: kubasejdak/gcc:13-24.04
+      options: --user root
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - PRESET: linux-native-gcc-debug
+    steps:
+      - uses: actions/checkout@v4
+      - uses: kubasejdak-org/cmake-build-preset-action/coverage@main
+        with:
+          preset: ${{ matrix.PRESET }}
+
+  check-all-linux:
+    runs-on: [self-hosted, build]
+    needs:
+      - build-x64
+    steps:
+      - run: echo "Success"
