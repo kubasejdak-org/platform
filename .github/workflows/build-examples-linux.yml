@@ -8,7 +8,6 @@ on:
 
 jobs:
   build-x64:
-    name: ${{ matrix.PRESET }}
     runs-on: [self-hosted, X64, build, docker]
     needs: []
     container:
@@ -41,7 +40,6 @@ jobs:
           preset: ${{ matrix.PRESET }}
  
   build-arm64:
-    name: ${{ matrix.PRESET }}
     runs-on: [self-hosted, X64, build, docker]
     needs: []
     container:
@@ -66,7 +64,6 @@ jobs:
           preset: ${{ matrix.PRESET }}
 
   examples-x64:
-    name: ${{ matrix.APP }}
     runs-on: [self-hosted, X64, docker]
     needs: build-x64
     container:
@@ -87,7 +84,6 @@ jobs:
           artifact: ${{ env.PRESET }}
  
   examples-arm64:
-    name: ${{ matrix.APP }}
     runs-on: [self-hosted, ARM64, docker]
     needs: build-arm64
     container:
@@ -107,7 +103,6 @@ jobs:
           artifact: ${{ env.PRESET }}
 
   valgrind-x64:
-    name: ${{ matrix.APP }}
     runs-on: [self-hosted, X64, docker]
     needs: build-x64
     container:
@@ -128,7 +123,6 @@ jobs:
           artifact: ${{ env.PRESET }}
 
   sanitizers-x64:
-    name: ${{ matrix.APP }}
     runs-on: [self-hosted, X64, docker]
     needs: build-x64
     container:
@@ -160,7 +154,7 @@ jobs:
           binary: ${{ matrix.APP }}
           artifact: ${{ matrix.PRESET }}
 
-  coverage-build:
+  build-coverage:
     runs-on: [self-hosted, X64, build, docker]
     needs: []
     container:
@@ -187,6 +181,6 @@ jobs:
       - examples-arm64
       - valgrind-x64
       - sanitizers-x64
-      - coverage-build
+      - build-coverage
     steps:
       - run: echo "Success"
