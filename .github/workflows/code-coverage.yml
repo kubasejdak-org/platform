@@ -39,7 +39,7 @@ jobs:
     env:
       PRESET: linux-native-gcc-debug
     steps:
-      - uses: kubasejdak-org/binary-run-action/coverage@feature/add-coverage-support
+      - uses: kubasejdak-org/binary-run-action/coverage@main
         with:
           binary: ${{ matrix.APP }}
           artifact: ${{ env.PRESET }}
