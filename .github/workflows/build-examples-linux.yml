@@ -161,7 +161,6 @@ jobs:
           artifact: ${{ matrix.PRESET }}
 
   coverage-build:
-    name: ${{ matrix.PRESET }}
     runs-on: [self-hosted, X64, build, docker]
     needs: []
     container:
@@ -175,7 +174,7 @@ jobs:
             DOCKER_IMAGE: kubasejdak/gcc:13-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: kubasejdak-org/cmake-build-preset-action/coverage@feature/add-coverage-subaction
+      - uses: kubasejdak-org/cmake-build-preset-action/coverage@main
         with:
           preset: ${{ matrix.PRESET }}
 
