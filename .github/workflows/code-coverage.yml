@@ -24,25 +24,25 @@ jobs:
         with:
           preset: ${{ matrix.PRESET }}
 
-  # examples-x64:
-  #   runs-on: [self-hosted, X64, docker]
-  #   needs: build-x64
-  #   container:
-  #     image: kubasejdak/gcc:13-24.04
-  #     options: --user root
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       include:
-  #         - APP: platform-package-info
-  #         - APP: platform-hello-world
-  #   env:
-  #     PRESET: linux-native-gcc-debug
-  #   steps:
-  #     - uses: kubasejdak-org/binary-run-action@main
-  #       with:
-  #         binary: ${{ matrix.APP }}
-  #         artifact: ${{ env.PRESET }}-coverage
+  examples-x64:
+    runs-on: [self-hosted, X64, docker]
+    needs: build-x64
+    container:
+      image: kubasejdak/gcc:13-24.04
+      options: --user root
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - APP: platform-package-info
+          - APP: platform-hello-world
+    env:
+      PRESET: linux-native-gcc-debug
+    steps:
+      - uses: kubasejdak-org/binary-run-action@feature/add-coverage-support
+        with:
+          binary: ${{ matrix.APP }}
+          artifact: ${{ env.PRESET }}
 
   check-all-coverage:
     runs-on: [self-hosted, build]
