@@ -43,6 +43,10 @@ jobs:
         with:
           binary: ${{ matrix.APP }}
           artifact: ${{ env.PRESET }}
+      - name: check files
+        run: |
+          pwd
+          ls -al
 
   check-all-coverage:
     runs-on: [self-hosted, build]
