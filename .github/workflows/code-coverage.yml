@@ -55,10 +55,11 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           pattern: coverage-*
+          path: pizda
       - run: |
           ls -al
           echo "--------------------"
-          tree coverage-platform-package-info
+          tree pizda/coverage-platform-package-info
 
 
           # apps=( \
