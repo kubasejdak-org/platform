@@ -57,6 +57,9 @@ jobs:
           pattern: coverage-*
       - run: |
           ls -al
+          echo "--------------------"
+          tree coverage-platform-package-info
+
 
           # apps=( \
           #   "AnalogSet1_Coverage_Linux_ARM" \
