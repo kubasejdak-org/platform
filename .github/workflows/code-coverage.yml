@@ -53,13 +53,9 @@ jobs:
       options: --user root
     steps:
       - uses: actions/download-artifact@v4
-        with:
-          path: dupadupa2
       - run: |
           pwd
           ls -al
-          echo "----------"
-          ls -al dupadupa2
 
           # apps=( \
           #   "AnalogSet1_Coverage_Linux_ARM" \
