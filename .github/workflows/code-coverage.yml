@@ -93,5 +93,6 @@ jobs:
     needs:
       - build-x64
       - examples-x64
+      - generate-report
     steps:
       - run: echo "Success"
