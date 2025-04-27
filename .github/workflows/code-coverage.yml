@@ -39,7 +39,7 @@ jobs:
     env:
       PRESET: linux-native-gcc-debug
     steps:
-      - uses: kubasejdak-org/binary-run-action/coverage@main
+      - uses: kubasejdak-org/binary-run-action/coverage@maintenance/improve-coverage
         with:
           binary: ${{ matrix.APP }}
           artifact: ${{ env.PRESET }}
@@ -53,6 +53,8 @@ jobs:
       options: --user root
     steps:
       - uses: actions/download-artifact@v4
+        with:
+          pattern: coverage-*
       - run: |
           pwd
           ls -al
