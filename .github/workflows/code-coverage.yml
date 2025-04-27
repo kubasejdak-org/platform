@@ -56,7 +56,6 @@ jobs:
         with:
           pattern: coverage-*
       - run: |
-          pwd
           ls -al
 
           # apps=( \
