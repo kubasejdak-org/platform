@@ -54,13 +54,12 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          merge-multiple: true
-          path: dupadupa
+          path: dupadupa2
       - run: |
           pwd
           ls -al
           echo "----------"
-          ls -al dupadupa
+          ls -al dupadupa2
 
           # apps=( \
           #   "AnalogSet1_Coverage_Linux_ARM" \
