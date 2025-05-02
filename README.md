@@ -1,7 +1,8 @@
-### Overview
+# Overview
 
 Platform project creates an easy-to-use abstraction for launching applications on various OS platforms.
 Its main goal is to provide:
+
 * compiler configuration for target platform,
 * abstraction of launching main application thread on target platform.
 
