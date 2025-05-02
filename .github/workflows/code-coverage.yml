@@ -39,65 +39,15 @@ jobs:
     env:
       PRESET: linux-native-gcc-debug
     steps:
-      - uses: kubasejdak-org/binary-run-action/coverage@maintenance/improve-coverage
+      - uses: kubasejdak-org/binary-run-action/coverage@main
         with:
           binary: ${{ matrix.APP }}
           artifact: ${{ env.PRESET }}
-
-  generate-report:
-    runs-on: [self-hosted, X64, docker]
-    needs:
-      - examples-x64
-    container:
-      image: kubasejdak/gcc:13-24.04
-      options: --user root
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          pattern: coverage-*
-          path: pizda
-      - run: |
-          ls -al
-          echo "--------------------"
-          tree pizda/coverage-platform-package-info
-
-
-          # apps=( \
-          #   "AnalogSet1_Coverage_Linux_ARM" \
-          #   "AnalogSet2_Coverage_Linux_ARM" \
-          #   "CircularBuffer_Coverage_Linux_x86" \
-          #   "CoverageAll_Coverage_Linux_ARM" \
-          #   "EepromSet1_Coverage_Linux_ARM" \
-          #   "EepromSet2_Coverage_Linux_ARM" \
-          #   "FlashSet1_Coverage_Linux_ARM" \
-          #   "GpioMiddleware_Coverage_Linux_x86" \
-          #   "GpioSet1_Coverage_Linux_ARM" \
-          #   "Misc_Coverage_Linux_x86" \
-          #   "UartSet1_Coverage_Linux_ARM" \
-          # )
-
-          # for app in ${apps[@]}; do
-          #   cd $app
-          #   lcov --ignore-errors=source,unused,mismatch -c -i -d . -o coverage_base.info
-          #   lcov --ignore-errors=source,unused,mismatch -c -d . -o coverage.info
-          #   lcov --ignore-errors=unused -a coverage_base.info -a coverage.info -o coverage.info
-          #   lcov --ignore-errors=unused -r coverage.info '/usr/*' '*/.conan2/*' '*/_deps/*' '*/opt/*' '*/tests/*' -o coverage.info
-          #   cd ..
-          #   LCOV_ARGS+="-a ../$app/coverage.info "
-          # done
-
-          # mkdir ${CI_JOB_NAME}
-          # cd ${CI_JOB_NAME}
-
-          # lcov $LCOV_ARGS -o coverage.info
-          # genhtml coverage.info -o html --prefix ${CI_PROJECT_DIR}/
-          # echo Coverage - `lcov --summary coverage.info | grep lines | cut -d ' ' -f 4`
 
   check-all-coverage:
     runs-on: [self-hosted, build]
     needs:
       - build-x64
       - examples-x64
-      - generate-report
     steps:
       - run: echo "Success"
