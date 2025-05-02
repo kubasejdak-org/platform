@@ -8,7 +8,6 @@ on:
 
 jobs:
   build-stm32f4:
-    name: ${{ matrix.PRESET }}
     runs-on: [self-hosted, X64, build, docker]
     needs: []
     container:
@@ -33,7 +32,6 @@ jobs:
           preset: ${{ matrix.PRESET }}
 
   examples-stm32f4:
-    name: ${{ matrix.APP }}
     runs-on: [self-hosted, ARM64, stm32f4]
     needs: build-stm32f4
     strategy:

@@ -12,7 +12,6 @@ pages:
   before_script:
     - mkdir public
   script:
-    # Generate documentation.
     - tools/doxygen.sh -i lib -i README.md -m README.md
     - doxygen
     - mv docs/html public/docs
