@@ -42,12 +42,12 @@ jobs:
           # Copy binaries
           cp build/bin/* coverage-artifacts/bin/
           
-          # Copy gcno files with directory structure
+          # Copy gcno files preserving the FULL build directory structure
+          # This is critical - gcno files have embedded paths that include "build/"
           find build -name "*.gcno" -type f | while read gcno_file; do
-            # Create directory structure in artifact
-            rel_path=$(echo "$gcno_file" | sed 's|^build/||')
-            mkdir -p "coverage-artifacts/gcno-files/$(dirname "$rel_path")"
-            cp "$gcno_file" "coverage-artifacts/gcno-files/$rel_path"
+            # Keep the full path including "build/" directory
+            mkdir -p "coverage-artifacts/gcno-files/$(dirname "$gcno_file")"
+            cp "$gcno_file" "coverage-artifacts/gcno-files/$gcno_file"
           done
           
           # List what we're uploading for debugging
@@ -90,24 +90,36 @@ jobs:
       
       - name: Setup test environment
         run: |
-          # Create working directory for this test
+          # Create working directory for this test - use the exact structure from our POC
           mkdir -p test-${{ matrix.APP }}
           cd test-${{ matrix.APP }}
           
           # Copy the specific binary
           cp ../coverage-artifacts/bin/${{ matrix.APP }} ./
           
-          # Copy all gcno files with directory structure
-          # We need all gcno files because binaries may reference shared libraries
-          cp -r ../coverage-artifacts/gcno-files/* ./
+          # Copy ALL gcno files preserving EXACT directory structure
+          # This is critical - gcov needs exact path matching
+          if [ -d "../coverage-artifacts/gcno-files" ]; then
+            # Copy the entire directory structure
+            cp -r ../coverage-artifacts/gcno-files/* ./ 2>/dev/null || true
+            
+            # Also create the required directory structure for gcda files
+            # Based on our POC, we need the full build path structure
+            find ../coverage-artifacts/gcno-files -type d -exec mkdir -p {} \; 2>/dev/null || true
+          fi
           
           # Make binary executable
           chmod +x ${{ matrix.APP }}
           
-          # List setup for debugging
+          # Debug: List what we have set up
           echo "=== Test environment setup for ${{ matrix.APP }} ==="
-          find . -name "*.gcno" | wc -l
+          echo "Binary:"
           ls -la ${{ matrix.APP }}
+          echo "Total gcno files: $(find . -name "*.gcno" | wc -l)"
+          echo "Directory structure:"
+          find . -type d | head -10
+          echo "Sample gcno files:"
+          find . -name "*.gcno" | head -5
       
       - name: Run binary and collect coverage data
         run: |
@@ -123,10 +135,18 @@ jobs:
           echo "=== Checking embedded paths in gcno files ==="
           find . -name "*.gcno" -exec strings {} \; | grep "/workspaces" | head -5
           
-          # Set GCOV environment variables based on our POC findings
-          # We need to redirect to the current test directory
+          # Verify we have the right directory structure (should match POC)
+          echo "=== Verifying directory structure matches POC ==="
+          echo "Looking for build/ directory:"
+          ls -la build/ 2>/dev/null || echo "No build/ directory found"
+          echo "Sample gcno file paths:"
+          find . -name "*.gcno" | head -3
+          
+          # Set GCOV environment variables - use the EXACT approach from our working POC
+          # In our POC, we used: GCOV_PREFIX=/workspaces/platform/coverage-test-v2/ci-sim/stage2-hello-world GCOV_PREFIX_STRIP=3
+          # This creates gcda files in the local directory structure
           export GCOV_PREFIX="$PWD"
-          export GCOV_PREFIX_STRIP=3  # This worked in our POC
+          export GCOV_PREFIX_STRIP=3
           
           echo "GCOV_PREFIX: $GCOV_PREFIX"
           echo "GCOV_PREFIX_STRIP: $GCOV_PREFIX_STRIP"
