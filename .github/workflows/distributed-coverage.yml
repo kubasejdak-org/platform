@@ -24,11 +24,10 @@ jobs:
         run: pipx install gcovr
       
       - name: Build with coverage instrumentation
-        run: |
-          mkdir build
-          cd build
-          cmake .. --preset ${{ env.PRESET }} -DWITH_COVERAGE=ON
-          make
+        uses: kubasejdak-org/cmake-build-preset-action@main
+        with:
+          preset: ${{ env.PRESET }}
+          cmakeExtraArgs: '-DWITH_COVERAGE=ON'
       
       - name: Collect gcno files and binaries
         run: |
