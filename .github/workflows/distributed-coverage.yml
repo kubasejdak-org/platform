@@ -1,4 +1,4 @@
-name: Distributed Code Coverage
+name: Check code coverage (Claude)
 
 on:
   push:
@@ -21,10 +21,7 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Install coverage tools
-        run: |
-          apt-get update
-          apt-get install -y lcov
-          pipx install gcovr
+        run: pipx install gcovr
       
       - name: Build with coverage instrumentation
         run: |
