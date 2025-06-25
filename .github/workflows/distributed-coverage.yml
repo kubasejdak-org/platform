@@ -69,12 +69,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Install coverage tools
-        run: |
-          apt-get update
-          apt-get install -y lcov
-          pipx install gcovr
-      
       - name: Download coverage build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -259,12 +253,6 @@ jobs:
       options: --user root
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Install coverage tools
-        run: |
-          apt-get update
-          apt-get install -y lcov
-          pipx install gcovr
       
       - name: Download all coverage data
         uses: actions/download-artifact@v4
