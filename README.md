@@ -17,30 +17,39 @@ which usually never returns (at least until all threads are destroyed). Previous
 the main application logic should be placed in `appMain()` function. On desktop systems this function would be called
 directly from `main()`. On RTOS systems, this function would be used as feed for a new user thread.
 
-### Original author
+## Original author
 
 Original idea, design and implementation done by Grzegorz Heldt `grzegorz.heldt@gmail.com`.
 
-### Usage
+## Usage
 
-> Note: `Platform` usage requires CMake build system. 
+> Note: `Platform` usage requires CMake build system.
 
 In order to use `platform` follow the steps below.
 
-#### 1. Make `platform` code available in you build system
+### 1. Make `platform` code available in you build system
 
 Code of `platform` project can be included in another project in several ways.
 
-##### 1.1. git submodule
-##### 1.2. regular copy
-##### 1.3. CMake `FetchContent`
-##### 2. Set `APP` variable with the name of the application
-##### 3. Define application specific settings
-##### 4. Include toolchain file for the given platform
-##### 5. Add `platform/app` subdirectory to build system
-##### 6. Provide `app${APP}` library containing `appMain()` function body
-##### 7. Put application main thread into `appMain()` function
-##### 8. Optional: redirect STDOUT to the demanded destination
+#### 1.1. git submodule
+
+#### 1.2. regular copy
+
+#### 1.3. CMake `FetchContent`
+
+#### 2. Set `APP` variable with the name of the application
+
+#### 3. Define application specific settings
+
+#### 4. Include toolchain file for the given platform
+
+#### 5. Add `platform/app` subdirectory to build system
+
+#### 6. Provide `app${APP}` library containing `appMain()` function body
+
+#### 7. Put application main thread into `appMain()` function
+
+#### 8. Optional: redirect STDOUT to the demanded destination
 
 ### Benefits
 
@@ -52,9 +61,9 @@ and which compiler among all supported by that platform.
 #### 2. No need to mess business logic with bootstrapping code
 
 Application shouldn't rely on the fact that it runs directly from main or in a separate thread. With `appMain()`
-introduced all OS specific bootstrapping is hidden in the platform library making business logic truly OS independent. 
+introduced all OS specific bootstrapping is hidden in the platform library making business logic truly OS independent.
 
-### Usage
+### Usage2
 
 Set toolchain file for the selected platform:
 
