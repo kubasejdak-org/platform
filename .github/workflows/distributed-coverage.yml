@@ -48,7 +48,7 @@ jobs:
           find coverage-artifacts -type f | head -20
       
       - name: Upload coverage build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: coverage-build-artifacts
           path: coverage-artifacts/
@@ -239,7 +239,7 @@ jobs:
           lcov --summary ${{ matrix.APP }}-lib.info
       
       - name: Upload coverage data
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: coverage-data-${{ matrix.APP }}
           path: test-${{ matrix.APP }}/${{ matrix.APP }}-lib.info
@@ -343,14 +343,14 @@ jobs:
           lcov --summary merged-coverage.info || echo "Could not generate summary"
       
       - name: Upload coverage report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: coverage-report
           path: coverage-report/coverage-html/
           retention-days: 30
       
       - name: Upload coverage info for further processing
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: coverage-info
           path: coverage-report/merged-coverage.info
