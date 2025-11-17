@@ -26,6 +26,14 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
+#include <iostream>
+
+void test()
+{
+    std::cout << "Hello world!\n";
+    std::cout << "PASSED\n";
+}
+
 /// Main application entry point.
 /// @param argc         Number of the commandline arguments.
 /// @param argv         Array of commandline arguments containing argc strings.
