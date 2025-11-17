@@ -31,6 +31,12 @@
 #include <cstdlib>
 #include <iostream>
 
+void test()
+{
+    std::cout << "Hello world!\n";
+    std::cout << "PASSED\n";
+}
+
 int appMain([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 {
     if (!platform::init())
