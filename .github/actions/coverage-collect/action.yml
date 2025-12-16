@@ -62,6 +62,11 @@ runs:
     - name: Setup test environment
       shell: bash
       run: |
+        # Debug: Show downloaded artifact structure
+        echo "=== Downloaded artifact structure ==="
+        find coverage-artifacts -type f | head -20 || echo "No files found"
+        find coverage-artifacts -type d | head -10 || echo "No directories found"
+
         # Create working directory for this test
         mkdir -p ${{ inputs.working-directory }}
         cd ${{ inputs.working-directory }}
@@ -72,12 +77,17 @@ runs:
         # Copy ALL gcno files preserving EXACT directory structure
         # This is critical - gcov needs exact path matching
         if [ -d "../coverage-artifacts/gcno-files" ]; then
+          echo "Found gcno-files directory, copying..."
           # Copy the entire directory structure
           cp -r ../coverage-artifacts/gcno-files/* ./ 2>/dev/null || true
 
           # Also create the required directory structure for gcda files
           # Based on our POC, we need the full build path structure
           find ../coverage-artifacts/gcno-files -type d -exec mkdir -p {} \; 2>/dev/null || true
+        else
+          echo "WARNING: No gcno-files directory found in artifacts!"
+          echo "Looking for gcno files in other locations..."
+          find ../coverage-artifacts -name "*.gcno" | head -10 || echo "No gcno files found anywhere"
         fi
 
         # Make binary executable
@@ -106,7 +116,7 @@ runs:
 
         # Check what paths are embedded in the gcno files
         echo "=== Checking embedded paths in gcno files ==="
-        find . -name "*.gcno" -exec strings {} \; | grep "/workspaces" | head -5
+        find . -name "*.gcno" -exec strings {} \; | grep "/workspaces" | head -5 || echo "No /workspaces paths found in gcno files"
 
         # Verify we have the right directory structure (should match POC)
         echo "=== Verifying directory structure matches POC ==="
