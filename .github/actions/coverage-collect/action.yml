@@ -1,0 +1,262 @@
+name: 'Collect coverage for binary'
+description: 'Downloads build artifacts, runs binary with coverage, generates filtered coverage info'
+
+inputs:
+  binary:
+    description: 'Name of the binary to run (e.g., platform-hello-world)'
+    required: true
+
+  artifact-name:
+    description: 'Name of the coverage build artifact to download'
+    required: false
+    default: 'coverage-build-artifacts'
+
+  coverage-include-pattern:
+    description: 'Pattern for lcov --extract to filter coverage (e.g., "lib")'
+    required: false
+    default: 'lib'
+
+  working-directory:
+    description: 'Working directory name for test execution'
+    required: false
+    default: 'test-run'
+
+  gcov-prefix-strip:
+    description: 'Value for GCOV_PREFIX_STRIP environment variable'
+    required: false
+    default: '3'
+
+  run-args:
+    description: 'Command line arguments to pass to the binary'
+    required: false
+    default: ''
+
+  run-env:
+    description: 'Additional environment variables for the binary (multiline string)'
+    required: false
+    default: ''
+
+  lcov-branch-coverage:
+    description: 'Enable branch coverage in lcov (true/false)'
+    required: false
+    default: 'true'
+
+outputs:
+  coverage-file:
+    description: 'Name of the generated coverage info file'
+    value: ${{ steps.set-outputs.outputs.coverage-file }}
+
+  artifact-name:
+    description: 'Name of the uploaded coverage artifact'
+    value: ${{ steps.set-outputs.outputs.artifact-name }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Download coverage build artifacts
+      uses: actions/download-artifact@v6
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: coverage-artifacts/
+
+    - name: Setup test environment
+      shell: bash
+      run: |
+        # Create working directory for this test
+        mkdir -p ${{ inputs.working-directory }}
+        cd ${{ inputs.working-directory }}
+
+        # Copy the specific binary
+        cp ../coverage-artifacts/bin/${{ inputs.binary }} ./
+
+        # Copy ALL gcno files preserving EXACT directory structure
+        # This is critical - gcov needs exact path matching
+        if [ -d "../coverage-artifacts/gcno-files" ]; then
+          # Copy the entire directory structure
+          cp -r ../coverage-artifacts/gcno-files/* ./ 2>/dev/null || true
+
+          # Also create the required directory structure for gcda files
+          # Based on our POC, we need the full build path structure
+          find ../coverage-artifacts/gcno-files -type d -exec mkdir -p {} \; 2>/dev/null || true
+        fi
+
+        # Make binary executable
+        chmod +x ${{ inputs.binary }}
+
+        # Debug: List what we have set up
+        echo "=== Test environment setup for ${{ inputs.binary }} ==="
+        echo "Binary:"
+        ls -la ${{ inputs.binary }}
+        echo "Total gcno files: $(find . -name "*.gcno" | wc -l)"
+        echo "Directory structure:"
+        find . -type d | head -10
+        echo "Sample gcno files:"
+        find . -name "*.gcno" | head -5
+
+    - name: Run binary and collect coverage data
+      shell: bash
+      run: |
+        cd ${{ inputs.working-directory }}
+
+        # Debug: Show current working directory and contents
+        echo "=== Current working directory ==="
+        pwd
+        echo "=== Directory contents before running ==="
+        find . -type f | head -20
+
+        # Check what paths are embedded in the gcno files
+        echo "=== Checking embedded paths in gcno files ==="
+        find . -name "*.gcno" -exec strings {} \; | grep "/workspaces" | head -5
+
+        # Verify we have the right directory structure (should match POC)
+        echo "=== Verifying directory structure matches POC ==="
+        echo "Looking for build/ directory:"
+        ls -la build/ 2>/dev/null || echo "No build/ directory found"
+        echo "Sample gcno file paths:"
+        find . -name "*.gcno" | head -3
+
+        # Set GCOV environment variables - use the EXACT approach from our working POC
+        # In our POC, we used: GCOV_PREFIX=/workspaces/platform/coverage-test-v2/ci-sim/stage2-hello-world GCOV_PREFIX_STRIP=3
+        # This creates gcda files in the local directory structure
+        export GCOV_PREFIX="$PWD"
+        export GCOV_PREFIX_STRIP=${{ inputs.gcov-prefix-strip }}
+
+        echo "GCOV_PREFIX: $GCOV_PREFIX"
+        echo "GCOV_PREFIX_STRIP: $GCOV_PREFIX_STRIP"
+
+        # Apply additional environment variables if provided
+        if [ -n "${{ inputs.run-env }}" ]; then
+          echo "=== Applying additional environment variables ==="
+          echo "${{ inputs.run-env }}" | while IFS= read -r line; do
+            if [ -n "$line" ]; then
+              export "$line"
+              echo "Set: $line"
+            fi
+          done
+        fi
+
+        # Run the binary
+        echo "Running ${{ inputs.binary }}..."
+        ./${{ inputs.binary }} ${{ inputs.run-args }} || {
+          echo "ERROR: Binary execution failed"
+          exit 1
+        }
+
+        # Check for generated gcda files in current directory first
+        echo "=== Generated gcda files in current directory ==="
+        find . -maxdepth 1 -name "*.gcda" -type f
+
+        # Check for gcda files anywhere in the test directory
+        echo "=== All generated gcda files ==="
+        find . -name "*.gcda" -type f
+
+        # Count total gcda files
+        gcda_count=$(find . -name "*.gcda" -type f | wc -l)
+        echo "Total gcda files found: $gcda_count"
+
+        # If no gcda files found, this is a problem
+        if [ "$gcda_count" -eq 0 ]; then
+          echo "ERROR: No gcda files generated!"
+          echo "This indicates coverage instrumentation is not working properly"
+          echo "Checking available gcno files:"
+          find . -name "*.gcno" -type f
+          echo "Trying to run binary with different GCOV settings..."
+
+          # Try without GCOV_PREFIX to see if gcda files appear in original locations
+          unset GCOV_PREFIX
+          unset GCOV_PREFIX_STRIP
+          echo "Running without GCOV environment variables..."
+          ./${{ inputs.binary }} ${{ inputs.run-args }}
+
+          echo "Checking for gcda files anywhere after second run:"
+          find . -name "*.gcda" -type f
+
+          if [ $(find . -name "*.gcda" -type f | wc -l) -eq 0 ]; then
+            echo "FATAL: Still no gcda files - coverage is broken"
+            exit 1
+          fi
+        fi
+
+    - name: Generate filtered coverage info
+      shell: bash
+      run: |
+        cd ${{ inputs.working-directory }}
+
+        # Check if we have both gcno and gcda files
+        gcno_count=$(find . -name "*.gcno" -type f | wc -l)
+        gcda_count=$(find . -name "*.gcda" -type f | wc -l)
+
+        echo "Found $gcno_count gcno files and $gcda_count gcda files"
+
+        if [ "$gcda_count" -eq 0 ]; then
+          echo "ERROR: No gcda files found - coverage data was not generated"
+          echo "This usually means the binary didn't run with coverage enabled"
+          echo "Gcno files present:"
+          find . -name "*.gcno" -type f
+          exit 1
+        fi
+
+        # Generate coverage info from all gcda files
+        echo "Generating coverage info with lcov..."
+        if [ "${{ inputs.lcov-branch-coverage }}" = "true" ]; then
+          lcov --capture --directory . --output-file ${{ inputs.binary }}-all.info --gcov-tool gcov --rc lcov_branch_coverage=1 || {
+            echo "Error: lcov capture with branch coverage failed."
+            echo "Trying without branch coverage..."
+
+            # Try without branch coverage
+            lcov --capture --directory . --output-file ${{ inputs.binary }}-all.info --gcov-tool gcov || {
+              echo "Error: lcov capture failed completely. Debug info:"
+              echo "Gcda files:"
+              find . -name "*.gcda" -type f
+              echo "Gcno files:"
+              find . -name "*.gcno" -type f
+              echo "Working directory:"
+              pwd
+              echo "Directory structure:"
+              find . -type f | head -20
+              exit 1
+            }
+          }
+        else
+          lcov --capture --directory . --output-file ${{ inputs.binary }}-all.info --gcov-tool gcov || {
+            echo "Error: lcov capture failed. Debug info:"
+            echo "Gcda files:"
+            find . -name "*.gcda" -type f
+            echo "Gcno files:"
+            find . -name "*.gcno" -type f
+            exit 1
+          }
+        fi
+
+        # Show all coverage before filtering
+        echo "=== Coverage summary for ${{ inputs.binary }} (all files) ==="
+        lcov --summary ${{ inputs.binary }}-all.info
+
+        # Filter to include only specified pattern
+        echo "Filtering to include only ${{ inputs.coverage-include-pattern }} directory..."
+        lcov --extract ${{ inputs.binary }}-all.info "*/${{ inputs.coverage-include-pattern }}/*" --output-file ${{ inputs.binary }}-filtered.info || {
+          echo "Warning: No files matched pattern */${{ inputs.coverage-include-pattern }}/*"
+          echo "Available files in coverage data:"
+          lcov --list ${{ inputs.binary }}-all.info | head -20
+          # Create empty info file to continue workflow
+          echo "TN:" > ${{ inputs.binary }}-filtered.info
+          echo "end_of_record" >> ${{ inputs.binary }}-filtered.info
+        }
+
+        # Show coverage summary
+        echo "=== Coverage summary for ${{ inputs.binary }} (filtered) ==="
+        lcov --summary ${{ inputs.binary }}-filtered.info
+
+    - name: Upload coverage data
+      uses: actions/upload-artifact@v5
+      with:
+        name: coverage-data-${{ inputs.binary }}
+        path: ${{ inputs.working-directory }}/${{ inputs.binary }}-filtered.info
+        retention-days: 1
+
+    - name: Set outputs
+      id: set-outputs
+      shell: bash
+      run: |
+        echo "coverage-file=${{ inputs.binary }}-filtered.info" >> $GITHUB_OUTPUT
+        echo "artifact-name=coverage-data-${{ inputs.binary }}" >> $GITHUB_OUTPUT

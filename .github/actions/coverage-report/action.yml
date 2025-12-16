@@ -1,0 +1,249 @@
+name: 'Generate coverage report and check thresholds'
+description: 'Merges coverage data, generates HTML report, validates coverage thresholds'
+
+inputs:
+  coverage-artifact-pattern:
+    description: 'Pattern for downloading coverage artifacts (e.g., "coverage-data-*")'
+    required: false
+    default: 'coverage-data-*'
+
+  coverage-title:
+    description: 'Title for the HTML coverage report'
+    required: false
+    default: 'Coverage Report'
+
+  source-directory:
+    description: 'Source directory to copy for HTML generation (relative to workspace)'
+    required: false
+    default: 'lib'
+
+  min-line-coverage:
+    description: 'Minimum line coverage percentage threshold'
+    required: false
+    default: '50.0'
+
+  min-function-coverage:
+    description: 'Minimum function coverage percentage threshold'
+    required: false
+    default: '50.0'
+
+  workspace-path:
+    description: 'Workspace path for path relativization (usually github.workspace)'
+    required: false
+    default: ${{ github.workspace }}
+
+  check-thresholds:
+    description: 'Whether to fail if thresholds are not met (true/false)'
+    required: false
+    default: 'true'
+
+  html-report-retention-days:
+    description: 'Artifact retention days for HTML report'
+    required: false
+    default: '30'
+
+  coverage-info-retention-days:
+    description: 'Artifact retention days for merged coverage info'
+    required: false
+    default: '30'
+
+outputs:
+  line-coverage:
+    description: 'Line coverage percentage'
+    value: ${{ steps.check-thresholds.outputs.line-coverage }}
+
+  function-coverage:
+    description: 'Function coverage percentage'
+    value: ${{ steps.check-thresholds.outputs.function-coverage }}
+
+  thresholds-passed:
+    description: 'Whether coverage thresholds were met (true/false)'
+    value: ${{ steps.check-thresholds.outputs.passed }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Download all coverage data
+      uses: actions/download-artifact@v6
+      with:
+        pattern: ${{ inputs.coverage-artifact-pattern }}
+        path: coverage-data/
+
+    - name: Merge coverage data
+      shell: bash
+      run: |
+        # Create output directory
+        mkdir -p coverage-report
+        cd coverage-report
+
+        # List downloaded coverage data
+        echo "=== Downloaded coverage data ==="
+        find ../coverage-data -type f
+
+        # Find all coverage info files
+        coverage_files=$(find ../coverage-data -name "*-filtered.info" -type f)
+        if [ -z "$coverage_files" ]; then
+          echo "ERROR: No *-filtered.info files found!"
+          echo "Looking for any .info files:"
+          find ../coverage-data -name "*.info" -type f
+          echo "Directory structure:"
+          ls -la ../coverage-data/
+          exit 1
+        fi
+
+        echo "Found coverage files:"
+        for file in $coverage_files; do
+          echo "  - $file"
+          echo "    Size: $(stat -c%s "$file") bytes"
+          echo "    Contents preview:"
+          head -5 "$file" | sed 's/^/      /'
+        done
+
+        # Merge coverage info files
+        merge_cmd="lcov"
+        for info_file in $coverage_files; do
+          merge_cmd="$merge_cmd --add-tracefile $info_file"
+        done
+        merge_cmd="$merge_cmd --output-file merged-coverage.info"
+
+        echo "Executing: $merge_cmd"
+        eval "$merge_cmd" || {
+          echo "ERROR: Failed to merge coverage files"
+          echo "Individual file summaries:"
+          for file in $coverage_files; do
+            echo "=== $file ==="
+            lcov --summary "$file" || echo "Failed to get summary for $file"
+          done
+          exit 1
+        }
+
+        # Check if merged file has any data
+        if [ ! -s merged-coverage.info ]; then
+          echo "WARNING: Merged coverage file is empty"
+          echo "Creating minimal coverage file to continue workflow"
+          echo "TN:" > merged-coverage.info
+          echo "end_of_record" >> merged-coverage.info
+        fi
+
+        # Make paths relative to project root
+        sed -i "s@${{ inputs.workspace-path }}/@@g" merged-coverage.info
+
+        echo "=== Merged coverage info created ==="
+        ls -lh merged-coverage.info
+
+    - name: Generate HTML coverage report
+      shell: bash
+      run: |
+        cd coverage-report
+
+        # Copy source files needed for report generation
+        cp -r ../${{ inputs.source-directory }} . || {
+          echo "ERROR: Failed to copy ${{ inputs.source-directory }} directory"
+          echo "Available directories:"
+          ls -la ../
+          exit 1
+        }
+
+        # Generate HTML coverage report
+        genhtml merged-coverage.info \
+          --output-directory coverage-html \
+          --title "${{ inputs.coverage-title }}" \
+          --legend \
+          --show-details \
+          --ignore-errors source || {
+          echo "WARNING: genhtml failed, but continuing..."
+          mkdir -p coverage-html
+          echo "<html><body><h1>Coverage report generation failed</h1></body></html>" > coverage-html/index.html
+        }
+
+        # Show final coverage summary
+        echo "=== Final merged coverage summary ==="
+        lcov --summary merged-coverage.info || echo "Could not generate summary"
+
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v5
+      with:
+        name: coverage-report
+        path: coverage-report/coverage-html/
+        retention-days: ${{ inputs.html-report-retention-days }}
+
+    - name: Upload coverage info for further processing
+      uses: actions/upload-artifact@v5
+      with:
+        name: coverage-info
+        path: coverage-report/merged-coverage.info
+        retention-days: ${{ inputs.coverage-info-retention-days }}
+
+    - name: Check coverage thresholds
+      id: check-thresholds
+      shell: bash
+      run: |
+        # Install bc if not available
+        if ! command -v bc &> /dev/null; then
+          echo "Installing bc..."
+          apt update && apt install -y bc
+        fi
+
+        cd coverage-report
+
+        # Extract coverage percentages
+        line_coverage=$(lcov --summary merged-coverage.info | grep "lines" | grep -o '[0-9.]*%' | head -1 | sed 's/%//' || echo "0")
+        function_coverage=$(lcov --summary merged-coverage.info | grep "functions" | grep -o '[0-9.]*%' | head -1 | sed 's/%//' || echo "0")
+
+        # Handle empty coverage values
+        line_coverage=${line_coverage:-0}
+        function_coverage=${function_coverage:-0}
+
+        echo "Line Coverage: ${line_coverage}%"
+        echo "Function Coverage: ${function_coverage}%"
+
+        # Set outputs
+        echo "line-coverage=${line_coverage}" >> $GITHUB_OUTPUT
+        echo "function-coverage=${function_coverage}" >> $GITHUB_OUTPUT
+
+        # Set thresholds from inputs
+        MIN_LINE_COVERAGE=${{ inputs.min-line-coverage }}
+        MIN_FUNCTION_COVERAGE=${{ inputs.min-function-coverage }}
+
+        # Initialize pass status
+        passed=true
+
+        # Check if we have any coverage at all
+        if [ -z "$line_coverage" ] || [ "$line_coverage" = "0" ]; then
+          echo "Warning: No line coverage data found"
+          echo "This might indicate a problem with coverage collection"
+          # Don't fail for now, just warn
+          passed=false
+        else
+          # Check line coverage
+          if (( $(echo "$line_coverage < $MIN_LINE_COVERAGE" | bc -l) )); then
+            echo "Line coverage $line_coverage% is below threshold $MIN_LINE_COVERAGE%"
+            passed=false
+          else
+            echo "Line coverage $line_coverage% meets threshold $MIN_LINE_COVERAGE%"
+          fi
+        fi
+
+        if [ -z "$function_coverage" ] || [ "$function_coverage" = "0" ]; then
+          echo "Warning: No function coverage data found"
+          passed=false
+        else
+          # Check function coverage
+          if (( $(echo "$function_coverage < $MIN_FUNCTION_COVERAGE" | bc -l) )); then
+            echo "Function coverage $function_coverage% is below threshold $MIN_FUNCTION_COVERAGE%"
+            passed=false
+          else
+            echo "Function coverage $function_coverage% meets threshold $MIN_FUNCTION_COVERAGE%"
+          fi
+        fi
+
+        # Set passed output
+        echo "passed=${passed}" >> $GITHUB_OUTPUT
+
+        # Fail if check-thresholds is enabled and thresholds not met
+        if [ "${{ inputs.check-thresholds }}" = "true" ] && [ "$passed" = "false" ]; then
+          echo "Coverage checks failed!"
+          exit 1
+        fi
+
+        echo "Coverage checks completed!"
