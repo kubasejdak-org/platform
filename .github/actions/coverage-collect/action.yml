@@ -65,8 +65,8 @@ runs:
         # Copy the specific binary
         cp ../coverage-artifacts/bin/${{ inputs.binary }} ./
 
-        # Copy ALL gcno files preserving EXACT directory structure
-        # This is critical - gcov needs exact path matching
+        # Copy gcno files while preserving directory structure
+        # Note: gcov requires exact path matching between gcno and gcda files
         if [ -d "../coverage-artifacts/gcno-files" ]; then
           echo "Found gcno-files directory, copying..."
           # Copy the entire directory structure
@@ -99,26 +99,20 @@ runs:
       run: |
         cd ${{ inputs.working-directory }}
 
-        # Debug: Show current working directory and contents
-        echo "=== Current working directory ==="
-        pwd
-        echo "=== Directory contents before running ==="
-        find . -type f | head -20
-
         # Check what paths are embedded in the gcno files
-        echo "=== Checking embedded paths in gcno files ==="
-        find . -name "*.gcno" -exec strings {} \; | grep "/workspaces" | head -5 || echo "No /workspaces paths found in gcno files"
+        echo "=== Sample embedded paths in gcno files ==="
+        find . -name "*.gcno" -exec strings {} \; | grep "^/" | head -10 || echo "No absolute paths found in gcno files"
 
-        # Verify we have the right directory structure (should match POC)
-        echo "=== Verifying directory structure matches POC ==="
+        # Verify we have the expected directory structure
+        echo "=== Verifying directory structure ==="
         echo "Looking for build/ directory:"
         ls -la build/ 2>/dev/null || echo "No build/ directory found"
         echo "Sample gcno file paths:"
         find . -name "*.gcno" | head -3
 
-        # Set GCOV environment variables - use the EXACT approach from our working POC
-        # In our POC, we used: GCOV_PREFIX=/workspaces/platform/coverage-test-v2/ci-sim/stage2-hello-world GCOV_PREFIX_STRIP=3
-        # This creates gcda files in the local directory structure
+        # Set GCOV environment variables for coverage data generation
+        # GCOV_PREFIX: Base directory where gcda files will be written
+        # GCOV_PREFIX_STRIP: Number of path components to strip from embedded paths
         export GCOV_PREFIX="$PWD"
         export GCOV_PREFIX_STRIP=${{ inputs.gcov-prefix-strip }}
 
@@ -143,17 +137,14 @@ runs:
           exit 1
         }
 
-        # Check for generated gcda files in current directory first
-        echo "=== Generated gcda files in current directory ==="
-        find . -maxdepth 1 -name "*.gcda" -type f
-
-        # Check for gcda files anywhere in the test directory
-        echo "=== All generated gcda files ==="
-        find . -name "*.gcda" -type f
-
-        # Count total gcda files
-        gcda_count=$(find . -name "*.gcda" -type f | wc -l)
-        echo "Total gcda files found: $gcda_count"
+        # Check for generated gcda files
+        echo "=== Generated gcda files ==="
+        gcda_files=$(find . -name "*.gcda" -type f)
+        if [ -n "$gcda_files" ]; then
+          echo "$gcda_files"
+        fi
+        gcda_count=$(echo "$gcda_files" | grep -c "." || echo "0")
+        echo "Total: $gcda_count files"
 
         # If no gcda files found, this is a problem
         if [ "$gcda_count" -eq 0 ]; then
