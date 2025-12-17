@@ -35,7 +35,6 @@ runs:
     - name: Collect coverage artifacts
       shell: bash
       run: |
-        # Create structured artifact directory for coverage processing
         mkdir -p coverage-artifacts/bin
         mkdir -p coverage-artifacts/gcno
 
@@ -51,11 +50,10 @@ runs:
           cp "$gcno_file" "coverage-artifacts/gcno/$gcno_file"
         done
 
-        # Debug output for troubleshooting
-        echo "=== Coverage artifacts structure ==="
+        echo "=== Coverage artifacts ==="
         echo "Binaries: $(ls coverage-artifacts/bin/ | wc -l) files"
         echo "gcno files: $(find coverage-artifacts/gcno -name "*.gcno" | wc -l) files"
-        echo "Sample structure:"
+        echo "Coverage artifacts:"
         find coverage-artifacts -type f
 
     - name: Set coverage artifact name
