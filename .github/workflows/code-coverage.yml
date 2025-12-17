@@ -40,7 +40,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Collect coverage for ${{ matrix.APP }}
-        uses: ./.github/actions/coverage-collect
+        uses: ./.github/actions/cpp-coverage/collect
         with:
           binary: ${{ matrix.APP }}
           artifact-name: coverage-build-artifacts
