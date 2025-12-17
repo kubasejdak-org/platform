@@ -66,11 +66,11 @@ jobs:
           min-function-coverage: '50.0'
           workspace-path: ${{ github.workspace }}
 
-  check-all-distributed-coverage:
+  check-all-coverage:
     runs-on: [self-hosted, build]
     needs:
       - build-coverage
       - test-coverage
       - generate-coverage-report
     steps:
-      - run: echo "✅ Distributed coverage workflow completed successfully"
+      - run: echo "Success"
