@@ -42,8 +42,8 @@ jobs:
       - name: Collect coverage for ${{ matrix.APP }}
         uses: ./.github/actions/cpp-coverage/collect
         with:
+          preset: ${{ env.PRESET }}
           binary: ${{ matrix.APP }}
-          artifact-name: coverage-build-${{ env.PRESET }}
           coverage-include-pattern: ${{ env.COVERAGE_INCLUDE_PATTERN }}
           working-directory: test-${{ matrix.APP }}
 

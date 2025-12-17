@@ -1,14 +1,19 @@
-name: Collect coverage for binary
-description: Downloads build artifacts, runs binary with coverage, generates filtered coverage info
+name: Collect coverage data for binary
+description: Collect coverage data for binary
 
 inputs:
-  binary:
-    description: Name of the binary to run (e.g., platform-hello-world)
+  preset:
+    description: CMake preset used to build the binary
     required: true
-  artifact-name:
-    description: Name of the coverage build artifact to download
+
+  artifactSuffix:
+    description: Suffix appended to the artifact name
     required: false
-    default: coverage-build-artifacts
+
+  binary:
+    description: Binary to run
+    required: true
+
   coverage-include-pattern:
     description: Pattern for lcov --extract to filter coverage (e.g., "lib")
     required: false
@@ -48,7 +53,7 @@ runs:
     - name: Download coverage build artifacts
       uses: actions/download-artifact@v6
       with:
-        name: ${{ inputs.artifact-name }}
+        name: ${{ inputs.preset }}${{ inputs.artifactSuffix }}
         path: coverage-artifacts/
 
     - name: Setup test environment
