@@ -5,10 +5,11 @@ inputs:
   preset:
     description: CMake preset to build
     required: true
+
   cmakeExtraArgs:
-    description: Additional CMake arguments (appended after -DWITH_COVERAGE=ON)
+    description: Extra arguments to pass to CMake (appended after -DWITH_COVERAGE=ON)
     required: false
-    default: ''
+
   artifact-name:
     description: Name for the uploaded coverage artifacts
     required: false
@@ -53,7 +54,7 @@ runs:
         echo "Binaries: $(ls coverage-artifacts/bin/ | wc -l) files"
         echo "gcno files: $(find coverage-artifacts/gcno-files -name "*.gcno" | wc -l) files"
         echo "Sample structure:"
-        find coverage-artifacts -type f | head -20
+        find coverage-artifacts -type f
 
     - uses: actions/upload-artifact@v6
       with:
