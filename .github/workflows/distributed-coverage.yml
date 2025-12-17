@@ -19,40 +19,11 @@ jobs:
       options: --user root
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Build with coverage instrumentation
-        uses: kubasejdak-org/cmake-build-preset-action@main
+        uses: ./.github/actions/coverage-build
         with:
           preset: ${{ env.PRESET }}
-          cmakeExtraArgs: '-DWITH_COVERAGE=ON'
-      
-      - name: Collect gcno files and binaries
-        run: |
-          # Create artifact directory
-          mkdir -p coverage-artifacts/bin
-          mkdir -p coverage-artifacts/gcno-files
-          
-          # Copy binaries
-          cp build/bin/* coverage-artifacts/bin/
-          
-          # Copy gcno files preserving the FULL build directory structure
-          # This is critical - gcno files have embedded paths that include "build/"
-          find build -name "*.gcno" -type f | while read gcno_file; do
-            # Keep the full path including "build/" directory
-            mkdir -p "coverage-artifacts/gcno-files/$(dirname "$gcno_file")"
-            cp "$gcno_file" "coverage-artifacts/gcno-files/$gcno_file"
-          done
-          
-          # List what we're uploading for debugging
-          echo "=== Coverage artifacts being uploaded ==="
-          find coverage-artifacts -type f | head -20
-      
-      - name: Upload coverage build artifacts
-        uses: actions/upload-artifact@v5
-        with:
-          name: coverage-build-artifacts
-          path: coverage-artifacts/
-          retention-days: 1
 
   test-coverage:
     runs-on: [self-hosted, X64, docker]
