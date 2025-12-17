@@ -13,10 +13,6 @@ inputs:
     description: Name for the uploaded coverage artifacts
     required: false
     default: coverage-build-artifacts
-  artifact-retention-days:
-    description: Number of days to retain the coverage artifacts
-    required: false
-    default: '1'
 
 outputs:
   artifact-name:
@@ -26,8 +22,7 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Build with coverage instrumentation
-      uses: kubasejdak-org/cmake-build-preset-action@main
+    - uses: kubasejdak-org/cmake-build-preset-action@main
       with:
         preset: ${{ inputs.preset }}
         cmakeExtraArgs: '-DWITH_COVERAGE=ON ${{ inputs.cmakeExtraArgs }}'
@@ -60,15 +55,12 @@ runs:
         echo "Sample structure:"
         find coverage-artifacts -type f | head -20
 
-    - name: Upload coverage artifacts
-      uses: actions/upload-artifact@v5
+    - uses: actions/upload-artifact@v6
       with:
         name: ${{ inputs.artifact-name }}
         path: coverage-artifacts/
-        retention-days: ${{ inputs.artifact-retention-days }}
 
-    - name: Set output
-      id: set-output
+    - id: set-output
       shell: bash
       run: |
         echo "artifact-name=${{ inputs.artifact-name }}" >> $GITHUB_OUTPUT
