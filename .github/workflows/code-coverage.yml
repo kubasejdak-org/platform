@@ -45,7 +45,6 @@ jobs:
           preset: ${{ env.PRESET }}
           binary: ${{ matrix.APP }}
           coverage-include-pattern: ${{ env.COVERAGE_INCLUDE_PATTERN }}
-          working-directory: test-${{ matrix.APP }}
 
   generate-coverage-report:
     runs-on: [self-hosted, X64, build, docker]

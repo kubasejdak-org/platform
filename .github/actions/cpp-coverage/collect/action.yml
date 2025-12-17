@@ -18,10 +18,6 @@ inputs:
     description: Pattern for lcov --extract to filter coverage (e.g., "lib")
     required: false
     default: lib
-  working-directory:
-    description: Working directory name for test execution
-    required: false
-    default: test-run
   gcov-prefix-strip:
     description: Value for GCOV_PREFIX_STRIP environment variable
     required: false
@@ -56,16 +52,15 @@ runs:
     - name: Setup test environment
       shell: bash
       run: |
-        echo "=== Downloaded artifact files ==="
-        find coverage-artifacts -type f || echo "No files found"
-        find coverage-artifacts -type d || echo "No directories found"
+        echo "=== Downloaded artifacts ==="
+        find coverage-artifacts || echo "No artifacts found"
 
         # Create working directory for this test
-        mkdir -p ${{ inputs.working-directory }}
-        cd ${{ inputs.working-directory }}
+        mkdir -p test-${{ inputs.binary }}
+        cd ${{ inputs.binary }}
 
         # Copy the specific binary
-        cp ../coverage-artifacts/bin/${{ inputs.binary }} ./
+        cp ../coverage-artifacts/bin/${{ inputs.binary }} .
 
         # Copy gcno files while preserving directory structure
         # Note: gcov requires exact path matching between gcno and gcda files
@@ -80,7 +75,7 @@ runs:
         else
           echo "WARNING: No gcno directory found in artifacts!"
           echo "Looking for gcno files in other locations..."
-          find ../coverage-artifacts -name "*.gcno" | head -10 || echo "No gcno files found anywhere"
+          find ../coverage-artifacts -name "*.gcno" || echo "No gcno files found anywhere"
         fi
 
         # Make binary executable
@@ -99,7 +94,7 @@ runs:
     - name: Run binary and collect coverage data
       shell: bash
       run: |
-        cd ${{ inputs.working-directory }}
+        cd test-${{ inputs.binary }}
 
         # Check what paths are embedded in the gcno files
         echo "=== Sample embedded paths in gcno files ==="
@@ -174,7 +169,7 @@ runs:
     - name: Generate filtered coverage info
       shell: bash
       run: |
-        cd ${{ inputs.working-directory }}
+        cd test-${{ inputs.binary }}
 
         # Check if we have both gcno and gcda files
         gcno_count=$(find . -name "*.gcno" -type f | wc -l)
@@ -245,7 +240,7 @@ runs:
       uses: actions/upload-artifact@v5
       with:
         name: coverage-data-${{ inputs.binary }}
-        path: ${{ inputs.working-directory }}/${{ inputs.binary }}-filtered.info
+        path: test-${{ inputs.binary }}/${{ inputs.binary }}-filtered.info
         retention-days: 1
 
     - name: Set outputs
