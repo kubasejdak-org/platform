@@ -1,4 +1,4 @@
-name: Check code coverage
+name: Check code coverage (Claude)
 
 on:
   push:
@@ -6,27 +6,27 @@ on:
     - cron: "0 12 * * SAT"
   workflow_dispatch:
 
+env:
+  COVERAGE_INCLUDE_PATTERN: "lib"
+  COVERAGE_TITLE: "Platform Library Coverage Report"
+  PRESET: linux-native-gcc-debug
+
 jobs:
-  build-x64:
+  build-coverage:
     runs-on: [self-hosted, X64, build, docker]
-    needs: []
     container:
       image: kubasejdak/gcc:13-24.04
       options: --user root
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - PRESET: linux-native-gcc-debug
     steps:
-      - uses: actions/checkout@v4
-      - uses: kubasejdak-org/cmake-build-preset-action/coverage@main
-        with:
-          preset: ${{ matrix.PRESET }}
+      - uses: actions/checkout@v6
 
-  examples-x64:
+      - uses: ./.github/actions/coverage-build
+        with:
+          preset: ${{ env.PRESET }}
+
+  test-coverage:
     runs-on: [self-hosted, X64, docker]
-    needs: build-x64
+    needs: build-coverage
     container:
       image: kubasejdak/gcc:13-24.04
       options: --user root
@@ -36,18 +36,41 @@ jobs:
         include:
           - APP: platform-package-info
           - APP: platform-hello-world
-    env:
-      PRESET: linux-native-gcc-debug
     steps:
-      - uses: kubasejdak-org/binary-run-action/coverage@main
+      - uses: actions/checkout@v6
+
+      - name: Collect coverage for ${{ matrix.APP }}
+        uses: ./.github/actions/coverage-collect
         with:
           binary: ${{ matrix.APP }}
-          artifact: ${{ env.PRESET }}
+          artifact-name: coverage-build-artifacts
+          coverage-include-pattern: ${{ env.COVERAGE_INCLUDE_PATTERN }}
+          working-directory: test-${{ matrix.APP }}
+
+  generate-coverage-report:
+    runs-on: [self-hosted, X64, build, docker]
+    needs: test-coverage
+    container:
+      image: kubasejdak/gcc:13-24.04
+      options: --user root
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Generate and validate coverage report
+        uses: ./.github/actions/coverage-report
+        with:
+          coverage-artifact-pattern: coverage-data-*
+          coverage-title: ${{ env.COVERAGE_TITLE }}
+          source-directory: lib
+          min-line-coverage: '50.0'
+          min-function-coverage: '50.0'
+          workspace-path: ${{ github.workspace }}
 
   check-all-coverage:
     runs-on: [self-hosted, build]
     needs:
-      - build-x64
-      - examples-x64
+      - build-coverage
+      - test-coverage
+      - generate-coverage-report
     steps:
       - run: echo "Success"
