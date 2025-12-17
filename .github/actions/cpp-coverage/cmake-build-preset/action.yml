@@ -33,7 +33,7 @@ runs:
       run: |
         # Create structured artifact directory for coverage processing
         mkdir -p coverage-artifacts/bin
-        mkdir -p coverage-artifacts/gcno-files
+        mkdir -p coverage-artifacts/gcno
 
         # Copy binaries
         echo "Collecting binaries from build/bin/..."
@@ -41,18 +41,16 @@ runs:
 
         # Copy gcno files preserving FULL directory structure including "build/" prefix
         # This is critical: gcov requires exact path matching between gcno and gcda files
-        # The embedded paths in gcno files include "build/" so we must preserve it
         echo "Collecting gcno files with directory structure..."
         find build -name "*.gcno" -type f | while read gcno_file; do
-          # Preserve full path including "build/" directory
-          mkdir -p "coverage-artifacts/gcno-files/$(dirname "$gcno_file")"
-          cp "$gcno_file" "coverage-artifacts/gcno-files/$gcno_file"
+          mkdir -p "coverage-artifacts/gcno/$(dirname "$gcno_file")"
+          cp "$gcno_file" "coverage-artifacts/gcno/$gcno_file"
         done
 
         # Debug output for troubleshooting
         echo "=== Coverage artifacts structure ==="
         echo "Binaries: $(ls coverage-artifacts/bin/ | wc -l) files"
-        echo "gcno files: $(find coverage-artifacts/gcno-files -name "*.gcno" | wc -l) files"
+        echo "gcno files: $(find coverage-artifacts/gcno -name "*.gcno" | wc -l) files"
         echo "Sample structure:"
         find coverage-artifacts -type f
 

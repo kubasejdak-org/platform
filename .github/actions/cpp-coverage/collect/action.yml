@@ -67,16 +67,16 @@ runs:
 
         # Copy gcno files while preserving directory structure
         # Note: gcov requires exact path matching between gcno and gcda files
-        if [ -d "../coverage-artifacts/gcno-files" ]; then
-          echo "Found gcno-files directory, copying..."
+        if [ -d "../coverage-artifacts/gcno" ]; then
+          echo "Found gcno directory, copying..."
           # Copy the entire directory structure
-          cp -r ../coverage-artifacts/gcno-files/* ./ 2>/dev/null || true
+          cp -r ../coverage-artifacts/gcno/* ./ 2>/dev/null || true
 
           # Also create the required directory structure for gcda files
           # Based on our POC, we need the full build path structure
-          find ../coverage-artifacts/gcno-files -type d -exec mkdir -p {} \; 2>/dev/null || true
+          find ../coverage-artifacts/gcno -type d -exec mkdir -p {} \; 2>/dev/null || true
         else
-          echo "WARNING: No gcno-files directory found in artifacts!"
+          echo "WARNING: No gcno directory found in artifacts!"
           echo "Looking for gcno files in other locations..."
           find ../coverage-artifacts -name "*.gcno" | head -10 || echo "No gcno files found anywhere"
         fi
