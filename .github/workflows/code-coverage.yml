@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: ./.github/actions/coverage/cmake-preset-build
+      - uses: ./.github/actions/coverage/cmake-build-preset
         with:
           preset: ${{ env.PRESET }}
 
