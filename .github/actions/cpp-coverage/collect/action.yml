@@ -29,11 +29,9 @@ inputs:
   run-args:
     description: Command line arguments to pass to the binary
     required: false
-    default: ""
   run-env:
     description: Additional environment variables for the binary (multiline string)
     required: false
-    default: ""
   lcov-branch-coverage:
     description: Enable branch coverage in lcov (true/false)
     required: false
@@ -50,8 +48,7 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Download coverage build artifacts
-      uses: actions/download-artifact@v6
+    - uses: actions/download-artifact@v6
       with:
         name: coverage-build-${{ inputs.preset }}${{ inputs.artifactSuffix }}
         path: coverage-artifacts/
@@ -59,7 +56,7 @@ runs:
     - name: Setup test environment
       shell: bash
       run: |
-        echo "=== Downloaded artifact structure ==="
+        echo "=== Downloaded artifact files ==="
         find coverage-artifacts -type f || echo "No files found"
         find coverage-artifacts -type d || echo "No directories found"
 
