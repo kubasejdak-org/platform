@@ -10,10 +10,14 @@ inputs:
     description: Extra arguments to pass to CMake (appended after -DWITH_COVERAGE=ON)
     required: false
 
-  artifact-name:
-    description: Name for the uploaded coverage artifacts
+  artifactBindir:
+    description: Path to the binary output directory (relative to build directory)
     required: false
-    default: coverage-build-artifacts
+    default: bin
+
+  artifactSuffix:
+    description: Suffix appended to the artifact name
+    required: false
 
 outputs:
   coverage-artifact-name:
@@ -36,8 +40,8 @@ runs:
         mkdir -p coverage-artifacts/gcno
 
         # Copy binaries
-        echo "Collecting binaries from build/bin/..."
-        cp build/bin/* coverage-artifacts/bin/
+        echo "Collecting binaries from build/${{ inputs.artifactBindir }}/..."
+        cp build/${{ inputs.artifactBindir }}/* coverage-artifacts/bin/
 
         # Copy gcno files preserving FULL directory structure including "build/" prefix
         # This is critical: gcov requires exact path matching between gcno and gcda files
@@ -54,12 +58,12 @@ runs:
         echo "Sample structure:"
         find coverage-artifacts -type f
 
-    - uses: actions/upload-artifact@v6
-      with:
-        name: ${{ inputs.artifact-name }}
-        path: coverage-artifacts/
-
     - name: Set coverage artifact name
       id: set-output
       shell: bash
-      run: echo "coverage-artifact-name=${{ inputs.artifact-name }}" >> $GITHUB_OUTPUT
+      run: echo "coverage-artifact-name=build-${{ inputs.preset }}${{ inputs.artifactSuffix }}-coverage" >> $GITHUB_OUTPUT
+
+    - uses: actions/upload-artifact@v6
+      with:
+        name: ${{ steps.set-output.outputs.coverage-artifact-name }}
+        path: coverage-artifacts/
