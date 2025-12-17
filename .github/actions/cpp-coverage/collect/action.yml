@@ -65,11 +65,9 @@ runs:
         # Note: gcov requires exact path matching between gcno and gcda files
         if [ -d "../coverage-artifacts/gcno" ]; then
           echo "Found gcno directory, copying..."
-          # Copy the entire directory structure
           cp -r ../coverage-artifacts/gcno/* ./ 2>/dev/null || true
 
-          # Also create the required directory structure for gcda files
-          # Based on our POC, we need the full build path structure
+          # Create the required directory structure for gcda files
           find ../coverage-artifacts/gcno -type d -exec mkdir -p {} \; 2>/dev/null || true
         else
           echo "WARNING: No gcno directory found in artifacts!"
@@ -77,7 +75,6 @@ runs:
           find ../coverage-artifacts -name "*.gcno" || echo "No gcno files found anywhere"
         fi
 
-        # Make binary executable
         chmod +x ${{ inputs.binary }}
 
     - name: Run binary and collect coverage data
@@ -87,14 +84,14 @@ runs:
 
         # Check what paths are embedded in the gcno files
         echo "=== Sample embedded paths in gcno files ==="
-        find . -name "*.gcno" -exec strings {} \; | grep "^/" | head -10 || echo "No absolute paths found in gcno files"
+        find . -name "*.gcno" -exec strings {} \; | grep "^/" || echo "No absolute paths found in gcno files"
 
         # Verify we have the expected directory structure
         echo "=== Verifying directory structure ==="
         echo "Looking for build/ directory:"
         ls -la build/ 2>/dev/null || echo "No build/ directory found"
         echo "Sample gcno file paths:"
-        find . -name "*.gcno" | head -3
+        find . -name "*.gcno"
 
         # Set GCOV environment variables for coverage data generation
         # GCOV_PREFIX: Base directory where gcda files will be written
