@@ -56,8 +56,7 @@ runs:
         find coverage-artifacts || echo "No artifacts found"
 
         # Create working directory for this test
-        mkdir -p test-${{ inputs.binary }}
-        cd ${{ inputs.binary }}
+        mkdir -p test-${{ inputs.binary }} && cd $_
 
         # Copy the specific binary
         cp ../coverage-artifacts/bin/${{ inputs.binary }} .
