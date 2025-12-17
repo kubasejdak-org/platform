@@ -80,16 +80,6 @@ runs:
         # Make binary executable
         chmod +x ${{ inputs.binary }}
 
-        # Debug: List what we have set up
-        echo "=== Test environment setup for ${{ inputs.binary }} ==="
-        echo "Binary:"
-        ls -la ${{ inputs.binary }}
-        echo "Total gcno files: $(find . -name "*.gcno" | wc -l)"
-        echo "Directory structure:"
-        find . -type d | head -10
-        echo "Sample gcno files:"
-        find . -name "*.gcno" | head -5
-
     - name: Run binary and collect coverage data
       shell: bash
       run: |
