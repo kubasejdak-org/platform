@@ -18,10 +18,9 @@ jobs:
       image: kubasejdak/gcc:13-24.04
       options: --user root
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - name: Build with coverage instrumentation
-        uses: ./.github/actions/coverage-build
+      - uses: ./.github/actions/coverage-build
         with:
           preset: ${{ env.PRESET }}
 
@@ -38,7 +37,7 @@ jobs:
           - APP: platform-package-info
           - APP: platform-hello-world
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Collect coverage for ${{ matrix.APP }}
         uses: ./.github/actions/coverage-collect
@@ -55,7 +54,7 @@ jobs:
       image: kubasejdak/gcc:13-24.04
       options: --user root
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Generate and validate coverage report
         uses: ./.github/actions/coverage-report
