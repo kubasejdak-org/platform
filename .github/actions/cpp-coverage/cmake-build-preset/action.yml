@@ -53,7 +53,7 @@ runs:
         echo "=== Coverage artifacts ==="
         echo "Binaries: $(ls coverage-artifacts/bin/ | wc -l) files"
         echo "gcno files: $(find coverage-artifacts/gcno -name "*.gcno" | wc -l) files"
-        echo "Coverage artifacts:"
+        echo "Artifact files:"
         find coverage-artifacts -type f
 
     - name: Set coverage artifact name
