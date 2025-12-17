@@ -61,7 +61,7 @@ runs:
     - name: Set coverage artifact name
       id: set-output
       shell: bash
-      run: echo "coverage-artifact-name=build-${{ inputs.preset }}${{ inputs.artifactSuffix }}-coverage" >> $GITHUB_OUTPUT
+      run: echo "coverage-artifact-name=coverage-build-${{ inputs.preset }}${{ inputs.artifactSuffix }}" >> $GITHUB_OUTPUT
 
     - uses: actions/upload-artifact@v6
       with:

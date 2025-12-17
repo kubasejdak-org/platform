@@ -43,7 +43,7 @@ jobs:
         uses: ./.github/actions/cpp-coverage/collect
         with:
           binary: ${{ matrix.APP }}
-          artifact-name: build-${{ env.PRESET }}-coverage
+          artifact-name: coverage-build-${{ env.PRESET }}
           coverage-include-pattern: ${{ env.COVERAGE_INCLUDE_PATTERN }}
           working-directory: test-${{ matrix.APP }}
 
