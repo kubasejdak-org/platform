@@ -1,5 +1,5 @@
-name: Build with coverage instrumentation
-description: Builds CMake preset with coverage enabled and collects artifacts for coverage processing
+name: Build CMake preset with coverage
+description: Build CMake preset with coverage
 
 inputs:
   preset:
