@@ -16,9 +16,9 @@ inputs:
     default: coverage-build-artifacts
 
 outputs:
-  artifact-name:
+  coverage-artifact-name:
     description: Name of the uploaded coverage artifact
-    value: ${{ steps.set-output.outputs.artifact-name }}
+    value: ${{ steps.set-output.outputs.coverage-artifact-name }}
 
 runs:
   using: composite
@@ -64,4 +64,4 @@ runs:
     - name: Set coverage artifact name
       id: set-output
       shell: bash
-      run: echo "artifact-name=${{ inputs.artifact-name }}" >> $GITHUB_OUTPUT
+      run: echo "coverage-artifact-name=${{ inputs.artifact-name }}" >> $GITHUB_OUTPUT
