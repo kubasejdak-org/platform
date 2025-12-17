@@ -53,7 +53,7 @@ runs:
     - name: Download coverage build artifacts
       uses: actions/download-artifact@v6
       with:
-        name: ${{ inputs.preset }}${{ inputs.artifactSuffix }}
+        name: coverage-build-${{ inputs.preset }}${{ inputs.artifactSuffix }}
         path: coverage-artifacts/
 
     - name: Setup test environment
