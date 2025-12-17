@@ -57,7 +57,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Generate and validate coverage report
-        uses: ./.github/actions/coverage-report
+        uses: ./.github/actions/cpp-coverage/report
         with:
           coverage-artifact-pattern: coverage-data-*
           coverage-title: ${{ env.COVERAGE_TITLE }}
