@@ -1,4 +1,4 @@
-name: Check code coverage (Claude)
+name: Check code coverage (new)
 
 on:
   push:
