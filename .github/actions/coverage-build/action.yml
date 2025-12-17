@@ -16,7 +16,7 @@ inputs:
 
 outputs:
   artifact-name:
-    description: Name of the uploaded artifact
+    description: Name of the uploaded coverage artifact
     value: ${{ steps.set-output.outputs.artifact-name }}
 
 runs:
@@ -60,7 +60,7 @@ runs:
         name: ${{ inputs.artifact-name }}
         path: coverage-artifacts/
 
-    - id: set-output
+    - name: Set coverage artifact name
+      id: set-output
       shell: bash
-      run: |
-        echo "artifact-name=${{ inputs.artifact-name }}" >> $GITHUB_OUTPUT
+      run: echo "artifact-name=${{ inputs.artifact-name }}" >> $GITHUB_OUTPUT
