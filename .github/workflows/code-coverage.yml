@@ -7,7 +7,6 @@ on:
   workflow_dispatch:
 
 env:
-  COVERAGE_INCLUDE_PATTERN: "lib"
   COVERAGE_TITLE: "Platform Library Coverage Report"
   PRESET: linux-native-gcc-debug
 
@@ -44,7 +43,6 @@ jobs:
         with:
           preset: ${{ env.PRESET }}
           binary: ${{ matrix.APP }}
-          coverage-include-pattern: ${{ env.COVERAGE_INCLUDE_PATTERN }}
 
   generate-coverage-report:
     runs-on: [self-hosted, X64, build, docker]
