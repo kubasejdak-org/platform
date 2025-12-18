@@ -73,13 +73,9 @@ runs:
         echo "=== Embedded paths in gcno files ==="
         find . -name "*.gcno" -exec strings {} \; | grep "^/" | sort | uniq || echo "No absolute paths found in gcno files"
 
-        echo "=== Test directory contents ==="
-        pwd
-        ls -al
-
     - uses: kubasejdak-org/binary-run-action@main
       with:
-        binary: ./${{ inputs.binary }}
+        binary: ${{ inputs.binary }}
         runArgs: ${{ inputs.runArgs }}
         runEnv: GCOV_PREFIX="$PWD" GCOV_PREFIX_STRIP=${{ inputs.gcov-prefix-strip }} ${{ inputs.runEnv }}
         workdir: test-${{ inputs.binary }}
@@ -98,7 +94,7 @@ runs:
         echo "Total: $gcda_count files"
 
     # - name: Run binary and collect coverage data
-    #   shell: bash 
+    #   shell: bash
     #   run: |
     #     cd test-${{ inputs.binary }}
 
