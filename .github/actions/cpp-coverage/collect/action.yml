@@ -73,7 +73,7 @@ runs:
         echo "=== Embedded paths in gcno files ==="
         find . -name "*.gcno" -exec strings {} \; | grep "^/" | sort | uniq || echo "No absolute paths found in gcno files"
 
-    - uses: kubasejdak-org/run-binary-action@main
+    - uses: kubasejdak-org/binary-run-action@main
       with:
         binary: ${{ inputs.binary }}
         runArgs: ${{ inputs.runArgs }}
