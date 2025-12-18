@@ -75,7 +75,7 @@ runs:
 
     - uses: kubasejdak-org/binary-run-action@main
       with:
-        binary: ${{ inputs.binary }}
+        binary: ./${{ inputs.binary }}
         runArgs: ${{ inputs.runArgs }}
         runEnv: GCOV_PREFIX="$PWD" GCOV_PREFIX_STRIP=${{ inputs.gcov-prefix-strip }} ${{ inputs.runEnv }}
         workdir: test-${{ inputs.binary }}
@@ -92,36 +92,6 @@ runs:
         fi
         gcda_count=$(echo "$gcda_files" | grep -c "." || echo "0")
         echo "Total: $gcda_count files"
-
-    # - name: Run binary and collect coverage data
-    #   shell: bash
-    #   run: |
-    #     cd test-${{ inputs.binary }}
-
-    #     echo "=== Embedded paths in gcno files ==="
-    #     find . -name "*.gcno" -exec strings {} \; | grep "^/" | sort | uniq || echo "No absolute paths found in gcno files"
-
-    #     # Set GCOV environment variables for coverage data generation
-    #     # GCOV_PREFIX: Base directory where gcda files will be written
-    #     # GCOV_PREFIX_STRIP: Number of path components to strip from embedded paths
-    #     export GCOV_PREFIX="$PWD"
-    #     export GCOV_PREFIX_STRIP=${{ inputs.gcov-prefix-strip }}
-    #     echo "GCOV_PREFIX: $GCOV_PREFIX"
-    #     echo "GCOV_PREFIX_STRIP: $GCOV_PREFIX_STRIP"
-
-    #     # Run the binary
-    #     echo "Running ${{ inputs.binary }}..."
-    #     chmod +x ${{ inputs.binary }}
-    #     ${{ inputs.runEnv }} ./${{ inputs.binary }} ${{ inputs.runArgs }}
-
-    #     # Check for generated gcda files
-    #     echo "=== Generated gcda files ==="
-    #     gcda_files=$(find . -name "*.gcda" -type f)
-    #     if [ -n "$gcda_files" ]; then
-    #       echo "$gcda_files"
-    #     fi
-    #     gcda_count=$(echo "$gcda_files" | grep -c "." || echo "0")
-    #     echo "Total: $gcda_count files"
 
     - name: Generate filtered coverage info
       shell: bash
