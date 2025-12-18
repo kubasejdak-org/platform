@@ -14,6 +14,14 @@ inputs:
     description: Binary to run
     required: true
 
+  runArgs:
+    description: Command line arguments passed to the binary
+    required: false
+
+  runEnv:
+    description: Environment variables to set for the binary
+    required: false
+
   coverage-include-pattern:
     description: Pattern for lcov --extract to filter coverage (e.g., "lib")
     required: false
@@ -22,12 +30,6 @@ inputs:
     description: Value for GCOV_PREFIX_STRIP environment variable
     required: false
     default: 3
-  run-args:
-    description: Command line arguments to pass to the binary
-    required: false
-  run-env:
-    description: Additional environment variables for the binary (multiline string)
-    required: false
   lcov-branch-coverage:
     description: Enable branch coverage in lcov (true/false)
     required: false
@@ -72,8 +74,6 @@ runs:
           find ../coverage-artifacts -name "*.gcno" || echo "No gcno files found anywhere"
         fi
 
-        chmod +x ${{ inputs.binary }}
-
     - name: Run binary and collect coverage data
       shell: bash
       run: |
@@ -81,41 +81,20 @@ runs:
 
         # Check what paths are embedded in the gcno files
         echo "=== Embedded paths in gcno files ==="
-        find . -name "*.gcno" -exec strings {} \; | grep "^/" | uniq || echo "No absolute paths found in gcno files"
-
-        # Verify we have the expected directory structure
-        echo "=== Verifying directory structure ==="
-        echo "Looking for build/ directory:"
-        ls -la build/ 2>/dev/null || echo "No build/ directory found"
-        echo "Sample gcno file paths:"
-        find . -name "*.gcno"
+        find . -name "*.gcno" -exec strings {} \; | grep "^/" | uniq | sort || echo "No absolute paths found in gcno files"
 
         # Set GCOV environment variables for coverage data generation
         # GCOV_PREFIX: Base directory where gcda files will be written
         # GCOV_PREFIX_STRIP: Number of path components to strip from embedded paths
         export GCOV_PREFIX="$PWD"
         export GCOV_PREFIX_STRIP=${{ inputs.gcov-prefix-strip }}
-
         echo "GCOV_PREFIX: $GCOV_PREFIX"
         echo "GCOV_PREFIX_STRIP: $GCOV_PREFIX_STRIP"
 
-        # Apply additional environment variables if provided
-        if [ -n "${{ inputs.run-env }}" ]; then
-          echo "=== Applying additional environment variables ==="
-          echo "${{ inputs.run-env }}" | while IFS= read -r line; do
-            if [ -n "$line" ]; then
-              export "$line"
-              echo "Set: $line"
-            fi
-          done
-        fi
-
         # Run the binary
         echo "Running ${{ inputs.binary }}..."
-        ./${{ inputs.binary }} ${{ inputs.run-args }} || {
-          echo "ERROR: Binary execution failed"
-          exit 1
-        }
+        chmod +x ${{ inputs.binary }}
+        ${{ inputs.runEnv }} ./${{ inputs.binary }} ${{ inputs.runArgs }}
 
         # Check for generated gcda files
         echo "=== Generated gcda files ==="
