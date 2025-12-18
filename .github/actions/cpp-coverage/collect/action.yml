@@ -98,7 +98,7 @@ runs:
         echo "Total: $gcda_count files"
 
     # - name: Run binary and collect coverage data
-    #   shell: bash
+    #   shell: bash 
     #   run: |
     #     cd test-${{ inputs.binary }}
 
