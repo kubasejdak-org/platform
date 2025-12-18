@@ -6,10 +6,6 @@ inputs:
     description: CMake preset used to build the binary
     required: true
 
-  artifactSuffix:
-    description: Suffix appended to the artifact name
-    required: false
-
   binary:
     description: Binary to run
     required: true
@@ -48,7 +44,7 @@ runs:
   steps:
     - uses: actions/download-artifact@v6
       with:
-        name: coverage-build-${{ inputs.preset }}${{ inputs.artifactSuffix }}
+        name: coverage-build-${{ inputs.preset }}
         path: coverage-artifacts/
 
     - name: Setup test environment
