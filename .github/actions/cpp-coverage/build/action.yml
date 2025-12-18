@@ -6,11 +6,11 @@ inputs:
     description: CMake preset to build
     required: true
 
-  cmakeExtraArgs:
+  cmake-extra-args:
     description: Extra arguments to pass to CMake (appended after -DWITH_COVERAGE=ON)
     required: false
 
-  artifactBindir:
+  artifact-bindir:
     description: Path to the binary output directory (relative to build directory)
     required: false
     default: bin
@@ -26,7 +26,7 @@ runs:
     - uses: kubasejdak-org/cmake-build-preset-action@main
       with:
         preset: ${{ inputs.preset }}
-        cmakeExtraArgs: -DWITH_COVERAGE=ON ${{ inputs.cmakeExtraArgs }}
+        cmake-extra-args: -DWITH_COVERAGE=ON ${{ inputs.cmake-extra-args }}
 
     - name: Collect coverage artifacts
       shell: bash
@@ -35,8 +35,8 @@ runs:
         mkdir -p coverage-artifacts/gcno
 
         # Copy binaries
-        echo "Collecting binaries from build/${{ inputs.artifactBindir }}/..."
-        cp build/${{ inputs.artifactBindir }}/* coverage-artifacts/bin/
+        echo "Collecting binaries from build/${{ inputs.artifact-bindir }}/..."
+        cp build/${{ inputs.artifact-bindir }}/* coverage-artifacts/bin/
 
         # Copy gcno files preserving FULL directory structure including "build/" prefix
         # This is critical: gcov requires exact path matching between gcno and gcda files

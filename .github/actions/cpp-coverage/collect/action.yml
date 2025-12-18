@@ -73,8 +73,8 @@ runs:
     - uses: kubasejdak-org/binary-run-action@main
       with:
         binary: ./${{ inputs.binary }}
-        runArgs: ${{ inputs.run-args }}
-        runEnv: GCOV_PREFIX="$PWD" GCOV_PREFIX_STRIP=${{ inputs.gcov-prefix-strip }} ${{ inputs.run-env }}
+        run-args: ${{ inputs.run-args }}
+        run-env: GCOV_PREFIX="$PWD" GCOV_PREFIX_STRIP=${{ inputs.gcov-prefix-strip }} ${{ inputs.run-env }}
         workdir: test-${{ inputs.binary }}
 
     - name: Collect coverage data
@@ -137,7 +137,6 @@ runs:
       with:
         name: coverage-data-${{ inputs.binary }}
         path: test-${{ inputs.binary }}/${{ inputs.binary }}-filtered.info
-        retention-days: 1
 
     - name: Set outputs
       id: set-outputs
