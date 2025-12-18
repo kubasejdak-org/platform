@@ -52,9 +52,6 @@ runs:
     - name: Setup test environment
       shell: bash
       run: |
-        echo "=== Downloaded artifacts ==="
-        find coverage-artifacts || echo "No artifacts found"
-
         # Create working directory for this test
         mkdir -p test-${{ inputs.binary }} && cd $_
 
