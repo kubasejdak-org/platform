@@ -10,11 +10,11 @@ inputs:
     description: Binary to run
     required: true
 
-  runArgs:
+  run-args:
     description: Command line arguments passed to the binary
     required: false
 
-  runEnv:
+  run-env:
     description: Environment variables to set for the binary
     required: false
 
@@ -22,6 +22,7 @@ inputs:
     description: Pattern for lcov --extract to filter coverage (e.g., "lib")
     required: false
     default: lib
+
   gcov-prefix-strip:
     description: Value for GCOV_PREFIX_STRIP environment variable
     required: false
@@ -72,8 +73,8 @@ runs:
     - uses: kubasejdak-org/binary-run-action@main
       with:
         binary: ./${{ inputs.binary }}
-        runArgs: ${{ inputs.runArgs }}
-        runEnv: GCOV_PREFIX="$PWD" GCOV_PREFIX_STRIP=${{ inputs.gcov-prefix-strip }} ${{ inputs.runEnv }}
+        runArgs: ${{ inputs.run-args }}
+        runEnv: GCOV_PREFIX="$PWD" GCOV_PREFIX_STRIP=${{ inputs.gcov-prefix-strip }} ${{ inputs.run-env }}
         workdir: test-${{ inputs.binary }}
 
     - name: Collect coverage data
