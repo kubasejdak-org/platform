@@ -80,8 +80,8 @@ runs:
         cd test-${{ inputs.binary }}
 
         # Check what paths are embedded in the gcno files
-        echo "=== Sample embedded paths in gcno files ==="
-        find . -name "*.gcno" -exec strings {} \; | grep "^/" || echo "No absolute paths found in gcno files"
+        echo "=== Embedded paths in gcno files ==="
+        find . -name "*.gcno" -exec strings {} \; | grep "^/" | uniq || echo "No absolute paths found in gcno files"
 
         # Verify we have the expected directory structure
         echo "=== Verifying directory structure ==="
