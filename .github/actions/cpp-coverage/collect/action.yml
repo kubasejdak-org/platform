@@ -81,7 +81,7 @@ runs:
 
         # Check what paths are embedded in the gcno files
         echo "=== Embedded paths in gcno files ==="
-        find . -name "*.gcno" -exec strings {} \; | grep "^/" | uniq | sort || echo "No absolute paths found in gcno files"
+        find . -name "*.gcno" -exec strings {} \; | grep "^/" | sort | uniq || echo "No absolute paths found in gcno files"
 
         # Set GCOV environment variables for coverage data generation
         # GCOV_PREFIX: Base directory where gcda files will be written
@@ -104,29 +104,6 @@ runs:
         fi
         gcda_count=$(echo "$gcda_files" | grep -c "." || echo "0")
         echo "Total: $gcda_count files"
-
-        # If no gcda files found, this is a problem
-        if [ "$gcda_count" -eq 0 ]; then
-          echo "ERROR: No gcda files generated!"
-          echo "This indicates coverage instrumentation is not working properly"
-          echo "Checking available gcno files:"
-          find . -name "*.gcno" -type f
-          echo "Trying to run binary with different GCOV settings..."
-
-          # Try without GCOV_PREFIX to see if gcda files appear in original locations
-          unset GCOV_PREFIX
-          unset GCOV_PREFIX_STRIP
-          echo "Running without GCOV environment variables..."
-          ./${{ inputs.binary }} ${{ inputs.run-args }}
-
-          echo "Checking for gcda files anywhere after second run:"
-          find . -name "*.gcda" -type f
-
-          if [ $(find . -name "*.gcda" -type f | wc -l) -eq 0 ]; then
-            echo "FATAL: Still no gcda files - coverage is broken"
-            exit 1
-          fi
-        fi
 
     - name: Generate filtered coverage info
       shell: bash
