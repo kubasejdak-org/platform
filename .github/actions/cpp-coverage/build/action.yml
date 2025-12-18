@@ -30,7 +30,7 @@ runs:
     - uses: kubasejdak-org/cmake-build-preset-action@main
       with:
         preset: ${{ inputs.preset }}
-        cmakeExtraArgs: '-DWITH_COVERAGE=ON ${{ inputs.cmakeExtraArgs }}'
+        cmakeExtraArgs: -DWITH_COVERAGE=ON ${{ inputs.cmakeExtraArgs }}
 
     - name: Collect coverage artifacts
       shell: bash
