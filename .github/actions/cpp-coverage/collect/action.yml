@@ -75,7 +75,7 @@ runs:
 
     - uses: kubasejdak-org/binary-run-action@main
       with:
-        binary: ${{ inputs.binary }}
+        binary: ./${{ inputs.binary }}
         runArgs: ${{ inputs.runArgs }}
         runEnv: GCOV_PREFIX="$PWD" GCOV_PREFIX_STRIP=${{ inputs.gcov-prefix-strip }} ${{ inputs.runEnv }}
         workdir: test-${{ inputs.binary }}
