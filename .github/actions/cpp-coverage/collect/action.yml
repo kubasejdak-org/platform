@@ -82,7 +82,7 @@ runs:
         binary: ./${{ inputs.binary }}
         runArgs: ${{ inputs.runArgs }}
         runEnv: GCOV_PREFIX="$PWD" GCOV_PREFIX_STRIP=${{ inputs.gcov-prefix-strip }} ${{ inputs.runEnv }}
-        workdir: ${{ github.workspace }}/test-${{ inputs.binary }}
+        workdir: ${{ env.GITHUB_WORKSPACE }}/test-${{ inputs.binary }}
 
     - name: Collect coverage data
       shell: bash
