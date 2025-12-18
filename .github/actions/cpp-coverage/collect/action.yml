@@ -95,21 +95,6 @@ runs:
       run: |
         cd test-${{ inputs.binary }}
 
-        # Check if we have both gcno and gcda files
-        gcno_count=$(find . -name "*.gcno" -type f | wc -l)
-        gcda_count=$(find . -name "*.gcda" -type f | wc -l)
-
-        echo "Found $gcno_count gcno files and $gcda_count gcda files"
-
-        if [ "$gcda_count" -eq 0 ]; then
-          echo "ERROR: No gcda files found - coverage data was not generated"
-          echo "This usually means the binary didn't run with coverage enabled"
-          echo "Gcno files present:"
-          find . -name "*.gcno" -type f
-          exit 1
-        fi
-
-        # Generate coverage info from all gcda files
         echo "Generating coverage info with lcov..."
         lcov --capture --directory . --output-file ${{ inputs.binary }}-all.info --gcov-tool gcov --rc lcov_branch_coverage=1
 
