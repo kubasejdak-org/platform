@@ -2,11 +2,6 @@ name: Check coverage thresholds and generate coverage report
 description: Check coverage thresholds and generate coverage report
 
 inputs:
-  coverage-artifact-pattern:
-    description: Pattern for downloading coverage artifacts (e.g., "coverage-data-*")
-    required: false
-    default: coverage-data-*
-
   coverage-title:
     description: Title for the HTML coverage report
     required: false
@@ -42,7 +37,7 @@ runs:
   steps:
     - uses: actions/download-artifact@v6
       with:
-        pattern: ${{ inputs.coverage-artifact-pattern }}
+        pattern: coverage-data-*
         path: coverage-data/
 
     - name: Merge coverage data

@@ -7,7 +7,6 @@ on:
   workflow_dispatch:
 
 env:
-  COVERAGE_TITLE: "Platform Library Coverage Report"
   PRESET: linux-native-gcc-debug
 
 jobs:
@@ -56,8 +55,6 @@ jobs:
       - name: Generate and validate coverage report
         uses: ./.github/actions/cpp-coverage/report
         with:
-          coverage-artifact-pattern: coverage-data-*
-          coverage-title: ${{ env.COVERAGE_TITLE }}
           source-directory: lib
           min-line-coverage: 50.0
           min-function-coverage: 50.0
