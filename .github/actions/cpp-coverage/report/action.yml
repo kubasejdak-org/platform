@@ -37,19 +37,6 @@ inputs:
     required: false
     default: true
 
-outputs:
-  line-coverage:
-    description: Line coverage percentage
-    value: ${{ steps.check-thresholds.outputs.line-coverage }}
-
-  function-coverage:
-    description: Function coverage percentage
-    value: ${{ steps.check-thresholds.outputs.function-coverage }}
-
-  thresholds-passed:
-    description: Whether coverage thresholds were met (true/false)
-    value: ${{ steps.check-thresholds.outputs.passed }}
-
 runs:
   using: composite
   steps:
@@ -184,10 +171,6 @@ runs:
         echo "Line Coverage: ${line_coverage}%"
         echo "Function Coverage: ${function_coverage}%"
 
-        # Set outputs
-        echo "line-coverage=${line_coverage}" >> $GITHUB_OUTPUT
-        echo "function-coverage=${function_coverage}" >> $GITHUB_OUTPUT
-
         # Set thresholds from inputs
         MIN_LINE_COVERAGE=${{ inputs.min-line-coverage }}
         MIN_FUNCTION_COVERAGE=${{ inputs.min-function-coverage }}
@@ -223,9 +206,6 @@ runs:
             echo "Function coverage $function_coverage% meets threshold $MIN_FUNCTION_COVERAGE%"
           fi
         fi
-
-        # Set passed output
-        echo "passed=${passed}" >> $GITHUB_OUTPUT
 
         # Fail if check-thresholds is enabled and thresholds not met
         if [ "${{ inputs.check-thresholds }}" = "true" ] && [ "$passed" = "false" ]; then
