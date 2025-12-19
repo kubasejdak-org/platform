@@ -111,7 +111,7 @@ runs:
 
         # Generate HTML coverage report
         genhtml merged-coverage.info \
-          --output-directory coverage-html \
+          --output-directory html \
           --title "${{ inputs.coverage-title }}" \
           --legend \
           --show-details \
@@ -121,4 +121,4 @@ runs:
       uses: actions/upload-artifact@v6
       with:
         name: coverage-report
-        path: coverage-report/coverage-html/
+        path: coverage-report/html
