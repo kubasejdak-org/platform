@@ -103,8 +103,9 @@ runs:
         COVERAGE_FILE=${{ inputs.binary }}-filtered.info
         lcov --extract ${{ inputs.binary }}-all.info "*/${{ inputs.coverage-include-pattern }}/*" --output-file ${COVERAGE_FILE} > /dev/null
 
-        echo "=== Coverage summary for ${{ inputs.binary }} (filtered) ==="
+        echo "=================================================="
         lcov --summary ${COVERAGE_FILE}
+        echo "=================================================="
 
         echo "coverage-file=${COVERAGE_FILE}" >> $GITHUB_OUTPUT
         echo "artifact-name=coverage-data-${{ inputs.binary }}" >> $GITHUB_OUTPUT
