@@ -83,7 +83,7 @@ runs:
           echo "❌ Line coverage is below threshold: $line_coverage% < $MIN_LINE_COVERAGE%"
           passed=false
         else
-          echo "✅ Line coverage is above threshold: $line_coverage% >= $MIN_LINE_COVERAGE%"
+          echo "✅ Line coverage passed     : $line_coverage% >= $MIN_LINE_COVERAGE%"
         fi
 
         # Check function coverage
@@ -91,7 +91,7 @@ runs:
           echo "❌ Function coverage is below threshold: $function_coverage% < $MIN_FUNCTION_COVERAGE%"
           passed=false
         else
-          echo "✅ Function coverage is above threshold: $function_coverage% >= $MIN_FUNCTION_COVERAGE%"
+          echo "✅ Function coverage passed : $function_coverage% >= $MIN_FUNCTION_COVERAGE%"
         fi
         echo "=================================================="
 
