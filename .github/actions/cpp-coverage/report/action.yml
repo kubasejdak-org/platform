@@ -77,23 +77,23 @@ runs:
 
         echo "=================================================="
         lcov --summary merged-coverage.info || echo "Could not generate summary"
-        echo "=================================================="
 
         # Check line coverage
         if (( $(echo "$line_coverage < $MIN_LINE_COVERAGE" | bc -l) )); then
-          echo "Line coverage $line_coverage% is below threshold $MIN_LINE_COVERAGE%"
+          echo "❌ Line coverage is below threshold: $line_coverage% < $MIN_LINE_COVERAGE%"
           passed=false
         else
-          echo "Line coverage $line_coverage% meets threshold $MIN_LINE_COVERAGE%"
+          echo "✅ Line coverage is above threshold: $line_coverage% >= $MIN_LINE_COVERAGE%"
         fi
 
         # Check function coverage
         if (( $(echo "$function_coverage < $MIN_FUNCTION_COVERAGE" | bc -l) )); then
-          echo "Function coverage $function_coverage% is below threshold $MIN_FUNCTION_COVERAGE%"
+          echo "❌ Function coverage is below threshold: $function_coverage% < $MIN_FUNCTION_COVERAGE%"
           passed=false
         else
-          echo "Function coverage $function_coverage% meets threshold $MIN_FUNCTION_COVERAGE%"
+          echo "✅ Function coverage is above threshold: $function_coverage% >= $MIN_FUNCTION_COVERAGE%"
         fi
+        echo "=================================================="
 
         # Fail if check-thresholds is enabled and thresholds not met
         if [ "${{ inputs.check-thresholds }}" = "true" ] && [ "$passed" = "false" ]; then
