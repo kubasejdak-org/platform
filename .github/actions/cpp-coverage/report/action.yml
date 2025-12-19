@@ -64,49 +64,31 @@ runs:
 
         # Extract coverage percentages
         line_coverage=$(lcov --summary merged-coverage.info | grep "lines" | grep -o '[0-9.]*%' | head -1 | sed 's/%//' || echo "0")
-        function_coverage=$(lcov --summary merged-coverage.info | grep "functions" | grep -o '[0-9.]*%' | head -1 | sed 's/%//' || echo "0")
-
-        # Handle empty coverage values
         line_coverage=${line_coverage:-0}
+        function_coverage=$(lcov --summary merged-coverage.info | grep "functions" | grep -o '[0-9.]*%' | head -1 | sed 's/%//' || echo "0")
         function_coverage=${function_coverage:-0}
 
         echo "Line Coverage: ${line_coverage}%"
         echo "Function Coverage: ${function_coverage}%"
 
-        # Set thresholds from inputs
         MIN_LINE_COVERAGE=${{ inputs.min-line-coverage }}
         MIN_FUNCTION_COVERAGE=${{ inputs.min-function-coverage }}
-
-        # Initialize pass status
         passed=true
 
-        # Check if we have any coverage at all
-        if [ -z "$line_coverage" ] || [ "$line_coverage" = "0" ]; then
-          echo "Warning: No line coverage data found"
-          echo "This might indicate a problem with coverage collection"
-          # Don't fail for now, just warn
+        # Check line coverage
+        if (( $(echo "$line_coverage < $MIN_LINE_COVERAGE" | bc -l) )); then
+          echo "Line coverage $line_coverage% is below threshold $MIN_LINE_COVERAGE%"
           passed=false
         else
-          # Check line coverage
-          if (( $(echo "$line_coverage < $MIN_LINE_COVERAGE" | bc -l) )); then
-            echo "Line coverage $line_coverage% is below threshold $MIN_LINE_COVERAGE%"
-            passed=false
-          else
-            echo "Line coverage $line_coverage% meets threshold $MIN_LINE_COVERAGE%"
-          fi
+          echo "Line coverage $line_coverage% meets threshold $MIN_LINE_COVERAGE%"
         fi
 
-        if [ -z "$function_coverage" ] || [ "$function_coverage" = "0" ]; then
-          echo "Warning: No function coverage data found"
+        # Check function coverage
+        if (( $(echo "$function_coverage < $MIN_FUNCTION_COVERAGE" | bc -l) )); then
+          echo "Function coverage $function_coverage% is below threshold $MIN_FUNCTION_COVERAGE%"
           passed=false
         else
-          # Check function coverage
-          if (( $(echo "$function_coverage < $MIN_FUNCTION_COVERAGE" | bc -l) )); then
-            echo "Function coverage $function_coverage% is below threshold $MIN_FUNCTION_COVERAGE%"
-            passed=false
-          else
-            echo "Function coverage $function_coverage% meets threshold $MIN_FUNCTION_COVERAGE%"
-          fi
+          echo "Function coverage $function_coverage% meets threshold $MIN_FUNCTION_COVERAGE%"
         fi
 
         # Fail if check-thresholds is enabled and thresholds not met
