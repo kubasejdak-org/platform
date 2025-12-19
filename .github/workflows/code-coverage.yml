@@ -58,7 +58,6 @@ jobs:
           source-directory: lib
           min-line-coverage: 50.0
           min-function-coverage: 50.0
-          workspace-path: ${{ github.workspace }}
 
   check-all-coverage:
     runs-on: [self-hosted, build]

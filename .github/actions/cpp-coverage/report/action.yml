@@ -22,11 +22,6 @@ inputs:
     required: false
     default: 50.0
 
-  workspace-path:
-    description: Workspace path for path relativization (usually github.workspace)
-    required: false
-    default: ${{ github.workspace }}
-
   check-thresholds:
     description: Whether to fail if thresholds are not met (true/false)
     required: false
@@ -60,7 +55,7 @@ runs:
         eval "$merge_cmd"
 
         # Make paths relative to project root
-        sed -i "s@${{ inputs.workspace-path }}/@@g" merged-coverage.info
+        sed -i "s@${{ github.workspace }}/@@g" merged-coverage.info
 
     - name: Generate HTML coverage report
       shell: bash
