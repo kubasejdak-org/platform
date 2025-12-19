@@ -49,33 +49,13 @@ runs:
       shell: bash
       run: |
         # Create output directory
-        mkdir -p coverage-report
-        cd coverage-report
+        mkdir -p coverage-report && cd $_
 
-        # List downloaded coverage data
         echo "=== Downloaded coverage data ==="
         find ../coverage-data -type f
 
-        # Find all coverage info files
-        coverage_files=$(find ../coverage-data -name "*-filtered.info" -type f)
-        if [ -z "$coverage_files" ]; then
-          echo "ERROR: No *-filtered.info files found!"
-          echo "Looking for any .info files:"
-          find ../coverage-data -name "*.info" -type f
-          echo "Directory structure:"
-          ls -la ../coverage-data/
-          exit 1
-        fi
-
-        echo "Found coverage files:"
-        for file in $coverage_files; do
-          echo "  - $file"
-          echo "    Size: $(stat -c%s "$file") bytes"
-          echo "    Contents preview:"
-          head -5 "$file" | sed 's/^/      /'
-        done
-
         # Merge coverage info files
+        coverage_files=$(find ../coverage-data -name "*-filtered.info" -type f)
         merge_cmd="lcov"
         for info_file in $coverage_files; do
           merge_cmd="$merge_cmd --add-tracefile $info_file"
