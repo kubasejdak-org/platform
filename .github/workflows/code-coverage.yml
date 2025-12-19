@@ -59,8 +59,8 @@ jobs:
           coverage-artifact-pattern: coverage-data-*
           coverage-title: ${{ env.COVERAGE_TITLE }}
           source-directory: lib
-          min-line-coverage: '50.0'
-          min-function-coverage: '50.0'
+          min-line-coverage: 50.0
+          min-function-coverage: 50.0
           workspace-path: ${{ github.workspace }}
 
   check-all-coverage:
