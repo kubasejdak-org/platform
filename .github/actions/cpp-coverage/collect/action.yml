@@ -99,7 +99,7 @@ runs:
         lcov --capture --directory . --output-file ${{ inputs.binary }}-all.info --gcov-tool gcov --rc lcov_branch_coverage=1
 
         echo "Filtering to include only ${{ inputs.coverage-include-pattern }} directory..."
-        lcov --extract ${{ inputs.binary }}-all.info "*/${{ inputs.coverage-include-pattern }}/*" --output-file ${{ inputs.binary }}-filtered.info
+        lcov --extract ${{ inputs.binary }}-all.info "*/${{ inputs.coverage-include-pattern }}/*" --output-file ${{ inputs.binary }}-filtered.info > /dev/null
 
         echo "=== Coverage summary for ${{ inputs.binary }} (filtered) ==="
         lcov --summary ${{ inputs.binary }}-filtered.info
