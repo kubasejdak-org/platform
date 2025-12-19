@@ -2,16 +2,6 @@ name: Check coverage thresholds and generate coverage report
 description: Check coverage thresholds and generate coverage report
 
 inputs:
-  coverage-title:
-    description: Title for the HTML coverage report
-    required: false
-    default: Coverage Report
-
-  source-directory:
-    description: Source directory to copy for HTML generation (relative to workspace)
-    required: false
-    default: lib
-
   min-line-coverage:
     description: Minimum line coverage percentage threshold
     required: false
@@ -26,6 +16,16 @@ inputs:
     description: Whether to fail if thresholds are not met (true/false)
     required: false
     default: true
+
+  coverage-title:
+    description: Title for the HTML coverage report
+    required: false
+    default: Coverage Report
+
+  source-directory:
+    description: Source directory to copy for HTML generation (relative to workspace)
+    required: false
+    default: lib
 
 runs:
   using: composite
@@ -58,15 +58,8 @@ runs:
         sed -i "s@${{ github.workspace }}/@@g" merged-coverage.info
 
     - name: Check coverage thresholds
-      id: check-thresholds
       shell: bash
       run: |
-        # Install bc if not available
-        if ! command -v bc &> /dev/null; then
-          echo "Installing bc..."
-          apt update && apt install -y bc
-        fi
-
         cd coverage-report
 
         # Extract coverage percentages
