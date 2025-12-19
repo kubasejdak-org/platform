@@ -55,9 +55,8 @@ jobs:
       - name: Generate and validate coverage report
         uses: ./.github/actions/cpp-coverage/report
         with:
-          source-directory: lib
-          min-line-coverage: 50.0
-          min-function-coverage: 50.0
+          min-line-coverage: 80.0
+          min-function-coverage: 80.0
 
   check-all-coverage:
     runs-on: [self-hosted, build]

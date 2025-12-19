@@ -17,15 +17,15 @@ inputs:
     required: false
     default: true
 
-  coverage-title:
-    description: Title for the HTML coverage report
-    required: false
-    default: Coverage Report
-
   source-directory:
     description: Source directory to copy for HTML generation (relative to workspace)
     required: false
     default: lib
+
+  coverage-title:
+    description: Title for the HTML coverage report
+    required: false
+    default: Coverage Report
 
 runs:
   using: composite
