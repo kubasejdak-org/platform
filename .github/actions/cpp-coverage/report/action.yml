@@ -103,14 +103,7 @@ runs:
       shell: bash
       run: |
         cd coverage-report
-
-        # Copy source files needed for report generation
-        cp -r ../${{ inputs.source-directory }} . || {
-          echo "ERROR: Failed to copy ${{ inputs.source-directory }} directory"
-          echo "Available directories:"
-          ls -la ../
-          exit 1
-        }
+        cp -r ../${{ inputs.source-directory }} .
 
         # Generate HTML coverage report
         genhtml merged-coverage.info \
@@ -118,11 +111,7 @@ runs:
           --title "${{ inputs.coverage-title }}" \
           --legend \
           --show-details \
-          --ignore-errors source || {
-          echo "WARNING: genhtml failed, but continuing..."
-          mkdir -p coverage-html
-          echo "<html><body><h1>Coverage report generation failed</h1></body></html>" > coverage-html/index.html
-        }
+          --ignore-errors source
 
         # Show final coverage summary
         echo "=== Final merged coverage summary ==="
@@ -133,9 +122,3 @@ runs:
       with:
         name: coverage-report
         path: coverage-report/coverage-html/
-
-    - name: Upload coverage info for further processing
-      uses: actions/upload-artifact@v6
-      with:
-        name: coverage-info
-        path: coverage-report/merged-coverage.info
