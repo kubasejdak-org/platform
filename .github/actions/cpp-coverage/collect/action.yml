@@ -31,10 +31,11 @@ inputs:
 outputs:
   coverage-file:
     description: Name of the generated coverage info file
-    value: ${{ steps.set-outputs.outputs.coverage-file }}
+    value: ${{ steps.generate.outputs.coverage-file }}
+
   artifact-name:
     description: Name of the uploaded coverage artifact
-    value: ${{ steps.set-outputs.outputs.artifact-name }}
+    value: ${{ steps.generate.outputs.artifact-name }}
 
 runs:
   using: composite
@@ -91,6 +92,7 @@ runs:
         echo "Total: $gcda_count files"
 
     - name: Generate filtered coverage info
+      id: generate
       shell: bash
       run: |
         cd test-${{ inputs.binary }}
@@ -99,20 +101,16 @@ runs:
         lcov --capture --directory . --output-file ${{ inputs.binary }}-all.info --gcov-tool gcov --rc lcov_branch_coverage=1
 
         echo "Filtering to include only ${{ inputs.coverage-include-pattern }} directory..."
-        lcov --extract ${{ inputs.binary }}-all.info "*/${{ inputs.coverage-include-pattern }}/*" --output-file ${{ inputs.binary }}-filtered.info > /dev/null
+        COVERAGE_FILE=${{ inputs.binary }}-filtered.info
+        lcov --extract ${{ inputs.binary }}-all.info "*/${{ inputs.coverage-include-pattern }}/*" --output-file ${COVERAGE_FILE} > /dev/null
 
         echo "=== Coverage summary for ${{ inputs.binary }} (filtered) ==="
-        lcov --summary ${{ inputs.binary }}-filtered.info
+        lcov --summary ${COVERAGE_FILE}
 
-    - name: Upload coverage data
-      uses: actions/upload-artifact@v5
+        echo "coverage-file=${COVERAGE_FILE}" >> $GITHUB_OUTPUT
+        echo "artifact-name=coverage-data-${{ inputs.binary }}" >> $GITHUB_OUTPUT
+
+    - uses: actions/upload-artifact@v6
       with:
         name: coverage-data-${{ inputs.binary }}
-        path: test-${{ inputs.binary }}/${{ inputs.binary }}-filtered.info
-
-    - name: Set outputs
-      id: set-outputs
-      shell: bash
-      run: |
-        echo "coverage-file=${{ inputs.binary }}-filtered.info" >> $GITHUB_OUTPUT
-        echo "artifact-name=coverage-data-${{ inputs.binary }}" >> $GITHUB_OUTPUT
+        path: test-${{ inputs.binary }}/${{ steps.generate.outputs.coverage-file }}

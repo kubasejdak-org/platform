@@ -53,7 +53,6 @@ runs:
         echo "Artifact files:"
         find coverage-artifacts -type f
 
-        # Set artifact name
         echo "artifact-name=coverage-build-${{ inputs.preset }}" >> $GITHUB_OUTPUT
 
     - uses: actions/upload-artifact@v6
