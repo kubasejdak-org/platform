@@ -18,7 +18,7 @@ inputs:
 outputs:
   coverage-artifact-name:
     description: Name of the uploaded coverage artifact
-    value: ${{ steps.set-output.outputs.coverage-artifact-name }}
+    value: ${{ steps.collect.outputs.coverage-artifact-name }}
 
 runs:
   using: composite
@@ -29,6 +29,7 @@ runs:
         cmake-extra-args: -DWITH_COVERAGE=ON ${{ inputs.cmake-extra-args }}
 
     - name: Collect coverage artifacts
+      id: collect
       shell: bash
       run: |
         mkdir -p coverage-artifacts/bin
@@ -52,12 +53,10 @@ runs:
         echo "Artifact files:"
         find coverage-artifacts -type f
 
-    - name: Set coverage artifact name
-      id: set-output
-      shell: bash
-      run: echo "coverage-artifact-name=coverage-build-${{ inputs.preset }}" >> $GITHUB_OUTPUT
+        # Set coverage artifact name
+        echo "coverage-artifact-name=coverage-build-${{ inputs.preset }}" >> $GITHUB_OUTPUT
 
     - uses: actions/upload-artifact@v6
       with:
-        name: ${{ steps.set-output.outputs.coverage-artifact-name }}
+        name: ${{ steps.collect.outputs.coverage-artifact-name }}
         path: coverage-artifacts/
