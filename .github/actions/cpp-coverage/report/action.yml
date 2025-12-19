@@ -1,5 +1,5 @@
-name: 'Generate coverage report and check thresholds'
-description: 'Merges coverage data, generates HTML report, validates coverage thresholds'
+name: Check coverage thresholds and generate coverage report
+description: Check coverage thresholds and generate coverage report
 
 inputs:
   coverage-artifact-pattern:
@@ -15,7 +15,7 @@ inputs:
   source-directory:
     description: 'Source directory to copy for HTML generation (relative to workspace)'
     required: false
-    default: 'lib'
+    default: lib
 
   min-line-coverage:
     description: 'Minimum line coverage percentage threshold'
@@ -61,10 +61,9 @@ outputs:
     value: ${{ steps.check-thresholds.outputs.passed }}
 
 runs:
-  using: 'composite'
+  using: composite
   steps:
-    - name: Download all coverage data
-      uses: actions/download-artifact@v6
+    - uses: actions/download-artifact@v6
       with:
         pattern: ${{ inputs.coverage-artifact-pattern }}
         path: coverage-data/
@@ -161,14 +160,14 @@ runs:
         lcov --summary merged-coverage.info || echo "Could not generate summary"
 
     - name: Upload coverage report
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: coverage-report
         path: coverage-report/coverage-html/
         retention-days: ${{ inputs.html-report-retention-days }}
 
     - name: Upload coverage info for further processing
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: coverage-info
         path: coverage-report/merged-coverage.info
