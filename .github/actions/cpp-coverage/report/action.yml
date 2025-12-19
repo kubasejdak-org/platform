@@ -75,6 +75,10 @@ runs:
         MIN_FUNCTION_COVERAGE=${{ inputs.min-function-coverage }}
         passed=true
 
+        echo "=================================================="
+        lcov --summary merged-coverage.info || echo "Could not generate summary"
+        echo "=================================================="
+
         # Check line coverage
         if (( $(echo "$line_coverage < $MIN_LINE_COVERAGE" | bc -l) )); then
           echo "Line coverage $line_coverage% is below threshold $MIN_LINE_COVERAGE%"
@@ -112,11 +116,6 @@ runs:
           --legend \
           --show-details \
           --ignore-errors source
-
-        echo "=================================================="
-        echo "Final merged coverage summary:"
-        lcov --summary merged-coverage.info || echo "Could not generate summary"
-        echo "=================================================="
 
     - name: Upload coverage report
       uses: actions/upload-artifact@v6
