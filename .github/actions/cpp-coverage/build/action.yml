@@ -10,7 +10,7 @@ inputs:
     description: Extra arguments to pass to CMake (appended after -DWITH_COVERAGE=ON)
     required: false
 
-  artifact-bindir:
+  bindir:
     description: Path to the binary output directory (relative to build directory)
     required: false
     default: bin
@@ -35,8 +35,8 @@ runs:
         mkdir -p coverage-artifacts/gcno
 
         # Copy binaries
-        echo "Collecting binaries from build/${{ inputs.artifact-bindir }}/..."
-        cp build/${{ inputs.artifact-bindir }}/* coverage-artifacts/bin/
+        echo "Collecting binaries from build/${{ inputs.bindir }}/..."
+        cp build/${{ inputs.bindir }}/* coverage-artifacts/bin/
 
         # Copy gcno files preserving FULL directory structure including "build/" prefix
         # This is critical: gcov requires exact path matching between gcno and gcda files
