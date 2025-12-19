@@ -48,7 +48,6 @@ runs:
     - name: Setup test environment
       shell: bash
       run: |
-        # Create working directory for this test
         mkdir -p test-${{ inputs.binary }} && cd $_
 
         # Copy the specific binary

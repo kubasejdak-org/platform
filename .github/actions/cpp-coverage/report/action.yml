@@ -48,7 +48,6 @@ runs:
     - name: Merge coverage data
       shell: bash
       run: |
-        # Create output directory
         mkdir -p coverage-report && cd $_
 
         echo "=== Downloaded coverage data ==="
@@ -62,30 +61,11 @@ runs:
         done
         merge_cmd="$merge_cmd --output-file merged-coverage.info"
 
-        echo "Executing: $merge_cmd"
-        eval "$merge_cmd" || {
-          echo "ERROR: Failed to merge coverage files"
-          echo "Individual file summaries:"
-          for file in $coverage_files; do
-            echo "=== $file ==="
-            lcov --summary "$file" || echo "Failed to get summary for $file"
-          done
-          exit 1
-        }
-
-        # Check if merged file has any data
-        if [ ! -s merged-coverage.info ]; then
-          echo "WARNING: Merged coverage file is empty"
-          echo "Creating minimal coverage file to continue workflow"
-          echo "TN:" > merged-coverage.info
-          echo "end_of_record" >> merged-coverage.info
-        fi
+        echo "Running: $merge_cmd"
+        eval "$merge_cmd"
 
         # Make paths relative to project root
         sed -i "s@${{ inputs.workspace-path }}/@@g" merged-coverage.info
-
-        echo "=== Merged coverage info created ==="
-        ls -lh merged-coverage.info
 
     - name: Generate HTML coverage report
       shell: bash
