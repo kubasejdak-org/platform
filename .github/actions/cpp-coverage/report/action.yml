@@ -2,12 +2,12 @@ name: Check coverage thresholds and generate coverage report
 description: Check coverage thresholds and generate coverage report
 
 inputs:
-  min-line-coverage:
+  line-coverage:
     description: Minimum line coverage percentage threshold
     required: false
     default: 50.0
 
-  min-function-coverage:
+  function-coverage:
     description: Minimum function coverage percentage threshold
     required: false
     default: 50.0
@@ -71,8 +71,8 @@ runs:
         echo "Line Coverage: ${line_coverage}%"
         echo "Function Coverage: ${function_coverage}%"
 
-        MIN_LINE_COVERAGE=${{ inputs.min-line-coverage }}
-        MIN_FUNCTION_COVERAGE=${{ inputs.min-function-coverage }}
+        MIN_LINE_COVERAGE=${{ inputs.line-coverage }}
+        MIN_FUNCTION_COVERAGE=${{ inputs.function-coverage }}
         passed=true
 
         echo "=================================================="
