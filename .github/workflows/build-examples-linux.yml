@@ -34,7 +34,8 @@ jobs:
           - PRESET: linux-native-clang-debug-ubsan
             DOCKER_IMAGE: kubasejdak/clang:18-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+
       - uses: kubasejdak-org/cmake-build-preset-action@main
         with:
           preset: ${{ matrix.PRESET }}
@@ -58,7 +59,8 @@ jobs:
           - PRESET: linux-arm64-clang-release
             DOCKER_IMAGE: kubasejdak/aarch64-none-linux-gnu-clang:18-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+
       - uses: kubasejdak-org/cmake-build-preset-action@main
         with:
           preset: ${{ matrix.PRESET }}
@@ -81,7 +83,7 @@ jobs:
       - uses: kubasejdak-org/binary-run-action@main
         with:
           binary: ${{ matrix.APP }}
-          artifact: ${{ env.PRESET }}
+          artifact: build-${{ env.PRESET }}
  
   examples-arm64:
     runs-on: [self-hosted, ARM64, docker]
@@ -100,7 +102,7 @@ jobs:
       - uses: kubasejdak-org/binary-run-action@main
         with:
           binary: ${{ matrix.APP }}
-          artifact: ${{ env.PRESET }}
+          artifact: build-${{ env.PRESET }}
 
   valgrind-x64:
     runs-on: [self-hosted, X64, docker]
@@ -120,7 +122,7 @@ jobs:
       - uses: kubasejdak-org/valgrind-run-action@main
         with:
           binary: ${{ matrix.APP }}
-          artifact: ${{ env.PRESET }}
+          artifact: build-${{ env.PRESET }}
 
   sanitizers-x64:
     runs-on: [self-hosted, X64, docker]
@@ -152,7 +154,7 @@ jobs:
       - uses: kubasejdak-org/binary-run-action@main
         with:
           binary: ${{ matrix.APP }}
-          artifact: ${{ matrix.PRESET }}
+          artifact: build-${{ matrix.PRESET }}
 
   check-all-linux:
     runs-on: [self-hosted, build]
