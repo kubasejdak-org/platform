@@ -107,7 +107,7 @@ runs:
         # Generate HTML coverage report
         genhtml merged-coverage.info \
           --output-directory html \
-          --title "${{ github.event.repository.name }} Code Coverage" \
+          --title "${{ github.event.repository.name }} code coverage" \
           --legend \
           --show-details \
           --ignore-errors source
