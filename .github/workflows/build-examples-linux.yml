@@ -75,8 +75,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - APP: ./platform-package-info
-          - APP: ./platform-hello-world
+          - APP: platform-package-info
+          - APP: platform-hello-world
     env:
       PRESET: linux-native-gcc-debug
     steps:
@@ -94,8 +94,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - APP: ./platform-package-info
-          - APP: ./platform-hello-world
+          - APP: platform-package-info
+          - APP: platform-hello-world
     env:
       PRESET: linux-arm64-gcc-debug
     steps:
@@ -114,8 +114,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - APP: ./platform-package-info
-          - APP: ./platform-hello-world
+          - APP: platform-package-info
+          - APP: platform-hello-world
     env:
       PRESET: linux-native-gcc-debug
     steps:
@@ -153,7 +153,7 @@ jobs:
     steps:
       - uses: kubasejdak-org/binary-run-action@main
         with:
-          binary: ./${{ matrix.APP }}
+          binary: ${{ matrix.APP }}
           artifact: build-${{ matrix.PRESET }}
 
   check-all-linux:
