@@ -1,0 +1,119 @@
+name: Check coverage thresholds and generate coverage report
+description: Check coverage thresholds and generate coverage report
+
+inputs:
+  line-coverage:
+    description: Minimum line coverage percentage threshold
+    required: false
+    default: 50.0
+
+  function-coverage:
+    description: Minimum function coverage percentage threshold
+    required: false
+    default: 50.0
+
+  check-thresholds:
+    description: Whether to fail if thresholds are not met (true/false)
+    required: false
+    default: true
+
+  source-directory:
+    description: Source directory to copy for HTML generation (relative to workspace)
+    required: false
+    default: lib
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/download-artifact@v6
+      with:
+        pattern: coverage-data-*
+        path: coverage-data/
+
+    - name: Merge coverage data
+      shell: bash
+      run: |
+        mkdir -p coverage-report && cd $_
+
+        echo "=== Downloaded coverage data ==="
+        find ../coverage-data -type f
+
+        # Merge coverage info files
+        coverage_files=$(find ../coverage-data -name "*-filtered.info" -type f)
+        merge_cmd="lcov"
+        for info_file in $coverage_files; do
+          merge_cmd="$merge_cmd --add-tracefile $info_file"
+        done
+        merge_cmd="$merge_cmd --output-file merged-coverage.info"
+
+        echo "Running: $merge_cmd"
+        eval "$merge_cmd"
+
+        # Make paths relative to project root
+        sed -i "s@${{ github.workspace }}/@@g" merged-coverage.info
+
+    - name: Check coverage thresholds
+      shell: bash
+      run: |
+        cd coverage-report
+
+        # Extract coverage percentages
+        line_coverage=$(lcov --summary merged-coverage.info | grep "lines" | grep -o '[0-9.]*%' | head -1 | sed 's/%//' || echo "0")
+        line_coverage=${line_coverage:-0}
+        function_coverage=$(lcov --summary merged-coverage.info | grep "functions" | grep -o '[0-9.]*%' | head -1 | sed 's/%//' || echo "0")
+        function_coverage=${function_coverage:-0}
+
+        echo "Line Coverage: ${line_coverage}%"
+        echo "Function Coverage: ${function_coverage}%"
+
+        MIN_LINE_COVERAGE=${{ inputs.line-coverage }}
+        MIN_FUNCTION_COVERAGE=${{ inputs.function-coverage }}
+        passed=true
+
+        echo "=================================================="
+        lcov --summary merged-coverage.info || echo "Could not generate summary"
+
+        # Check line coverage
+        if (( $(echo "$line_coverage < $MIN_LINE_COVERAGE" | bc -l) )); then
+          echo "❌ Line coverage is below threshold: $line_coverage% < $MIN_LINE_COVERAGE%"
+          passed=false
+        else
+          echo "✅ Line coverage passed     : $line_coverage% >= $MIN_LINE_COVERAGE%"
+        fi
+
+        # Check function coverage
+        if (( $(echo "$function_coverage < $MIN_FUNCTION_COVERAGE" | bc -l) )); then
+          echo "❌ Function coverage is below threshold: $function_coverage% < $MIN_FUNCTION_COVERAGE%"
+          passed=false
+        else
+          echo "✅ Function coverage passed : $function_coverage% >= $MIN_FUNCTION_COVERAGE%"
+        fi
+        echo "=================================================="
+
+        # Fail if check-thresholds is enabled and thresholds not met
+        if [ "${{ inputs.check-thresholds }}" = "true" ] && [ "$passed" = "false" ]; then
+          echo "Coverage checks failed!"
+          exit 1
+        fi
+
+        echo "Coverage checks completed!"
+
+    - name: Generate HTML coverage report
+      shell: bash
+      run: |
+        cd coverage-report
+        cp -r ../${{ inputs.source-directory }} .
+
+        # Generate HTML coverage report
+        genhtml merged-coverage.info \
+          --output-directory html \
+          --title "${{ github.event.repository.name }} code coverage" \
+          --legend \
+          --show-details \
+          --ignore-errors source
+
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v6
+      with:
+        name: coverage-report
+        path: coverage-report/html

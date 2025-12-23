@@ -1,0 +1,61 @@
+name: Build CMake preset with coverage
+description: Build CMake preset with coverage
+
+inputs:
+  preset:
+    description: CMake preset to build
+    required: true
+
+  cmake-extra-args:
+    description: Extra arguments to pass to CMake (appended after -DWITH_COVERAGE=ON)
+    required: false
+
+  bindir:
+    description: Path to the binary output directory (relative to build directory)
+    required: false
+    default: bin
+
+outputs:
+  coverage-artifact-name:
+    description: Name of the uploaded coverage artifact
+    value: ${{ steps.collect.outputs.artifact-name }}
+
+runs:
+  using: composite
+  steps:
+    - uses: kubasejdak-org/cmake-build-preset-action@main
+      with:
+        preset: ${{ inputs.preset }}
+        cmake-extra-args: -DWITH_COVERAGE=ON ${{ inputs.cmake-extra-args }}
+
+    - name: Collect coverage artifacts
+      id: collect
+      shell: bash
+      run: |
+        mkdir -p coverage-artifacts/bin
+        mkdir -p coverage-artifacts/gcno
+
+        # Copy binaries
+        echo "Collecting binaries from build/${{ inputs.bindir }}/..."
+        cp build/${{ inputs.bindir }}/* coverage-artifacts/bin/
+
+        # Copy gcno files preserving FULL directory structure including "build/" prefix
+        # This is critical: gcov requires exact path matching between gcno and gcda files
+        echo "Collecting gcno files with directory structure..."
+        find build -name "*.gcno" -type f | while read gcno_file; do
+          mkdir -p "coverage-artifacts/gcno/$(dirname "$gcno_file")"
+          cp "$gcno_file" "coverage-artifacts/gcno/$gcno_file"
+        done
+
+        echo "=== Coverage artifacts ==="
+        echo "Binaries: $(ls coverage-artifacts/bin/ | wc -l) files"
+        echo "gcno files: $(find coverage-artifacts/gcno -name "*.gcno" | wc -l) files"
+        echo "Artifact files:"
+        find coverage-artifacts -type f
+
+        echo "artifact-name=coverage-build-${{ inputs.preset }}" >> $GITHUB_OUTPUT
+
+    - uses: actions/upload-artifact@v6
+      with:
+        name: ${{ steps.collect.outputs.artifact-name }}
+        path: coverage-artifacts/

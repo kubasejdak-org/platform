@@ -1,0 +1,116 @@
+name: Collect coverage data for binary
+description: Collect coverage data for binary
+
+inputs:
+  preset:
+    description: CMake preset used to build the binary
+    required: true
+
+  binary:
+    description: Binary to run
+    required: true
+
+  run-args:
+    description: Command line arguments passed to the binary
+    required: false
+
+  run-env:
+    description: Environment variables to set for the binary
+    required: false
+
+  coverage-include-pattern:
+    description: Pattern for lcov --extract to filter coverage (e.g., "lib")
+    required: false
+    default: lib
+
+  gcov-prefix-strip:
+    description: Value for GCOV_PREFIX_STRIP environment variable
+    required: false
+    default: 3
+
+outputs:
+  coverage-file:
+    description: Name of the generated coverage info file
+    value: ${{ steps.generate.outputs.coverage-file }}
+
+  artifact-name:
+    description: Name of the uploaded coverage artifact
+    value: ${{ steps.generate.outputs.artifact-name }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/download-artifact@v6
+      with:
+        name: coverage-build-${{ inputs.preset }}
+        path: coverage-artifacts/
+
+    - name: Setup test environment
+      shell: bash
+      run: |
+        mkdir -p test-${{ inputs.binary }} && cd $_
+
+        # Copy the specific binary
+        cp ../coverage-artifacts/bin/${{ inputs.binary }} .
+
+        # Copy gcno files while preserving directory structure
+        # Note: gcov requires exact path matching between gcno and gcda files
+        if [ -d "../coverage-artifacts/gcno" ]; then
+          echo "Found gcno directory, copying..."
+          cp -r ../coverage-artifacts/gcno/* ./ 2>/dev/null || true
+
+          # Create the required directory structure for gcda files
+          find ../coverage-artifacts/gcno -type d -exec mkdir -p {} \; 2>/dev/null || true
+        else
+          echo "WARNING: No gcno directory found in artifacts!"
+          echo "Looking for gcno files in other locations..."
+          find ../coverage-artifacts -name "*.gcno" || echo "No gcno files found anywhere"
+        fi
+
+        echo "=== Embedded paths in gcno files ==="
+        find . -name "*.gcno" -exec strings {} \; | grep "^/" | sort | uniq || echo "No absolute paths found in gcno files"
+
+    - uses: kubasejdak-org/binary-run-action@main
+      with:
+        binary: ${{ inputs.binary }}
+        run-args: ${{ inputs.run-args }}
+        run-env: GCOV_PREFIX="$PWD" GCOV_PREFIX_STRIP=${{ inputs.gcov-prefix-strip }} ${{ inputs.run-env }}
+        workdir: test-${{ inputs.binary }}
+
+    - name: Collect coverage data
+      shell: bash
+      run: |
+        cd test-${{ inputs.binary }}
+
+        echo "=== Generated gcda files ==="
+        gcda_files=$(find . -name "*.gcda" -type f)
+        if [ -n "$gcda_files" ]; then
+          echo "$gcda_files"
+        fi
+        gcda_count=$(echo "$gcda_files" | grep -c "." || echo "0")
+        echo "Total: $gcda_count files"
+
+    - name: Generate filtered coverage info
+      id: generate
+      shell: bash
+      run: |
+        cd test-${{ inputs.binary }}
+
+        echo "Generating coverage info with lcov..."
+        lcov --capture --directory . --output-file ${{ inputs.binary }}-all.info --gcov-tool gcov --rc lcov_branch_coverage=1
+
+        echo "Filtering to include only ${{ inputs.coverage-include-pattern }} directory..."
+        COVERAGE_FILE=${{ inputs.binary }}-filtered.info
+        lcov --extract ${{ inputs.binary }}-all.info "*/${{ inputs.coverage-include-pattern }}/*" --output-file ${COVERAGE_FILE} > /dev/null
+
+        echo "=================================================="
+        lcov --summary ${COVERAGE_FILE}
+        echo "=================================================="
+
+        echo "coverage-file=${COVERAGE_FILE}" >> $GITHUB_OUTPUT
+        echo "artifact-name=coverage-data-${{ inputs.binary }}" >> $GITHUB_OUTPUT
+
+    - uses: actions/upload-artifact@v6
+      with:
+        name: coverage-data-${{ inputs.binary }}
+        path: test-${{ inputs.binary }}/${{ steps.generate.outputs.coverage-file }}
