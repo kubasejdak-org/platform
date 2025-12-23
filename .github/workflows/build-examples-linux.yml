@@ -129,7 +129,7 @@ jobs:
     needs: build-x64
     container:
       image: kubasejdak/gcc:13-24.04
-      options: --user root
+      options: --user root --cap-add=SYS_PTRACE --security-opt seccomp=unconfined
     strategy:
       fail-fast: false
       matrix:
