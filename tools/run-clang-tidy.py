@@ -66,9 +66,7 @@ def strtobool(val):
         return False
 
     # Return ArgumentTypeError so that argparse does not substitute its own error message
-    raise argparse.ArgumentTypeError(
-        "'{}' is invalid value for boolean argument! Try 0 or 1.".format(val)
-    )
+    raise argparse.ArgumentTypeError("'{}' is invalid value for boolean argument! Try 0 or 1.".format(val))
 
 
 def find_compilation_database(path):
@@ -179,20 +177,14 @@ def find_binary(arg, name, build_path):
         if shutil.which(arg):
             return arg
         else:
-            raise SystemExit(
-                "error: passed binary '{}' was not found or is not executable".format(
-                    arg
-                )
-            )
+            raise SystemExit("error: passed binary '{}' was not found or is not executable".format(arg))
 
     built_path = os.path.join(build_path, "bin", name)
     binary = shutil.which(name) or shutil.which(built_path)
     if binary:
         return binary
     else:
-        raise SystemExit(
-            "error: failed to find {} in $PATH or at {}".format(name, built_path)
-        )
+        raise SystemExit("error: failed to find {} in $PATH or at {}".format(name, built_path))
 
 
 def apply_fixes(args, clang_apply_replacements_binary, tmpdir):
@@ -230,9 +222,7 @@ def run_tidy(args, clang_tidy_binary, tmpdir, build_path, queue, lock, failed_fi
             args.warnings_as_errors,
         )
 
-        proc = subprocess.Popen(
-            invocation, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-        )
+        proc = subprocess.Popen(invocation, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, err = proc.communicate()
         if proc.returncode != 0:
             if proc.returncode < 0:
@@ -257,11 +247,9 @@ def main():
     parser.add_argument(
         "-allow-enabling-alpha-checkers",
         action="store_true",
-        help="allow alpha checkers from " "clang-analyzer.",
+        help="allow alpha checkers from clang-analyzer.",
     )
-    parser.add_argument(
-        "-clang-tidy-binary", metavar="PATH", help="path to clang-tidy binary"
-    )
+    parser.add_argument("-clang-tidy-binary", metavar="PATH", help="path to clang-tidy binary")
     parser.add_argument(
         "-clang-apply-replacements-binary",
         metavar="PATH",
@@ -270,7 +258,7 @@ def main():
     parser.add_argument(
         "-checks",
         default=None,
-        help="checks filter, when not specified, use clang-tidy " "default",
+        help="checks filter, when not specified, use clang-tidy default",
     )
     config_group = parser.add_mutually_exclusive_group()
     config_group.add_argument(
@@ -303,15 +291,14 @@ def main():
     parser.add_argument(
         "-line-filter",
         default=None,
-        help="List of files with line ranges to filter the" "warnings.",
+        help="List of files with line ranges to filter thewarnings.",
     )
     if yaml:
         parser.add_argument(
             "-export-fixes",
             metavar="filename",
             dest="export_fixes",
-            help="Create a yaml file to store suggested fixes in, "
-            "which can be applied with clang-apply-replacements.",
+            help="Create a yaml file to store suggested fixes in, which can be applied with clang-apply-replacements.",
         )
     parser.add_argument(
         "-j",
@@ -319,17 +306,13 @@ def main():
         default=0,
         help="number of tidy instances to be run in parallel.",
     )
-    parser.add_argument(
-        "files", nargs="*", default=[".*"], help="files to be processed (regex on path)"
-    )
+    parser.add_argument("files", nargs="*", default=[".*"], help="files to be processed (regex on path)")
     parser.add_argument("-fix", action="store_true", help="apply fix-its")
-    parser.add_argument(
-        "-format", action="store_true", help="Reformat code " "after applying fixes"
-    )
+    parser.add_argument("-format", action="store_true", help="Reformat code after applying fixes")
     parser.add_argument(
         "-style",
         default="file",
-        help="The style of reformat " "code after applying fixes",
+        help="The style of reformat code after applying fixes",
     )
     parser.add_argument(
         "-use-color",
@@ -340,26 +323,22 @@ def main():
         " default behavior. This option overrides the 'UseColor"
         "' option in .clang-tidy file, if any.",
     )
-    parser.add_argument(
-        "-p", dest="build_path", help="Path used to read a compile command database."
-    )
+    parser.add_argument("-p", dest="build_path", help="Path used to read a compile command database.")
     parser.add_argument(
         "-extra-arg",
         dest="extra_arg",
         action="append",
         default=[],
-        help="Additional argument to append to the compiler " "command line.",
+        help="Additional argument to append to the compiler command line.",
     )
     parser.add_argument(
         "-extra-arg-before",
         dest="extra_arg_before",
         action="append",
         default=[],
-        help="Additional argument to prepend to the compiler " "command line.",
+        help="Additional argument to prepend to the compiler command line.",
     )
-    parser.add_argument(
-        "-quiet", action="store_true", help="Run clang-tidy in quiet mode"
-    )
+    parser.add_argument("-quiet", action="store_true", help="Run clang-tidy in quiet mode")
     parser.add_argument(
         "-load",
         dest="plugins",
@@ -370,7 +349,7 @@ def main():
     parser.add_argument(
         "-warnings-as-errors",
         default=None,
-        help="Upgrades warnings to errors. Same format as " "'-checks'",
+        help="Upgrades warnings to errors. Same format as '-checks'",
     )
     args = parser.parse_args()
 
@@ -426,9 +405,7 @@ def main():
 
     # Load the database and extract all files.
     database = json.load(open(os.path.join(build_path, db_path)))
-    files = set(
-        [make_absolute(entry["file"], entry["directory"]) for entry in database]
-    )
+    files = set([make_absolute(entry["file"], entry["directory"]) for entry in database])
 
     max_task = args.j
     if max_task == 0:
