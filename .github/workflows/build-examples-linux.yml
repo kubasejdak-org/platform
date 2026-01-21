@@ -39,7 +39,7 @@ jobs:
       - uses: kubasejdak-org/cmake-build-preset-action@main
         with:
           preset: ${{ matrix.PRESET }}
- 
+
   build-arm64:
     runs-on: [self-hosted, X64, build, docker]
     needs: []
@@ -84,7 +84,7 @@ jobs:
         with:
           binary: ${{ matrix.APP }}
           artifact: build-${{ env.PRESET }}
- 
+
   examples-arm64:
     runs-on: [self-hosted, ARM64, docker]
     needs: build-arm64

@@ -14,143 +14,83 @@
   "configurePresets": [
     {
       "name": "linux-native-gcc-debug",
-      "inherits": [
-        "linux-native-gcc",
-        "debug"
-      ]
+      "inherits": ["linux-native-gcc", "debug"]
     },
     {
       "name": "linux-native-gcc-release",
-      "inherits": [
-        "linux-native-gcc",
-        "release"
-      ]
+      "inherits": ["linux-native-gcc", "release"]
     },
     {
       "name": "linux-native-clang-debug",
-      "inherits": [
-        "linux-native-clang",
-        "debug"
-      ]
+      "inherits": ["linux-native-clang", "debug"]
     },
     {
       "name": "linux-native-clang-release",
-      "inherits": [
-        "linux-native-clang",
-        "release"
-      ]
+      "inherits": ["linux-native-clang", "release"]
     },
     {
       "name": "linux-native-clang-debug-asan",
-      "inherits": [
-        "linux-native-clang-debug",
-        "asan"
-      ]
+      "inherits": ["linux-native-clang-debug", "asan"]
     },
     {
       "name": "linux-native-clang-debug-lsan",
-      "inherits": [
-        "linux-native-clang-debug",
-        "lsan"
-      ]
+      "inherits": ["linux-native-clang-debug", "lsan"]
     },
     {
       "name": "linux-native-clang-debug-tsan",
-      "inherits": [
-        "linux-native-clang-debug",
-        "tsan"
-      ]
+      "inherits": ["linux-native-clang-debug", "tsan"]
     },
     {
       "name": "linux-native-clang-debug-ubsan",
-      "inherits": [
-        "linux-native-clang-debug",
-        "ubsan"
-      ]
+      "inherits": ["linux-native-clang-debug", "ubsan"]
     },
     {
       "name": "linux-arm64-gcc-debug",
-      "inherits": [
-        "linux-arm64-gcc",
-        "debug"
-      ]
+      "inherits": ["linux-arm64-gcc", "debug"]
     },
     {
       "name": "linux-arm64-gcc-release",
-      "inherits": [
-        "linux-arm64-gcc",
-        "release"
-      ]
+      "inherits": ["linux-arm64-gcc", "release"]
     },
     {
       "name": "linux-arm64-clang-debug",
-      "inherits": [
-        "linux-arm64-clang",
-        "debug"
-      ]
+      "inherits": ["linux-arm64-clang", "debug"]
     },
     {
       "name": "linux-arm64-clang-release",
-      "inherits": [
-        "linux-arm64-clang",
-        "release"
-      ]
+      "inherits": ["linux-arm64-clang", "release"]
     },
     {
       "name": "yocto-sdk-gcc-debug",
-      "inherits": [
-        "yocto-sdk-gcc",
-        "debug"
-      ]
+      "inherits": ["yocto-sdk-gcc", "debug"]
     },
     {
       "name": "yocto-sdk-gcc-release",
-      "inherits": [
-        "yocto-sdk-gcc",
-        "release"
-      ]
+      "inherits": ["yocto-sdk-gcc", "release"]
     },
     {
       "name": "yocto-sdk-clang-debug",
-      "inherits": [
-        "yocto-sdk-clang",
-        "debug"
-      ]
+      "inherits": ["yocto-sdk-clang", "debug"]
     },
     {
       "name": "yocto-sdk-clang-release",
-      "inherits": [
-        "yocto-sdk-clang",
-        "release"
-      ]
+      "inherits": ["yocto-sdk-clang", "release"]
     },
     {
       "name": "baremetal-arm-debug",
-      "inherits": [
-        "baremetal-arm",
-        "debug"
-      ]
+      "inherits": ["baremetal-arm", "debug"]
     },
     {
       "name": "baremetal-arm-release",
-      "inherits": [
-        "baremetal-arm",
-        "release"
-      ]
+      "inherits": ["baremetal-arm", "release"]
     },
     {
       "name": "freertos-arm-debug",
-      "inherits": [
-        "freertos-arm",
-        "debug"
-      ]
+      "inherits": ["freertos-arm", "debug"]
     },
     {
       "name": "freertos-arm-release",
-      "inherits": [
-        "freertos-arm",
-        "release"
-      ]
+      "inherits": ["freertos-arm", "release"]
     }
   ]
 }
