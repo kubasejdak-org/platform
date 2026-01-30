@@ -26,7 +26,8 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <platform/init.hpp>
+#include "platform/init.hpp"
+
 #include <platform/package/build.hpp>
 #include <platform/package/git.hpp>
 

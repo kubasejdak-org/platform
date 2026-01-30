@@ -30,6 +30,9 @@
 
 namespace platform {
 
+/// Initializes the basic HW features needed for app to run (UART for console, basic pinmux).
+/// @return Flag indicating if initialization succeeded.
+/// @note This function is dependant on actual HW on which given app is launched.
 bool init();
 
 } // namespace platform

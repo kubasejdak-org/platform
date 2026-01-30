@@ -26,7 +26,7 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <platform/init.hpp>
+#include "platform/init.hpp"
 
 #include <cstdlib>
 #include <iostream>
