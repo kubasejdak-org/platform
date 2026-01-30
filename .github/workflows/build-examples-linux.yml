@@ -75,8 +75,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - APP: platform-package-info
-          - APP: platform-hello-world
+          - APP: platform-package-info-example
+          - APP: platform-hello-world-example
+          - APP: platform-paths-example
     env:
       PRESET: linux-native-gcc-debug
     steps:
@@ -94,8 +95,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - APP: platform-package-info
-          - APP: platform-hello-world
+          - APP: platform-package-info-example
+          - APP: platform-hello-world-example
+          - APP: platform-paths-example
     env:
       PRESET: linux-arm64-gcc-debug
     steps:
@@ -114,8 +116,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - APP: platform-package-info
-          - APP: platform-hello-world
+          - APP: platform-package-info-example
+          - APP: platform-hello-world-example
+          - APP: platform-paths-example
     env:
       PRESET: linux-native-gcc-debug
     steps:
@@ -134,21 +137,29 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - APP: platform-package-info
+          - APP: platform-package-info-example
             PRESET: linux-native-clang-debug-asan
-          - APP: platform-package-info
+          - APP: platform-package-info-example
             PRESET: linux-native-clang-debug-lsan
-          - APP: platform-package-info
+          - APP: platform-package-info-example
             PRESET: linux-native-clang-debug-tsan
-          - APP: platform-package-info
+          - APP: platform-package-info-example
             PRESET: linux-native-clang-debug-ubsan
-          - APP: platform-hello-world
+          - APP: platform-hello-world-example
             PRESET: linux-native-clang-debug-asan
-          - APP: platform-hello-world
+          - APP: platform-hello-world-example
             PRESET: linux-native-clang-debug-lsan
-          - APP: platform-hello-world
+          - APP: platform-hello-world-example
             PRESET: linux-native-clang-debug-tsan
-          - APP: platform-hello-world
+          - APP: platform-hello-world-example
+            PRESET: linux-native-clang-debug-ubsan
+          - APP: platform-paths-example
+            PRESET: linux-native-clang-debug-asan
+          - APP: platform-paths-example
+            PRESET: linux-native-clang-debug-lsan
+          - APP: platform-paths-example
+            PRESET: linux-native-clang-debug-tsan
+          - APP: platform-paths-example
             PRESET: linux-native-clang-debug-ubsan
     steps:
       - uses: kubasejdak-org/binary-run-action@main
