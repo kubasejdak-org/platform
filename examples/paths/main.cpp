@@ -28,7 +28,7 @@
 
 #include "platform/init.hpp"
 
-// #include <platform/paths.hpp>
+#include <platform/paths.hpp>
 
 #include <cstdlib>
 #include <iostream>
