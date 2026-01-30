@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright MIT License
 ///
-/// Copyright (c) 2019 Kuba Sejdak (kuba.sejdak@gmail.com)
+/// Copyright (c) 2026 Kuba Sejdak (kuba.sejdak@gmail.com)
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -26,21 +26,26 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include "platform/init.hpp"
+#pragma once
 
-#include <cstdlib>
-#include <iostream>
+#include <filesystem>
 
-int appMain(int argc, char** argv)
-{
-    if (!platform::init())
-        return EXIT_FAILURE;
+namespace platform {
 
-    std::cout << "Hello world!\n";
+/// @brief Returns INSTALL_PREFIX path used by build system during "INSTALL" step.
+/// @note This path is prepended to all system paths used by build system. In CMake it is defined by
+///       CMAKE_INSTALL_PREFIX variable.
+/// @note Default value is "/usr/local".
+std::filesystem::path getInstallPrefixPath();
 
-    for (int i = 0; i < argc; ++i)
-        std::cout << "argv[" << i << "] = '" << argv[i] << "'\n";
+/// @brief Returns system path to the directory where the application stores its configuration files.
+/// @note This path is a subpath of INSTALL_PREFIX path.
+/// @note Default value is "<CMAKE_INSTALL_PREFIX>/etc".
+std::filesystem::path getSysConfPath();
 
-    std::cout << "PASSED\n";
-    return EXIT_SUCCESS;
-}
+/// @brief Returns system path to the directory where the application stores its data files.
+/// @note This path is a subpath of INSTALL_PREFIX path.
+/// @note Default value is "<CMAKE_INSTALL_PREFIX>/share".
+std::filesystem::path getDataRootPath();
+
+} // namespace platform

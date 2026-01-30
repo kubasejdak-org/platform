@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright MIT License
 ///
-/// Copyright (c) 2019 Kuba Sejdak (kuba.sejdak@gmail.com)
+/// Copyright (c) 2026 Kuba Sejdak (kuba.sejdak@gmail.com)
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -28,18 +28,20 @@
 
 #include "platform/init.hpp"
 
+#include <platform/paths.hpp>
+
 #include <cstdlib>
 #include <iostream>
 
-int appMain(int argc, char** argv)
+int appMain([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 {
     if (!platform::init())
         return EXIT_FAILURE;
 
-    std::cout << "Hello world!\n";
-
-    for (int i = 0; i < argc; ++i)
-        std::cout << "argv[" << i << "] = '" << argv[i] << "'\n";
+    std::cout << "Platform paths:\n";
+    std::cout << "    install prefix : " << platform::getInstallPrefixPath() << "\n";
+    std::cout << "    configs path   : " << platform::getSysConfPath() << "\n";
+    std::cout << "    data path      : " << platform::getDataRootPath() << "\n";
 
     std::cout << "PASSED\n";
     return EXIT_SUCCESS;
