@@ -37,14 +37,14 @@ std::filesystem::path getInstallPrefixPath()
     return PLATFORM_INSTALL_PREFIX_PATH;
 }
 
-std::filesystem::path getDataRootPath()
-{
-    return PLATFORM_DATAROOTDIR_PATH;
-}
-
 std::filesystem::path getSysConfPath()
 {
     return PLATFORM_SYSCONFDIR_PATH;
+}
+
+std::filesystem::path getDataRootPath()
+{
+    return PLATFORM_DATAROOTDIR_PATH;
 }
 
 } // namespace platform

@@ -28,8 +28,7 @@
 
 #include "platform/init.hpp"
 
-// #include <platform/package/build.hpp>
-// #include <platform/package/git.hpp>
+// #include <platform/paths.hpp>
 
 #include <cstdlib>
 #include <iostream>
@@ -39,16 +38,10 @@ int appMain([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
     if (!platform::init())
         return EXIT_FAILURE;
 
-    // std::cout << "Build info:\n";
-    // std::cout << "    compiler       : " << platform::compiler() << "\n";
-    // std::cout << "    build type     : " << platform::buildType() << "\n";
-
-    // std::cout << "Using platform:\n";
-    // std::cout << "    git tag        : " << platform::gitTag() << "\n";
-    // std::cout << "    git branch     : " << platform::gitBranch() << "\n";
-    // std::cout << "    git commit     : " << platform::gitCommit() << "\n";
-    // std::cout << "    git user name  : " << platform::gitUserName() << "\n";
-    // std::cout << "    git user email : " << platform::gitUserEmail() << "\n";
+    std::cout << "Platform paths:\n";
+    // std::cout << "    git tag        : " << platform::getInstallPrefixPath() << "\n";
+    // std::cout << "    git branch     : " << platform::getSysConfPath() << "\n";
+    // std::cout << "    git commit     : " << platform::getDataRootPath() << "\n";
 
     std::cout << "PASSED\n";
     return EXIT_SUCCESS;

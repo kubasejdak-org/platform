@@ -4,8 +4,8 @@ target_sources(platform-main PRIVATE
 
 include(GNUInstallDirs)
 message(STATUS "platform: Using INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
-message(STATUS "platform: Using DATAROOTDIR: ${CMAKE_INSTALL_FULL_DATAROOTDIR}")
 message(STATUS "platform: Using SYSCONFDIR: ${CMAKE_INSTALL_FULL_SYSCONFDIR}")
+message(STATUS "platform: Using DATAROOTDIR: ${CMAKE_INSTALL_FULL_DATAROOTDIR}")
 
 add_library(platform-main-paths EXCLUDE_FROM_ALL
     paths.cpp

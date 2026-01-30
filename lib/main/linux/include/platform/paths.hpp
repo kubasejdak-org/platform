@@ -38,14 +38,14 @@ namespace platform {
 /// @note Default value is "/usr/local".
 std::filesystem::path getInstallPrefixPath();
 
-/// @brief Returns system path to the directory where the application stores its data files.
-/// @note This path is a subpath of INSTALL_PREFIX path.
-/// @note Default value is "<CMAKE_INSTALL_PREFIX>/share".
-std::filesystem::path getDataRootPath();
-
 /// @brief Returns system path to the directory where the application stores its configuration files.
 /// @note This path is a subpath of INSTALL_PREFIX path.
 /// @note Default value is "<CMAKE_INSTALL_PREFIX>/etc".
 std::filesystem::path getSysConfPath();
+
+/// @brief Returns system path to the directory where the application stores its data files.
+/// @note This path is a subpath of INSTALL_PREFIX path.
+/// @note Default value is "<CMAKE_INSTALL_PREFIX>/share".
+std::filesystem::path getDataRootPath();
 
 } // namespace platform
