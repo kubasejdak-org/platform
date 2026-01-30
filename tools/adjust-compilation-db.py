@@ -3,10 +3,7 @@
 import json
 
 COMPILATION_DB_FILE = "compile_commands.json"
-
-PATTERNS_TO_REMOVE = [
-    "_deps"
-]
+PATTERNS_TO_REMOVE = ["_deps"]
 
 with open(COMPILATION_DB_FILE) as file:
     compilation_db = json.load(file)
