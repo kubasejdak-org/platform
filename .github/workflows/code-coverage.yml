@@ -34,6 +34,7 @@ jobs:
         include:
           - APP: platform-package-info
           - APP: platform-hello-world
+          - APP: platform-paths-example
     steps:
       - uses: actions/checkout@v6
 
