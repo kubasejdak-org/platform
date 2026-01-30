@@ -39,9 +39,9 @@ int appMain([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
         return EXIT_FAILURE;
 
     std::cout << "Platform paths:\n";
-    // std::cout << "    git tag        : " << platform::getInstallPrefixPath() << "\n";
-    // std::cout << "    git branch     : " << platform::getSysConfPath() << "\n";
-    // std::cout << "    git commit     : " << platform::getDataRootPath() << "\n";
+    std::cout << "    git tag    : " << platform::getInstallPrefixPath() << "\n";
+    std::cout << "    git branch : " << platform::getSysConfPath() << "\n";
+    std::cout << "    git commit : " << platform::getDataRootPath() << "\n";
 
     std::cout << "PASSED\n";
     return EXIT_SUCCESS;
