@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright MIT License
 ///
-/// Copyright (c) 2019 Kuba Sejdak (kuba.sejdak@gmail.com)
+/// Copyright (c) 2026 Kuba Sejdak (kuba.sejdak@gmail.com)
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -28,18 +28,27 @@
 
 #include "platform/init.hpp"
 
+// #include <platform/package/build.hpp>
+// #include <platform/package/git.hpp>
+
 #include <cstdlib>
 #include <iostream>
 
-int appMain(int argc, char** argv)
+int appMain([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 {
     if (!platform::init())
         return EXIT_FAILURE;
 
-    std::cout << "Hello world!\n";
+    // std::cout << "Build info:\n";
+    // std::cout << "    compiler       : " << platform::compiler() << "\n";
+    // std::cout << "    build type     : " << platform::buildType() << "\n";
 
-    for (int i = 0; i < argc; ++i)
-        std::cout << "argv[" << i << "] = '" << argv[i] << "'\n";
+    // std::cout << "Using platform:\n";
+    // std::cout << "    git tag        : " << platform::gitTag() << "\n";
+    // std::cout << "    git branch     : " << platform::gitBranch() << "\n";
+    // std::cout << "    git commit     : " << platform::gitCommit() << "\n";
+    // std::cout << "    git user name  : " << platform::gitUserName() << "\n";
+    // std::cout << "    git user email : " << platform::gitUserEmail() << "\n";
 
     std::cout << "PASSED\n";
     return EXIT_SUCCESS;

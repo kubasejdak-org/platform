@@ -34,7 +34,7 @@
 #include <cstdlib>
 #include <iostream>
 
-int appMain(int argc, char** argv)
+int appMain([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 {
     if (!platform::init())
         return EXIT_FAILURE;
@@ -49,9 +49,6 @@ int appMain(int argc, char** argv)
     std::cout << "    git commit     : " << platform::gitCommit() << "\n";
     std::cout << "    git user name  : " << platform::gitUserName() << "\n";
     std::cout << "    git user email : " << platform::gitUserEmail() << "\n";
-
-    for (int i = 0; i < argc; ++i)
-        std::cout << "argv[" << i << "] = '" << argv[i] << "'\n";
 
     std::cout << "PASSED\n";
     return EXIT_SUCCESS;
