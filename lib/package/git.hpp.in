@@ -28,8 +28,10 @@
 
 #pragma once
 
-#define @PACKAGE_NAME @_GIT_TAG "@GIT_TAG@"
-#define @PACKAGE_NAME @_GIT_BRANCH "@GIT_BRANCH@"
-#define @PACKAGE_NAME @_GIT_COMMIT "@GIT_COMMIT@"
-#define @PACKAGE_NAME @_GIT_USER_NAME "@GIT_USER_NAME@"
-#define @PACKAGE_NAME @_GIT_USER_EMAIL "@GIT_USER_EMAIL@"
+// clang-format off
+#define @PACKAGE_NAME@_GIT_TAG        "@GIT_TAG@"
+#define @PACKAGE_NAME@_GIT_BRANCH     "@GIT_BRANCH@"
+#define @PACKAGE_NAME@_GIT_COMMIT     "@GIT_COMMIT@"
+#define @PACKAGE_NAME@_GIT_USER_NAME  "@GIT_USER_NAME@"
+#define @PACKAGE_NAME@_GIT_USER_EMAIL "@GIT_USER_EMAIL@"
+// clang-format on

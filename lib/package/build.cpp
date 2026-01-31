@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright MIT License
 ///
-/// Copyright (c) 2019 Kuba Sejdak (kuba.sejdak@gmail.com)
+/// Copyright (c) 2026 Kuba Sejdak (kuba.sejdak@gmail.com)
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -26,35 +26,41 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include "platform/init.hpp"
+#include "platform/package/build.hpp"
 
-#include <platform/package/build.hpp>
-#include <platform/package/git.hpp>
+#include "platform/package/git.hpp"
 
-#include <cstdlib>
+#include <format>
 #include <iostream>
 
-int appMain([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
+namespace platform {
+
+void printVersion()
 {
-    if (!platform::init())
-        return EXIT_FAILURE;
+    std::cout << gitTag() << "\n";
+}
+
+void printBuildInfo()
+{
+#if defined(__clang__)
+    auto compiler = std::format("clang-{}.{}.{}", __clang_major__, __clang_minor__, __clang_patchlevel__);
+#elif defined(__GNUC__) || defined(__GNUG__)
+    auto compiler = std::format("gcc-{}.{}.{}", __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
+#endif
+
+#ifdef NDEBUG
+    const auto* buildType = "release";
+#else
+    const auto* buildType = "debug";
+#endif
 
     std::cout << "Build info:\n";
-    std::cout << "    compiler       : " << platform::compiler() << "\n";
-    std::cout << "    build type     : " << platform::buildType() << "\n";
-
-    std::cout << "Using platform:\n";
-    std::cout << "    git tag        : " << platform::gitTag() << "\n";
-    std::cout << "    git branch     : " << platform::gitBranch() << "\n";
-    std::cout << "    git commit     : " << platform::gitCommit() << "\n";
-    std::cout << "    git user name  : " << platform::gitUserName() << "\n";
-    std::cout << "    git user email : " << platform::gitUserEmail() << "\n";
-
-    std::cout << "\n";
-    std::cout << "Helper functions:\n";
-    platform::printVersion();
-    platform::printBuildInfo();
-
-    std::cout << "PASSED\n";
-    return EXIT_SUCCESS;
+    std::cout << std::format("    compiler : {}\n", compiler);
+    std::cout << std::format("    type     : {}\n", buildType);
+    std::cout << std::format("    tag      : {}\n", gitTag());
+    std::cout << std::format("    branch   : {}\n", gitBranch());
+    std::cout << std::format("    user     : {} ({})\n", gitUserName(), gitUserEmail());
+    std::cout << std::format("    date     : {} {}\n", __DATE__, __TIME__);
 }
+
+} // namespace platform

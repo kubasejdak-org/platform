@@ -109,4 +109,10 @@ constexpr std::string_view buildType()
 #endif
 }
 
+/// Prints version string to standard output.
+void printVersion();
+
+/// Prints build information to standard output.
+void printBuildInfo();
+
 } // namespace platform
