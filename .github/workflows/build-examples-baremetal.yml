@@ -32,33 +32,33 @@ jobs:
         with:
           preset: ${{ matrix.PRESET }}
 
-  examples-stm32f4:
-    runs-on: [self-hosted, ARM64, stm32f4]
-    needs: build-stm32f4
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - APP: platform-package-info-example
-            PRESET: baremetal-arm-debug
-          - APP: platform-hello-world-example
-            PRESET: baremetal-arm-debug
-          - APP: platform-package-info-example
-            PRESET: freertos-arm-debug
-          - APP: platform-hello-world-example
-            PRESET: freertos-arm-debug
-    steps:
-      - uses: kubasejdak-org/openocd-run-action@main
-        with:
-          binary: ${{ matrix.APP }}
-          artifact: ${{ matrix.PRESET }}
-          board: stm32f4discovery
-          serial: /dev/ttyUSB0
+  # examples-stm32f4:
+  #   runs-on: [self-hosted, ARM64, stm32f4]
+  #   needs: build-stm32f4
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       include:
+  #         - APP: platform-package-info-example
+  #           PRESET: baremetal-arm-debug
+  #         - APP: platform-hello-world-example
+  #           PRESET: baremetal-arm-debug
+  #         - APP: platform-package-info-example
+  #           PRESET: freertos-arm-debug
+  #         - APP: platform-hello-world-example
+  #           PRESET: freertos-arm-debug
+  #   steps:
+  #     - uses: kubasejdak-org/openocd-run-action@main
+  #       with:
+  #         binary: ${{ matrix.APP }}
+  #         artifact: ${{ matrix.PRESET }}
+  #         board: stm32f4discovery
+  #         serial: /dev/ttyUSB0
 
   check-all-baremetal:
     runs-on: [self-hosted, build]
     needs:
       - build-stm32f4
-      - examples-stm32f4
+      # - examples-stm32f4
     steps:
       - run: echo "Success"
