@@ -77,20 +77,20 @@
       "inherits": ["yocto-sdk-clang", "release"]
     },
     {
-      "name": "baremetal-arm-debug",
-      "inherits": ["baremetal-arm", "debug"]
+      "name": "baremetal-armv7-m4-debug",
+      "inherits": ["baremetal-armv7-m4", "debug"]
     },
     {
-      "name": "baremetal-arm-release",
-      "inherits": ["baremetal-arm", "release"]
+      "name": "baremetal-armv7-m4-release",
+      "inherits": ["baremetal-armv7-m4", "release"]
     },
     {
-      "name": "freertos-arm-debug",
-      "inherits": ["freertos-arm", "debug"]
+      "name": "freertos-armv7-m4-debug",
+      "inherits": ["freertos-armv7-m4", "debug"]
     },
     {
-      "name": "freertos-arm-release",
-      "inherits": ["freertos-arm", "release"]
+      "name": "freertos-armv7-m4-release",
+      "inherits": ["freertos-armv7-m4", "release"]
     }
   ]
 }
