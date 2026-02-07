@@ -1,4 +1,4 @@
-name: Build and run examples for baremetal
+name: Build and run tests for baremetal
 
 on:
   push:
