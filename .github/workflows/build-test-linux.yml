@@ -1,4 +1,4 @@
-name: Build and run examples for Linux
+name: Build and run tests for Linux
 
 on:
   push:
