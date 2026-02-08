@@ -28,6 +28,7 @@
 
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
+#include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/types.h>
 
@@ -47,7 +48,6 @@ extern int consolePrint(const char* message, std::size_t size);
 
 extern "C" {
 
-// NOLINTNEXTLINE
 caddr_t _sbrk(intptr_t increment)
 {
     constexpr int cBufferSize = 2 * 1024;
@@ -63,10 +63,49 @@ caddr_t _sbrk(intptr_t increment)
     return reinterpret_cast<caddr_t>(&buffer.at(prevOffset));
 }
 
-// NOLINTNEXTLINE
 int _write(int /*unused*/, const void* buf, size_t count)
 {
     return consolePrint(reinterpret_cast<const char*>(buf), count);
+}
+
+int _open(const char* /*unused*/, int /*unused*/, int /*unused*/)
+{
+    return -1; // Not supported
+}
+
+int _close(int /*unused*/)
+{
+    return -1; // Not supported
+}
+
+int _read(int /*unused*/, void* /*unused*/, size_t /*unused*/)
+{
+    return -1; // Not supported
+}
+
+int _fstat(int /*unused*/, struct stat* /*unused*/)
+{
+    return -1; // Not supported
+}
+
+int _isatty(int /*unused*/)
+{
+    return 1; // Treat all file descriptors as TTY
+}
+
+int _lseek(int /*unused*/, int /*unused*/, int /*unused*/)
+{
+    return -1; // Not supported
+}
+
+int _getpid()
+{
+    return 1; // Single process system
+}
+
+int _kill(int /*unused*/, int /*unused*/)
+{
+    return -1; // Not supported
 }
 
 size_t fwrite(const void* ptr, size_t /*unused*/, size_t nmemb, FILE* /*unused*/)
@@ -74,7 +113,6 @@ size_t fwrite(const void* ptr, size_t /*unused*/, size_t nmemb, FILE* /*unused*/
     return _write(0, std::remove_const_t<char*>(ptr), nmemb);
 }
 
-// NOLINTNEXTLINE
 int _gettimeofday(struct timeval* tp, void* /*unused*/)
 {
     if (tp != nullptr) {
