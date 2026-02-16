@@ -1,18 +1,48 @@
-# Overview
+# platform
 
-Platform project creates an easy-to-use abstraction for launching applications on various hardware/OS platforms. Its
-main goal is to provide:
+A CMake-based bootstrap framework that enables building C/C++ projects for Linux and baremetal platforms (with or without RTOS) from a single codebase. It provides toolchain configuration via CMake variables and platform-specific entry point abstraction through a unified `appMain()` interface.
 
-* compiler configuration for target platform,
-* abstraction of launching main application thread on target platform.
+Main features:
 
-Compiler configuration is provided via CMake toolchain file. It's aim is to set all required CMake variables in order to
-allow cross-compilation to the target platform. It also handles the basic set of compilation and linking flags for
-particular platform/compiler pair.
+* **toolchain setup:** configures compiler, architecture flags, and build settings for target platform via CMake toolchain files,
+* **unified main():** provides platform-specific `main()` implementations that invoke application-defined `appMain()` function.
 
-Launching main application thread is implemented by distinguishing the `main()` function from the main thread. On
-desktop systems first app thread is executing directly code from `main()`. On systems where a dedicated scheduler is
-launched (e.g. baremetal RTOS), it is required that in the first thread user has to call some sort of "scheduler start"
-function, which usually never returns (at least until all threads are destroyed). Previously mentioned separation
-requires, that the main application logic should be placed in `appMain()` function. On desktop systems this function
-would be called directly from `main()`. On RTOS systems, this function would be used as feed for a new user thread.
+> [!note] `platform` requires target project to use CMake. Several CMake trait are used, which require target project to
+> use CMake in canonical way
+
+## Overview
+
+### Toolchain Setup
+
+Toolchain configuration is controlled by 2 CMake variables (typically set via CMake presets):
+
+* `PLATFORM` - selects platform from the list of supported ones,
+* `TOOLCHAIN` - selects toolchain among those supported by given platform.
+
+These variables select the appropriate toolchain file from `lib/toolchain/<platform>/` which configures the compiler,
+supporting tools and defines architecture-specific flags (e.g., `-mcpu=cortex-m4 -mthumb` for ARM).
+
+> [!note] For Linux `platform` provides also options to enable code coverage and sanitizers.
+
+### Unified `main()`
+
+Application code implements `appMain(int argc, char* argv[])` instead of `main()`. The platform-specific `main()` implementation is linked via `find_package(platform COMPONENTS main)` and handles platform initialization before calling `appMain()`. On Linux, this is a direct passthrough of arguments. On baremetal platforms, `main()` constructs synthetic arguments. On RTOS platforms, `main()` creates a task wrapper around `appMain()` and starts the scheduler. This separation allows identical application code to run across all supported platforms without modification.
+
+```mermaid
+flowchart TD
+    main["main()"] --> Platform{platform}
+
+    Platform -->|Linux| AppMainLinux["appMain()"]
+    Platform -->|Baremetal| AppMainBaremetal["appMain()"]
+    Platform -->|RTOS| CreateThread[Create thread]
+    CreateThread --> Scheduler[Run scheduler]
+    Scheduler e1@-->|new thread| AppMainRTOS["appMain()"]
+
+    e1@{ animation: fast }
+
+    classDef mainStyle stroke:#ff6600
+    classDef appMainStyle stroke:#00ff00
+
+    class main mainStyle
+    class AppMainLinux,AppMainBaremetal,AppMainRTOS appMainStyle
+```
