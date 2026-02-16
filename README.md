@@ -84,5 +84,5 @@ platform/
 
 ### Commands
 
-* Configure CMake: `cmake --preset <preset_name> -B out/build<preset_name>`
-* Build: `cmake --build out/build<preset_name>`
+* Configure CMake: `cmake --preset <preset_name> -B out/build/<preset_name>`
+* Build: `cmake --build out/build/<preset_name>`
