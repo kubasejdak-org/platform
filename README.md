@@ -47,3 +47,28 @@ flowchart TD
     class main mainStyle
     class AppMainLinux,AppMainBaremetal,AppMainRTOS appMainStyle
 ```
+
+## Repository Structure
+
+```txt
+platform/
+├── cmake/                          # CMake build system
+│   ├── compilation-flags.cmake     # Internal compilation flags
+│   ├── modules/                    # Modules for dependencies
+│   └── presets/                    # Internal presets helpers
+├── lib/                            # Core components
+│   ├── main/                       # appMain entrypoint for given platform
+│   │   ├── linux/                  # Entrypoint for Linux
+│   │   ├── baremetal-arm/          # Entrypoint for baremetal on ARM
+│   │   └── freertos-arm/           # Entrypoint for FreeRTOS on ARM
+│   ├── package/                    # Component with repo build, version and git info
+│   └── toolchain/                  # Toolchain configurations
+│       ├── linux/                  # Toolchain configs for Linux
+│       ├── baremetal-arm/          # Toolchain configs for baremetal on ARM
+│       └── freertos-arm/           # Toolchain configs for FreeRTOS on ARM
+├── examples/                       # Examples of platform usage
+├── tools/                          # Internal tools and scripts
+├── .devcontainer/                  # Devcontainers configs
+├── .github/workflows/              # GitHub Actions configs
+└── CMakePresets.json               # Development CMake presets
+```
