@@ -7,8 +7,8 @@ Main features:
 * **toolchain setup:** configures compiler, architecture flags, and build settings for target platform via CMake toolchain files,
 * **unified main():** provides platform-specific `main()` implementations that invoke application-defined `appMain()` function.
 
-> [!IMPORTANT] `platform` requires target project to use CMake. Several CMake trait are used, which require target project to
-> use CMake in canonical way
+> [!IMPORTANT]
+> `platform` requires target project to use CMake. Several CMake trait are used, which require target project to use CMake in canonical way
 
 ## Overview
 
@@ -22,7 +22,8 @@ Toolchain configuration is controlled by 2 CMake variables (typically set via CM
 These variables select the appropriate toolchain file from `lib/toolchain/<platform>/` which configures the compiler,
 supporting tools and defines architecture-specific flags (e.g., `-mcpu=cortex-m4 -mthumb` for ARM).
 
-> [!NOTE] For Linux `platform` provides also options to enable code coverage and sanitizers.
+> [!NOTE]
+> For Linux `platform` provides also options to enable code coverage and sanitizers.
 
 ### Unified `main()`
 
