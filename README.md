@@ -26,15 +26,23 @@ Toolchain configuration is controlled by 2 CMake variables (typically set via CM
 These variables select the appropriate toolchain file from `lib/toolchain/<platform>/` which configures the compiler,
 supporting tools and defines architecture-specific flags (e.g., `-mcpu=cortex-m4 -mthumb` for ARM).
 
-> [!NOTE] For Linux `platform` provides also options to enable code coverage and sanitizers.
+> [!NOTE]
+> For Linux `platform` provides also options to enable code coverage and sanitizers.
 
 ### Unified `main()`
 
-Application code implements `appMain(int argc, char* argv[])` instead of `main()`. The platform-specific `main()`
-implementation is linked via `find_package(platform COMPONENTS main)` and handles platform initialization before calling
-`appMain()`. On Linux, this is a direct passthrough of arguments. On baremetal platforms, `main()` constructs synthetic
-arguments. On RTOS platforms, `main()` creates a task wrapper around `appMain()` and starts the scheduler. This
-separation allows identical application code to run across all supported platforms without modification.
+Target application is required to implement `appMain(int argc, char* argv[])` instead of `main()`. Implementation of
+`main()` on selected platform handles platform-specific initialization and CLI arguments preparation before calling
+`appMain()`.
+
+Depending on platform it can mean different things:
+
+* **Linux:** calls directly `appMain()` with original arguments,
+* **Baremetal:** constructs synthetic `argv[0]` argument and passes it to `appMain()`,
+* **RTOS:**  creates an RTOS-specific task wrapper around `appMain()` and starts the scheduler.
+
+This separation allows identical application code to run across all supported platforms without modification. Below you
+can see a visualisation of this process:
 
 ```mermaid
 flowchart TD
@@ -57,14 +65,16 @@ flowchart TD
 
 ## Repository Structure
 
+`platform` follows standard `kubasejdak-org` repository layout for C++ library:
+
 ```txt
 platform/
 ├── cmake/                          # CMake build system
 │   ├── compilation-flags.cmake     # Internal compilation flags
-│   ├── modules/                    # Modules for dependencies
+│   ├── modules/                    # CMake Findxxx.cmake modules for dependencies
 │   └── presets/                    # Internal presets helpers
 ├── lib/                            # Core components
-│   ├── main/                       # appMain entrypoint for given platform
+│   ├── main/                       # appMain() entrypoint for given platform
 │   │   ├── linux/                  # Entrypoint for Linux
 │   │   ├── baremetal-arm/          # Entrypoint for baremetal on ARM
 │   │   └── freertos-arm/           # Entrypoint for FreeRTOS on ARM
@@ -84,5 +94,23 @@ platform/
 
 ### Commands
 
-* Configure CMake: `cmake --preset <preset_name> -B out/build/<preset_name>`
-* Build: `cmake --build out/build/<preset_name>`
+* **Configure:** `cmake --preset <preset-name> . -B out/build/<preset-name>`
+* **Build:** `cmake --build out/build/<preset-name> --parallel`
+* **Run tests:** `cd out/build/<preset-name>/bin; ./<binary-name>`
+* **Reformat code:** `tools/check-clang-format.sh`
+* **Run linter:** `cd out/build/<preset-name>; ../../../tools/check-clang-tidy.sh`
+  * Must be launched with clang preset (usually in clang devcontainer)
+
+### Available CMake Presets
+
+* **Native Linux**:
+  * **Dependencies provided by target system:** `linux-native-{gcc,clang}-{debug,release}`
+* **Cross-compilation**:
+  * **Generic ARM64:** `linux-arm64-{gcc,clang}-{debug,release}`
+  * **Yocto (via SDK):** `yocto-sdk-{gcc,clang}-{debug,release}`
+  * **Baremetal ARMv7:** `baremetal-armv7-*-gcc-{debug,release}`
+  * **FreeRTOS ARMv7:** `freertos-armv7-*-gcc-{debug,release}`
+* **Sanitizers**: `*-{asan,lsan,tsan,ubsan}` variants
+
+> [!NOTE]
+> For local development use `linux-native-conan-gcc-debug` preset.
