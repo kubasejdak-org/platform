@@ -16,6 +16,14 @@ Main features:
 
 ## Overview
 
+### Technologies
+
+* **Language**: C++23, C17
+* **Build System**: CMake (minimum version 3.28)
+* **Documentation**: MkDocs with Material theme
+* **Static Analysis**: clang-format, clang-tidy
+* **CI/CD**: GitHub Actions
+
 ### Toolchain Setup
 
 Toolchain configuration is controlled by 2 CMake variables (typically set via CMake presets):
