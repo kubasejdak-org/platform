@@ -122,3 +122,11 @@ platform/
 
 > [!NOTE]
 > For local development use `linux-native-conan-gcc-debug` preset.
+
+### Code Quality
+
+* **Zero Warning Policy:** All warnings treated as errors
+* **Code Formatting:** clang-format with project-specific style checked
+* **Static Analysis:** clang-tidy configuration checked
+* **Coverage:** Code coverage reports generated
+* **Sanitizers:** Address, leak, thread, and undefined behavior sanitizers checked
