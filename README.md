@@ -11,8 +11,8 @@ Main features:
 * **unified main():** provides platform-specific `main()` implementations that invoke application-defined `appMain()`
   function.
 
-> [!IMPORTANT] `platform` requires target project to use CMake. Several CMake trait are used, which require target
-> project to use CMake in canonical way
+> [!IMPORTANT]
+> `platform` requires target project to use CMake.
 
 ## Overview
 
