@@ -75,7 +75,7 @@ flowchart TD
 
 `platform` follows standard `kubasejdak-org` repository layout for C++ library:
 
-```txt
+```bash
 platform/
 ├── cmake/                          # CMake build system
 │   ├── compilation-flags.cmake     # Internal compilation flags
