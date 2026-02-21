@@ -91,6 +91,81 @@ platform/
 └── CMakePresets.json               # Development CMake presets
 ```
 
+## Usage
+
+Integrate `platform` into a CMake project by pointing to its `Find` module and requesting the required components.
+
+### CMake Integration
+
+Create `Findplatform.cmake` module (typically in `cmake/modules` directory):
+
+```cmake
+include(FetchContent)
+FetchContent_Declare(platform
+    GIT_REPOSITORY  https://github.com/kubasejdak-org/platform.git
+    GIT_TAG         dea2a14ea9acdde6a258b055b6b5a9ec0791e7b9
+    SOURCE_SUBDIR   lib
+)
+
+FetchContent_MakeAvailable(platform)
+include(${platform_SOURCE_DIR}/cmake/components.cmake)
+```
+
+This will allow defining which `platform` version should be used. It will also automatically download repo into build
+directory.
+
+Then, add directory containing that file to CMake search paths and use required components:
+
+```cmake
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
+
+...
+
+find_package(platform COMPONENTS toolchain)     # Must be requested before project()
+
+project(myproject)
+
+...
+
+find_package(platform COMPONENTS main package)  # Other components can be requested after project()
+```
+
+### Configuration
+
+Control platform selection via CMake variables (typically in `CMakePresets.json`):
+
+| Variable           | Purpose                                       | Examples                                 |
+| ------------------ | --------------------------------------------- | ---------------------------------------- |
+| `PLATFORM`         | Target platform                               | `linux`, `baremetal-arm`, `freertos-arm` |
+| `TOOLCHAIN`        | Compiler toolchain                            | `gcc`, `clang`, `arm-none-eabi-gcc`      |
+| `FREERTOS_VERSION` | FreeRTOS kernel version (`freertos-arm` only) | `freertos-10.2.1`                        |
+
+### Implementing `appMain()`
+
+Implement `appMain()` instead of `main()` in the application:
+
+```cpp
+#include <cstdlib>
+
+int appMain(int argc, char* argv[])
+{
+    // Application code
+    return EXIT_SUCCESS;
+}
+```
+
+### Linking
+
+```cmake
+target_link_libraries(my-app
+    PRIVATE
+        platform::main          # Provides main() → appMain() dispatch
+)
+```
+
+> [!TIP]
+> See [examples/](examples/) for complete, per-platform integration examples.
+
 ## Development
 
 > [!NOTE]
