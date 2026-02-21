@@ -34,7 +34,7 @@ Toolchain configuration is controlled by 2 CMake variables (typically set via CM
 These variables select the appropriate toolchain file from `lib/toolchain/<platform>/` which configures the compiler,
 supporting tools and defines architecture-specific flags (e.g., `-mcpu=cortex-m4 -mthumb` for ARM).
 
-> [!NOTE]
+> [!TIP]
 > For Linux `platform` provides also options to enable code coverage and sanitizers.
 
 ### Unified `main()`
@@ -100,6 +100,10 @@ platform/
 
 ## Development
 
+> [!NOTE]
+> This section is relevant when working with `platform` itself, in standalone way. However presets used to build
+> `platform` tests and examples can be used as a reference for dependent projects.
+
 ### Commands
 
 * **Configure:** `cmake --preset <preset-name> . -B out/build/<preset-name>`
@@ -129,4 +133,5 @@ platform/
 * **Code Formatting:** clang-format with project-specific style checked
 * **Static Analysis:** clang-tidy configuration checked
 * **Coverage:** Code coverage reports generated
+* **Valgrind:** Tests and examples run under valgrind
 * **Sanitizers:** Address, leak, thread, and undefined behavior sanitizers checked
