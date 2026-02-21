@@ -14,43 +14,28 @@ Main features:
 > [!IMPORTANT]
 > `platform` requires target project to use CMake.
 
-## Overview
+## Architecture
 
-### Technologies
+### Components
 
-* **Language**: C++23, C17
-* **Build System**: CMake (minimum version 3.28)
-* **Documentation**: MkDocs with Material theme
-* **Static Analysis**: clang-format, clang-tidy
-* **CI/CD**: GitHub Actions
+* **`toolchain`:**
+  * Configures compiler and architecture flags via `PLATFORM` + `TOOLCHAIN` CMake variables from the list of supported
+    ones.
+  * On Linux, additionally allows enabling sanitizer (`asan`, `lsan`, `tsan`, `ubsan`) and code coverage support.
+* **`main`:**
+  * Provides platform-specific `main()` that calls application-defined `appMain()`.
+  * On Linux, an optional `platform::main-paths` target exposes API for getting install, config, and data root paths.
+* **`package`:**
+  * Exposes build-time metadata (compiler, build type) and git metadata (e.g. tag, branch, commit), regenerated at every
+  CMake reconfiguration.
 
-### Toolchain Setup
+> [!IMPORTANT]
+> Only components explicitly referenced by `find_package(platform COMPONENTS ...)` are processed by CMake
+> and those referenced by `target_link_libraries()` are actually built.
 
-Toolchain configuration is controlled by 2 CMake variables (typically set via CMake presets):
+#### `main`
 
-* `PLATFORM` - selects platform from the list of supported ones,
-* `TOOLCHAIN` - selects toolchain among those supported by given platform.
-
-These variables select the appropriate toolchain file from `lib/toolchain/<platform>/` which configures the compiler,
-supporting tools and defines architecture-specific flags (e.g., `-mcpu=cortex-m4 -mthumb` for ARM).
-
-> [!TIP]
-> For Linux `platform` provides also options to enable code coverage and sanitizers.
-
-### Unified `main()`
-
-Target application is required to implement `appMain(int argc, char* argv[])` instead of `main()`. Implementation of
-`main()` on selected platform handles platform-specific initialization and CLI arguments preparation before calling
-`appMain()`.
-
-Depending on platform it can mean different things:
-
-* **Linux:** calls directly `appMain()` with original arguments,
-* **Baremetal:** constructs synthetic `argv[0]` argument and passes it to `appMain()`,
-* **RTOS:**  creates an RTOS-specific task wrapper around `appMain()` and starts the scheduler.
-
-This separation allows identical application code to run across all supported platforms without modification. Below you
-can see a visualisation of this process:
+The `main` component abstracts the entry-point dispatch across all supported platforms:
 
 ```mermaid
 flowchart TD
@@ -71,7 +56,15 @@ flowchart TD
     class AppMainLinux,AppMainBaremetal,AppMainRTOS appMainStyle
 ```
 
-## Repository Structure
+### Technologies
+
+* **Language**: C++23, C17
+* **Build System**: CMake (minimum version 3.28)
+* **Documentation**: MkDocs with Material theme
+* **Static Analysis**: clang-format, clang-tidy
+* **CI/CD**: GitHub Actions
+
+### Repository Structure
 
 `platform` follows standard `kubasejdak-org` repository layout for C++ library:
 
