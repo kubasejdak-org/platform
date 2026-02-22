@@ -21,7 +21,7 @@ Main features:
 * **`toolchain`:**
   * Configures compiler and architecture flags via `PLATFORM` + `TOOLCHAIN` CMake variables from the list of supported
     ones.
-  * On Linux, additionally allows enabling sanitizer (`asan`, `lsan`, `tsan`, `ubsan`) and code coverage support.
+  * On Linux, additionally allows enabling sanitizers (`asan`, `lsan`, `tsan`, `ubsan`) and code coverage support.
 * **`main`:**
   * Provides platform-specific `main()` that calls application-defined `appMain()`.
   * On Linux, an optional `platform::main-paths` target exposes API for getting install, config, and data root paths.
