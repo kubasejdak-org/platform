@@ -25,14 +25,14 @@ jobs:
             DOCKER_IMAGE: kubasejdak/clang:18-24.04
           - PRESET: linux-native-clang-release
             DOCKER_IMAGE: kubasejdak/clang:18-24.04
-          - PRESET: linux-native-clang-debug-asan
-            DOCKER_IMAGE: kubasejdak/clang:18-24.04
-          - PRESET: linux-native-clang-debug-lsan
-            DOCKER_IMAGE: kubasejdak/clang:18-24.04
-          - PRESET: linux-native-clang-debug-tsan
-            DOCKER_IMAGE: kubasejdak/clang:18-24.04
-          - PRESET: linux-native-clang-debug-ubsan
-            DOCKER_IMAGE: kubasejdak/clang:18-24.04
+          - PRESET: linux-native-gcc-debug-asan
+            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+          - PRESET: linux-native-gcc-debug-lsan
+            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+          - PRESET: linux-native-gcc-debug-tsan
+            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+          - PRESET: linux-native-gcc-debug-ubsan
+            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
     steps:
       - uses: actions/checkout@v6
 
@@ -138,29 +138,29 @@ jobs:
       matrix:
         include:
           - APP: platform-package-info-example
-            PRESET: linux-native-clang-debug-asan
+            PRESET: linux-native-gcc-debug-asan
           - APP: platform-package-info-example
-            PRESET: linux-native-clang-debug-lsan
+            PRESET: linux-native-gcc-debug-lsan
           - APP: platform-package-info-example
-            PRESET: linux-native-clang-debug-tsan
+            PRESET: linux-native-gcc-debug-tsan
           - APP: platform-package-info-example
-            PRESET: linux-native-clang-debug-ubsan
+            PRESET: linux-native-gcc-debug-ubsan
           - APP: platform-hello-world-example
-            PRESET: linux-native-clang-debug-asan
+            PRESET: linux-native-gcc-debug-asan
           - APP: platform-hello-world-example
-            PRESET: linux-native-clang-debug-lsan
+            PRESET: linux-native-gcc-debug-lsan
           - APP: platform-hello-world-example
-            PRESET: linux-native-clang-debug-tsan
+            PRESET: linux-native-gcc-debug-tsan
           - APP: platform-hello-world-example
-            PRESET: linux-native-clang-debug-ubsan
+            PRESET: linux-native-gcc-debug-ubsan
           - APP: platform-paths-example
-            PRESET: linux-native-clang-debug-asan
+            PRESET: linux-native-gcc-debug-asan
           - APP: platform-paths-example
-            PRESET: linux-native-clang-debug-lsan
+            PRESET: linux-native-gcc-debug-lsan
           - APP: platform-paths-example
-            PRESET: linux-native-clang-debug-tsan
+            PRESET: linux-native-gcc-debug-tsan
           - APP: platform-paths-example
-            PRESET: linux-native-clang-debug-ubsan
+            PRESET: linux-native-gcc-debug-ubsan
     steps:
       - uses: kubasejdak-org/binary-run-action@main
         with:
