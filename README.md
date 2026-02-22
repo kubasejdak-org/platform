@@ -206,10 +206,11 @@ target_link_libraries(my-app
 
 ### Important Notes
 
-1. **Component Structure**: Each component is a separate, reusable module with the following structure:
+1. **Component Structure**: Each component is a separate, reusable module in `lib/` with the following structure:
    * `<component>/include/platform/<component>/`: public headers
    * `<component>/`: private implementation files
    * `<component>/CMakeLists.txt`: component configuration
+   * optionally: `<component>/<module>/` with the same structure if it form a separate smaller part within component
 2. **Testing**: Always run tests when making changes. Test fixtures are well-established.
 3. **Dependencies**: Be careful with dependency management. This project has specific version requirements.
 4. **Code Style**: Follow the established patterns. The project has strict formatting and static analysis rules.
