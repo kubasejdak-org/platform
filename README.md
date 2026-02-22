@@ -203,3 +203,16 @@ target_link_libraries(my-app
 * **Coverage:** Code coverage reports generated
 * **Valgrind:** Tests and examples run under valgrind
 * **Sanitizers:** Address, leak, thread, and undefined behavior sanitizers checked
+
+### Important Notes
+
+1. **Component Structure**: Each component is a separate, reusable module with the following structure:
+   * `<component>/include/platform/<component>/`: public headers
+   * `<component>/`: private implementation files
+   * `<component>/CMakeLists.txt`: component configuration
+2. **Testing**: Always run tests when making changes. Test fixtures are well-established.
+3. **Dependencies**: Be careful with dependency management. This project has specific version requirements.
+4. **Code Style**: Follow the established patterns. The project has strict formatting and static analysis rules.
+5. **Error Handling**: Always use `std::error_code` for error reporting, never exceptions.
+6. **Documentation**: Update documentation when adding new components or changing APIs.
+7. **Namespace**: All code should be in the `platform::` namespace hierarchy.
