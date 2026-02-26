@@ -11,7 +11,7 @@
       "extensions": [
         "bierner.markdown-mermaid",
         "davidanson.vscode-markdownlint",
-        "editorconfig.editorconfig",
+        "esbenp.prettier-vscode",
         "hediet.vscode-drawio",
         "mads-hartmann.bash-ide-vscode",
         "matepek.vscode-catch2-test-adapter",
