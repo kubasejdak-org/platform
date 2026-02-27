@@ -87,18 +87,18 @@ works across all supported platforms.
 
 - [ ] **NFR-1:** All C++ code shall target the C++23 standard; all C code shall target C17.
 
-- [ ] **NFR-2:** All compiler warnings shall be treated as errors (`-Werror`). Warnings `-Wall`, `-Wextra`, and
+- [x] **NFR-2:** All compiler warnings shall be treated as errors (`-Werror`). Warnings `-Wall`, `-Wextra`, and
       `-Wpedantic` shall be enabled.
 
-- [ ] **NFR-3:** C++ exceptions shall be disabled across all platforms (`-fno-exceptions`).
+- [x] **NFR-3:** C++ exceptions shall be disabled across all platforms (`-fno-exceptions`).
 
-- [ ] **NFR-4:** Debug builds shall use no optimization (`-O0 -g`) for Linux targets and size-optimized compilation
+- [x] **NFR-4:** Debug builds shall use no optimization (`-O0 -g`) for Linux targets and size-optimized compilation
       (`-Os -g`) for ARM targets.
 
 - [ ] **NFR-5:** Release builds shall use full optimization (`-O3 -DNDEBUG`) for Linux targets and size-optimized
       compilation (`-Os -DNDEBUG`) for ARM targets.
 
-- [ ] **NFR-6:** Code coverage shall meet a minimum of 90% line coverage and 90% function coverage across the test
+- [x] **NFR-6:** Code coverage shall meet a minimum of 90% line coverage and 90% function coverage across the test
       suite.
 
 - [ ] **NFR-7:** The `platform::package` git metadata file (`git.hpp`) shall be auto-generated at CMake configuration
@@ -114,16 +114,16 @@ works across all supported platforms.
 - [ ] **TR-3:** The supported FreeRTOS kernel version is `freertos-10.2.1`, selectable via the `FREERTOS_VERSION` CMake
       variable. The portable layer shall be selectable via `FREERTOS_PORTABLE`.
 
-- [ ] **TR-4:** All C++ code shall reside in the `platform::` namespace hierarchy.
+- [x] **TR-4:** All C++ code shall reside in the `platform::` namespace hierarchy.
 
 - [ ] **TR-5:** Code formatting shall conform to the project's clang-format configuration (120- character column limit,
       4-space indent, Allman brace style, LF line endings).
 
-- [ ] **TR-6:** All clang-tidy checks enabled in the project configuration shall pass with no warnings (treated as
+- [x] **TR-6:** All clang-tidy checks enabled in the project configuration shall pass with no warnings (treated as
       errors).
 
 - [ ] **TR-7:** The CI pipeline shall validate builds on: native x64 GCC 13 and Clang 18 (debug/release), ARM64
       cross-compiled GCC 13 and Clang 18 (debug/release), all four sanitizer variants (ASAN, LSAN, TSAN, UBSAN),
       baremetal ARMv7-M4 (debug/release), and FreeRTOS ARMv7-M4 (debug/release).
 
-- [ ] **TR-8:** Linux native test builds shall be validated under Valgrind for memory safety.
+- [x] **TR-8:** Linux native test builds shall be validated under Valgrind for memory safety.
