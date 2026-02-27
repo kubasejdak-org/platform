@@ -85,7 +85,7 @@ works across all supported platforms.
 
 ## Non-Functional Requirements
 
-- [ ] **NFR-1:** All C++ code shall target the C++23 standard; all C code shall target C17.
+- [x] **NFR-1:** All C++ code shall target the C++23 standard; all C code shall target C17.
 
 - [x] **NFR-2:** All compiler warnings shall be treated as errors (`-Werror`). Warnings `-Wall`, `-Wextra`, and
       `-Wpedantic` shall be enabled.
@@ -95,14 +95,11 @@ works across all supported platforms.
 - [x] **NFR-4:** Debug builds shall use no optimization (`-O0 -g`) for Linux targets and size-optimized compilation
       (`-Os -g`) for ARM targets.
 
-- [ ] **NFR-5:** Release builds shall use full optimization (`-O3 -DNDEBUG`) for Linux targets and size-optimized
+- [x] **NFR-5:** Release builds shall use full optimization (`-O3 -DNDEBUG`) for Linux targets and size-optimized
       compilation (`-Os -DNDEBUG`) for ARM targets.
 
 - [x] **NFR-6:** Code coverage shall meet a minimum of 90% line coverage and 90% function coverage across the test
       suite.
-
-- [ ] **NFR-7:** The `platform::package` git metadata file (`git.hpp`) shall be auto-generated at CMake configuration
-      time and shall not be committed to source control.
 
 ## Technical Constraints and Requirements
 
@@ -116,8 +113,7 @@ works across all supported platforms.
 
 - [x] **TR-4:** All C++ code shall reside in the `platform::` namespace hierarchy.
 
-- [ ] **TR-5:** Code formatting shall conform to the project's clang-format configuration (120- character column limit,
-      4-space indent, Allman brace style, LF line endings).
+- [x] **TR-5:** Code formatting shall conform to the project's clang-format configuration.
 
 - [x] **TR-6:** All clang-tidy checks enabled in the project configuration shall pass with no warnings (treated as
       errors).
