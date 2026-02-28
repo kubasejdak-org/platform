@@ -15,8 +15,9 @@ set(CMAKE_GCOV                      aarch64-linux-gnu-gcov CACHE FILEPATH "")
 # Without this flag CMake is not able to pass the compiler sanity check.
 set(CMAKE_TRY_COMPILE_TARGET_TYPE   STATIC_LIBRARY)
 
-set(PLATFORM_C_FLAGS                "-Wno-psabi" CACHE INTERNAL "")
-set(PLATFORM_CXX_FLAGS              "${PLATFORM_C_FLAGS}" CACHE INTERNAL "")
+set(COMMON_FLAGS                    "-Wno-psabi" CACHE INTERNAL "")
+set(PLATFORM_C_FLAGS                "${COMMON_FLAGS} ${APP_C_FLAGS}" CACHE INTERNAL "")
+set(PLATFORM_CXX_FLAGS              "${COMMON_FLAGS} ${APP_CXX_FLAGS}" CACHE INTERNAL "")
 set(CMAKE_C_FLAGS                   "${PLATFORM_C_FLAGS}" CACHE INTERNAL "")
 set(CMAKE_CXX_FLAGS                 "${PLATFORM_CXX_FLAGS}" CACHE INTERNAL "")
 
