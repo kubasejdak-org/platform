@@ -55,7 +55,8 @@ works across all supported platforms.
 ### Component: toolchain
 
 - [x] **FR-9:** The framework shall configure the compiler, linker, and associated tools for the target platform,
-      selectable via build system variables.
+      selectable via build system variables. Additional application-specific compilation flags shall be configurable via
+      build system variables, allowing users to extend the toolchain flags with app-specific settings.
 
 - [x] **FR-10:** For Linux targets, the framework shall support GCC and Clang compiler variants for both native
       compilation and cross-compilation to ARM64 targets.
@@ -85,31 +86,28 @@ works across all supported platforms.
 
 ## Non-Functional Requirements
 
-- [x] **NFR-1:** All C++ code shall target the C++23 standard; all C code shall target C17.
-
-- [x] **NFR-2:** All compiler warnings shall be treated as errors (`-Werror`). Warnings `-Wall`, `-Wextra`, and
+- [x] **NFR-1:** All compiler warnings shall be treated as errors (`-Werror`). Warnings `-Wall`, `-Wextra`, and
       `-Wpedantic` shall be enabled.
 
-- [x] **NFR-3:** C++ exceptions shall be disabled across all platforms (`-fno-exceptions`).
+- [x] **NFR-2:** C++ exceptions shall be disabled across all platforms (`-fno-exceptions`).
 
-- [x] **NFR-4:** Debug builds shall use no optimization (`-O0 -g`) for Linux targets and size-optimized compilation
+- [x] **NFR-3:** Debug builds shall use no optimization (`-O0 -g`) for Linux targets and size-optimized compilation
       (`-Os -g`) for ARM targets.
 
-- [x] **NFR-5:** Release builds shall use full optimization (`-O3 -DNDEBUG`) for Linux targets and size-optimized
+- [x] **NFR-4:** Release builds shall use full optimization (`-O3 -DNDEBUG`) for Linux targets and size-optimized
       compilation (`-Os -DNDEBUG`) for ARM targets.
 
-- [x] **NFR-6:** Code coverage shall meet a minimum of 90% line coverage and 90% function coverage across the test
+- [x] **NFR-5:** Code coverage shall meet a minimum of 90% line coverage and 90% function coverage across the test
       suite.
 
 ## Technical Constraints and Requirements
 
-- [ ] **TR-1:** The build system shall require CMake version 3.28 or higher.
+- [x] **TR-1:** The build system shall use CMake.
 
-- [ ] **TR-2:** The framework shall support the following target platforms: native Linux (x64), cross-compiled Linux
+- [x] **TR-2:** The framework shall support the following target platforms: native Linux (x64), cross-compiled Linux
       (ARM64), baremetal ARM (ARMv7 Cortex-M4), and FreeRTOS ARM (ARMv7 Cortex-M4).
 
-- [ ] **TR-3:** The supported FreeRTOS kernel version is `freertos-10.2.1`, selectable via the `FREERTOS_VERSION` CMake
-      variable. The portable layer shall be selectable via `FREERTOS_PORTABLE`.
+- [x] **TR-3:** FreeRTOS kernel version and its portable layer should be selectable via proper CMake variables.
 
 - [x] **TR-4:** All C++ code shall reside in the `platform::` namespace hierarchy.
 
@@ -118,8 +116,7 @@ works across all supported platforms.
 - [x] **TR-6:** All clang-tidy checks enabled in the project configuration shall pass with no warnings (treated as
       errors).
 
-- [ ] **TR-7:** The CI pipeline shall validate builds on: native x64 GCC 13 and Clang 18 (debug/release), ARM64
-      cross-compiled GCC 13 and Clang 18 (debug/release), all four sanitizer variants (ASAN, LSAN, TSAN, UBSAN),
-      baremetal ARMv7-M4 (debug/release), and FreeRTOS ARMv7-M4 (debug/release).
+- [x] **TR-7:** The CI pipeline shall validate builds for all supported plarforms and compilers, both in debug and
+      release versions.
 
 - [x] **TR-8:** Linux native test builds shall be validated under Valgrind for memory safety.
