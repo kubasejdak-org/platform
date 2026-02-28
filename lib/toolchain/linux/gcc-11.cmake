@@ -9,8 +9,9 @@ set(CMAKE_SIZE                      size CACHE FILEPATH "")
 set(CMAKE_STRIP                     strip CACHE FILEPATH "")
 set(CMAKE_GCOV                      gcov-11 CACHE FILEPATH "")
 
-set(PLATFORM_C_FLAGS                "-Wno-psabi" CACHE INTERNAL "")
-set(PLATFORM_CXX_FLAGS              "${PLATFORM_C_FLAGS}" CACHE INTERNAL "")
+set(COMMON_FLAGS                    "-Wno-psabi" CACHE INTERNAL "")
+set(PLATFORM_C_FLAGS                "${COMMON_FLAGS} ${APP_C_FLAGS}" CACHE INTERNAL "")
+set(PLATFORM_CXX_FLAGS              "${COMMON_FLAGS} ${APP_CXX_FLAGS}" CACHE INTERNAL "")
 set(CMAKE_C_FLAGS                   "${PLATFORM_C_FLAGS}" CACHE INTERNAL "")
 set(CMAKE_CXX_FLAGS                 "${PLATFORM_CXX_FLAGS}" CACHE INTERNAL "")
 
