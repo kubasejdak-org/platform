@@ -11,134 +11,112 @@ works across all supported platforms.
 
 ### Component: main
 
-- [ ] **FR-1:** The framework shall provide a platform-specific `main()` entry point that dispatches to an
-      application-defined `appMain(int argc, char* argv[])` function.
-    - The `appMain()` function is the sole application entry point across all platforms.
-    - The return value of `appMain()` shall be forwarded as the process exit code.
+- [x] **FR-1:** The framework shall support the following target platforms: Linux, baremetal ARM, FreeRTOS ARM.
 
-- [ ] **FR-2:** On Linux, `main()` shall pass the actual command-line `argc` and `argv` arguments directly to
-      `appMain()`.
+- [x] **FR-2:** The framework shall provide a platform-specific `main()` entry point that dispatches to an
+      application-defined `appMain(int argc, char* argv[])` function. The return value of `appMain()` shall be forwarded
+      as the process exit code.
+    - On Linux: `main()` shall pass the actual command-line arguments directly to `appMain()`.
+    - On baremetal (non-RTOS) targets: `main()` shall invoke `appMain()` with a minimal fixed argument set.
+    - On RTOS targets: `main()` shall create the first user thread running `appMain()` and start the scheduler.
 
-- [ ] **FR-3:** On baremetal ARM, `main()` shall invoke `appMain()` with `argc=1` and `argv[0]` set to the string
-      `"appMain"`.
-    - A minimal newlib C runtime (syscalls) shall be provided.
-    - Heap memory shall be served via a static 2 KB buffer through `_sbrk()`.
-    - File I/O syscalls (`_open`, `_close`, `_read`, `_fstat`, `_lseek`) shall return error codes indicating no support.
-    - The application must provide a `consolePrint(const char*, size_t)` function for output.
+- [x] **FR-3:** On non-Linux targets, the framework shall provide a minimal C runtime adaptation layer to support
+      application execution without a host operating system.
+    - Heap memory shall be available through a statically allocated memory pool.
+    - Unsupported I/O operations shall return error codes indicating no support.
+    - The application shall be responsible for providing an output mechanism suitable for the target hardware.
 
-- [ ] **FR-4:** On FreeRTOS ARM, `main()` shall create a FreeRTOS task that runs `appMain()` and start the FreeRTOS
-      scheduler.
-    - The application task stack size shall be configurable at compile time via `APPMAIN_STACK_SIZE`.
-    - Both static and dynamic FreeRTOS memory allocation models shall be supported.
-    - Idle task and timer task memory shall be provided by the framework for static allocation.
-    - Time queries via `gettimeofday()` shall use FreeRTOS tick count as the time source.
+- [x] **FR-4:** On RTOS targets, the framework shall provide the RTOS integration necessary to run `appMain()` as the
+      first user thread.
+    - The application thread stack size shall be configurable at compile time.
+    - Both static and dynamic RTOS memory allocation models shall be supported.
+    - Required RTOS internal resources (e.g., idle task, timer task) shall be provisioned by the framework when using
+      static allocation.
+    - Time queries shall use the RTOS tick count as the time source.
 
-- [ ] **FR-5:** On Linux, the framework shall provide an optional `platform::main-paths` CMake target exposing
-      install-path query functions.
-    - `getInstallPrefixPath()` shall return the CMake install prefix path.
-    - `getSysConfPath()` shall return the system configuration directory path.
-    - `getDataRootPath()` shall return the shared data root directory path.
-    - All path values shall be baked in at compile time from CMake install variables.
+- [x] **FR-5:** On Linux, the framework shall optionally provide compile-time access to standard filesystem paths for
+      the current installation: the installation prefix, system configuration directory, and shared data root directory,
+      with values determined at build configuration time.
 
 ### Component: package
 
-- [ ] **FR-6:** The framework shall expose the compiler vendor as a compile-time constant string: `"gcc"`, `"clang"`, or
-      `"unsupported"`.
+- [x] **FR-6:** The framework shall expose compile-time constants describing the build configuration: the compiler
+      identity, compiler version (major, minor, and patch), and build type.
 
-- [ ] **FR-7:** The framework shall expose compiler major, minor, and patch version numbers as compile-time integer
-      constants.
-
-- [ ] **FR-8:** The framework shall expose the current build type as a compile-time constant string: `"debug"` or
-      `"release"`.
-
-- [ ] **FR-9:** The framework shall expose git repository metadata as runtime string values, captured at CMake
+- [x] **FR-7:** The framework shall expose git repository metadata as runtime string values, captured at CMake
       configuration time:
     - Git tag, branch name, commit SHA, committer name, and committer email.
     - When git metadata is unavailable, all values shall fall back to `"N/A"`.
     - Metadata shall be refreshed at every CMake reconfiguration.
 
-- [ ] **FR-10:** The framework shall provide `printVersion()` to print the git tag to standard output, and
-      `printBuildInfo()` to print a formatted summary including compiler, build type, git metadata, and build timestamp.
+- [x] **FR-8:** The framework shall provide a function to print the git tag to standard output, and a function to print
+      a formatted build summary including compiler, build type, git metadata, and build timestamp.
 
 ### Component: toolchain
 
-- [ ] **FR-11:** The framework shall configure the compiler, linker, and associated tools for the target platform based
-      on the `PLATFORM` and `TOOLCHAIN` CMake variables.
-    - Supported `PLATFORM` values: `linux`, `baremetal-arm`, `freertos-arm`.
-    - The `toolchain` component must be requested via `find_package` before the `project()` call.
+- [x] **FR-9:** The framework shall configure the compiler, linker, and associated tools for the target platform,
+      selectable via build system variables. Additional application-specific compilation flags shall be configurable via
+      build system variables, allowing users to extend the toolchain flags with app-specific settings.
 
-- [ ] **FR-12:** For Linux targets, the framework shall support the following toolchains: `gcc`, `clang`, `gcc-11`,
-      `gcc-13`, `clang-14`, `clang-18`, `aarch64-none-linux-gnu-gcc`, `aarch64-none-linux-gnu-clang`.
+- [x] **FR-10:** For Linux targets, the framework shall support GCC and Clang compiler variants for both native
+      compilation and cross-compilation to ARM64 targets.
 
-- [ ] **FR-13:** For baremetal ARM and FreeRTOS ARM targets, the framework shall support the `arm-none-eabi-gcc`
-      toolchain, with the binary directory configurable via `BAREMETAL_ARM_TOOLCHAIN_PATH`.
+- [x] **FR-11:** For non-Linux (ARM) targets, the framework shall support the appropriate cross-compilation toolchain.
+      The path to the compiler shall be configurable.
 
-- [ ] **FR-14:** For ARM64 Linux cross-compilation, the toolchain binary directory shall be configurable via
-      `LINUX_ARM_TOOLCHAIN_PATH`.
+- [x] **FR-12:** For ARM64 Linux cross-compilation, the path to the compiler shall be configurable.
 
-- [ ] **FR-15:** For Linux targets, the framework shall support enabling runtime sanitizers via CMake options: Address
-      Sanitizer (`USE_ASAN`), Leak Sanitizer (`USE_LSAN`), Thread Sanitizer (`USE_TSAN`), and Undefined Behavior
-      Sanitizer (`USE_UBSAN`).
-    - Only one sanitizer may be enabled per build.
-    - Optional flags `SANITIZER_DISABLE_FORTIFY` and `SANITIZER_DISABLE_OPTIMIZATION` shall allow further sanitizer
-      configuration.
+- [x] **FR-13:** For Linux targets, the framework shall support enabling runtime sanitizers: address, leak, thread, and
+      undefined behavior. Only one sanitizer may be enabled per build. Additional sanitizer behavior shall be
+      configurable.
 
-- [ ] **FR-16:** For Linux targets, the framework shall support enabling code coverage instrumentation via the
-      `WITH_COVERAGE` CMake option.
+- [x] **FR-14:** For Linux targets, the framework shall support enabling code coverage instrumentation.
 
-- [ ] **FR-17:** The framework shall expose the `OSAL_PLATFORM` preprocessor definition to dependent code reflecting the
-      active platform: `linux`, `none` (baremetal), or `freertos`.
+- [x] **FR-15:** The framework shall integrate with the OSAL library and automatically communicate the appropriate OSAL
+      backend for the active platform, without requiring the user to specify it separately.
 
-- [ ] **FR-18:** For baremetal ARM and FreeRTOS ARM targets, the framework shall provide a CMake helper function
-      `objcopy_generate_bin()` to produce raw binary images from ELF outputs.
+- [x] **FR-16:** For baremetal ARM and FreeRTOS ARM targets, the framework shall provide a CMake helper function to
+      produce raw binary images from ELF outputs.
 
 ### CMake Integration
 
-- [ ] **FR-19:** The framework shall be integrable into dependent projects via `find_package(platform COMPONENTS ...)`.
+- [x] **FR-17:** The framework shall be integrable into dependent projects via `find_package(platform COMPONENTS ...)`.
     - Only components listed in `COMPONENTS` shall be processed and built.
     - The framework shall support FetchContent-based download from a Git repository.
 
 ## Non-Functional Requirements
 
-- [ ] **NFR-1:** All C++ code shall target the C++23 standard; all C code shall target C17.
-
-- [ ] **NFR-2:** All compiler warnings shall be treated as errors (`-Werror`). Warnings `-Wall`, `-Wextra`, and
+- [x] **NFR-1:** All compiler warnings shall be treated as errors (`-Werror`). Warnings `-Wall`, `-Wextra`, and
       `-Wpedantic` shall be enabled.
 
-- [ ] **NFR-3:** C++ exceptions shall be disabled across all platforms (`-fno-exceptions`).
+- [x] **NFR-2:** C++ exceptions shall be disabled across all platforms (`-fno-exceptions`).
 
-- [ ] **NFR-4:** Debug builds shall use no optimization (`-O0 -g`) for Linux targets and size-optimized compilation
+- [x] **NFR-3:** Debug builds shall use no optimization (`-O0 -g`) for Linux targets and size-optimized compilation
       (`-Os -g`) for ARM targets.
 
-- [ ] **NFR-5:** Release builds shall use full optimization (`-O3 -DNDEBUG`) for Linux targets and size-optimized
+- [x] **NFR-4:** Release builds shall use full optimization (`-O3 -DNDEBUG`) for Linux targets and size-optimized
       compilation (`-Os -DNDEBUG`) for ARM targets.
 
-- [ ] **NFR-6:** Code coverage shall meet a minimum of 90% line coverage and 90% function coverage across the test
+- [x] **NFR-5:** Code coverage shall meet a minimum of 90% line coverage and 90% function coverage across the test
       suite.
-
-- [ ] **NFR-7:** The `platform::package` git metadata file (`git.hpp`) shall be auto-generated at CMake configuration
-      time and shall not be committed to source control.
 
 ## Technical Constraints and Requirements
 
-- [ ] **TR-1:** The build system shall require CMake version 3.28 or higher.
+- [x] **TR-1:** The build system shall use CMake.
 
-- [ ] **TR-2:** The framework shall support the following target platforms: native Linux (x64), cross-compiled Linux
+- [x] **TR-2:** The framework shall support the following target platforms: native Linux (x64), cross-compiled Linux
       (ARM64), baremetal ARM (ARMv7 Cortex-M4), and FreeRTOS ARM (ARMv7 Cortex-M4).
 
-- [ ] **TR-3:** The supported FreeRTOS kernel version is `freertos-10.2.1`, selectable via the `FREERTOS_VERSION` CMake
-      variable. The portable layer shall be selectable via `FREERTOS_PORTABLE`.
+- [x] **TR-3:** FreeRTOS kernel version and its portable layer should be selectable via proper CMake variables.
 
-- [ ] **TR-4:** All C++ code shall reside in the `platform::` namespace hierarchy.
+- [x] **TR-4:** All C++ code shall reside in the `platform::` namespace hierarchy.
 
-- [ ] **TR-5:** Code formatting shall conform to the project's clang-format configuration (120- character column limit,
-      4-space indent, Allman brace style, LF line endings).
+- [x] **TR-5:** Code formatting shall conform to the project's clang-format configuration.
 
-- [ ] **TR-6:** All clang-tidy checks enabled in the project configuration shall pass with no warnings (treated as
+- [x] **TR-6:** All clang-tidy checks enabled in the project configuration shall pass with no warnings (treated as
       errors).
 
-- [ ] **TR-7:** The CI pipeline shall validate builds on: native x64 GCC 13 and Clang 18 (debug/release), ARM64
-      cross-compiled GCC 13 and Clang 18 (debug/release), all four sanitizer variants (ASAN, LSAN, TSAN, UBSAN),
-      baremetal ARMv7-M4 (debug/release), and FreeRTOS ARMv7-M4 (debug/release).
+- [x] **TR-7:** The CI pipeline shall validate builds for all supported plarforms and compilers, both in debug and
+      release versions.
 
-- [ ] **TR-8:** Linux native test builds shall be validated under Valgrind for memory safety.
+- [x] **TR-8:** Linux native test builds shall be validated under Valgrind for memory safety.
