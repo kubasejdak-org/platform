@@ -35,7 +35,6 @@ CheckOptions:
   readability-identifier-naming.ClassCase: 'CamelCase'
   readability-identifier-naming.EnumCase: 'CamelCase'
   readability-identifier-naming.EnumConstantCase: 'CamelCase'
-  readability-identifier-naming.EnumConstantPrefix: 'e'
   readability-identifier-naming.FunctionCase: 'camelBack'
   readability-identifier-naming.MacroDefinitionCase : 'UPPER_CASE'
   readability-identifier-naming.NamespaceCase: 'lower_case'
