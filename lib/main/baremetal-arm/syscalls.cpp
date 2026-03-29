@@ -126,4 +126,9 @@ time_t timegm(struct tm* tm)
     return mktime(tm);
 }
 
+int _unlink(const char* /*unused*/)
+{
+    return -1; // Not supported
+}
+
 } // extern "C"
