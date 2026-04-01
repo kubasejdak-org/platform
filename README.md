@@ -75,7 +75,7 @@ platform/
 ├── cmake/                          # CMake build system
 │   ├── compilation-flags.cmake     # Internal compilation flags
 │   ├── components.cmake            # osal component loader (FetchContent helper)
-│   ├── modules/                    # CMake Findxxx.cmake modules for dependencies
+│   ├── modules/                    # CMake Find*.cmake modules for dependencies
 │   └── presets/                    # Internal presets helpers
 ├── lib/                            # Core components
 │   ├── main/                       # appMain() entrypoint for given platform
@@ -96,11 +96,9 @@ platform/
 
 ## Usage
 
-Integrate `platform` into a CMake project by pointing to its `Find` module and requesting the required components.
-
 ### CMake Integration
 
-Create `Findplatform.cmake` module (typically in `cmake/modules` directory):
+Create a `Findplatform.cmake` module (typically in `cmake/modules` directory):
 
 ```cmake
 include(FetchContent)
