@@ -74,6 +74,7 @@ flowchart TD
 platform/
 ├── cmake/                          # CMake build system
 │   ├── compilation-flags.cmake     # Internal compilation flags
+│   ├── components.cmake                # osal component loader (FetchContent helper)
 │   ├── modules/                    # CMake Findxxx.cmake modules for dependencies
 │   └── presets/                    # Internal presets helpers
 ├── lib/                            # Core components
@@ -105,13 +106,17 @@ Create `Findplatform.cmake` module (typically in `cmake/modules` directory):
 include(FetchContent)
 FetchContent_Declare(platform
     GIT_REPOSITORY  https://github.com/kubasejdak-org/platform.git
-    GIT_TAG         dea2a14ea9acdde6a258b055b6b5a9ec0791e7b9
+    GIT_TAG         <commit-sha|branch|tag>
     SOURCE_SUBDIR   lib
 )
 
 FetchContent_MakeAvailable(platform)
 include(${platform_SOURCE_DIR}/cmake/components.cmake)
 ```
+
+> [!NOTE]
+>
+> `GIT_TAG` accepts any ref recognized by CMake FetchContent: a full commit SHA, a branch name, or a tag.
 
 This will allow defining which `platform` version should be used. It will also automatically download repo into build
 directory.
