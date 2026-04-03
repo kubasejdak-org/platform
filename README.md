@@ -6,9 +6,9 @@ entry point abstraction through a unified `appMain()` interface.
 
 Main features:
 
-- **toolchain setup:** configures compiler, architecture flags, and build settings for target platform via CMake
+- **toolchain setup**: configures compiler, architecture flags, and build settings for target platform via CMake
   toolchain files,
-- **unified main():** provides platform-specific `main()` implementations that invoke application-defined `appMain()`
+- **unified main()**: provides platform-specific `main()` implementations that invoke application-defined `appMain()`
   function.
 
 > [!IMPORTANT]
@@ -19,14 +19,14 @@ Main features:
 
 ### Components
 
-- **`toolchain`:**
+- **`toolchain`**:
     - Configures compiler and architecture flags via `PLATFORM` + `TOOLCHAIN` CMake variables from the list of supported
       ones.
     - On Linux, additionally allows enabling sanitizers (`asan`, `lsan`, `tsan`, `ubsan`) and code coverage support.
-- **`main`:**
+- **`main`**:
     - Provides platform-specific `main()` that calls application-defined `appMain()`.
     - On Linux, an optional `platform::main-paths` target exposes API for getting install, config, and data root paths.
-- **`package`:**
+- **`package`**:
     - Exposes build-time metadata (compiler, build type) and git metadata (e.g. tag, branch, commit), regenerated at
       every CMake reconfiguration.
 
@@ -74,7 +74,7 @@ flowchart TD
 platform/
 ├── cmake/                          # CMake build system
 │   ├── compilation-flags.cmake     # Internal compilation flags
-│   ├── components.cmake            # osal component loader (FetchContent helper)
+│   ├── components.cmake            # Helper component loader (FetchContent helper)
 │   ├── modules/                    # CMake Find*.cmake modules for dependencies
 │   └── presets/                    # Internal presets helpers
 ├── lib/                            # Core components
@@ -181,22 +181,22 @@ target_link_libraries(my-app
 
 ### Commands
 
-- **Configure:** `cmake --preset <preset-name> . -B out/build/<preset-name>`
-- **Build:** `cmake --build out/build/<preset-name> --parallel`
-- **Run tests:** `cd out/build/<preset-name>/bin; ./<binary-name>`
-- **Reformat code:** `tools/check-clang-format.sh`
-- **Run linter:** `cd out/build/<preset-name>; ../../../tools/check-clang-tidy.sh`
+- **Configure**: `cmake --preset <preset-name> . -B out/build/<preset-name>`
+- **Build**: `cmake --build out/build/<preset-name> --parallel`
+- **Run tests**: `cd out/build/<preset-name>/bin; ./<binary-name>`
+- **Reformat code**: `tools/check-clang-format.sh`
+- **Run linter**: `cd out/build/<preset-name>; ../../../tools/check-clang-tidy.sh`
     - Must be launched with clang preset (usually in clang devcontainer)
 
 ### Available CMake Presets
 
 - **Native Linux**:
-    - **Dependencies provided by target system:** `linux-native-{gcc,clang}-{debug,release}`
+    - **Dependencies provided by target system**: `linux-native-{gcc,clang}-{debug,release}`
 - **Cross-compilation**:
-    - **Generic ARM64:** `linux-arm64-{gcc,clang}-{debug,release}`
-    - **Yocto (via SDK):** `yocto-sdk-{gcc,clang}-{debug,release}`
-    - **Baremetal ARMv7:** `baremetal-armv7-*-gcc-{debug,release}`
-    - **FreeRTOS ARMv7:** `freertos-armv7-*-gcc-{debug,release}`
+    - **Generic ARM64**: `linux-arm64-{gcc,clang}-{debug,release}`
+    - **Yocto (via SDK)**: `yocto-sdk-{gcc,clang}-{debug,release}`
+    - **Baremetal ARMv7**: `baremetal-armv7-*-gcc-{debug,release}`
+    - **FreeRTOS ARMv7**: `freertos-armv7-*-gcc-{debug,release}`
 - **Sanitizers**: `*-{asan,lsan,tsan,ubsan}` variants
 
 > [!NOTE]
@@ -205,12 +205,12 @@ target_link_libraries(my-app
 
 ### Code Quality
 
-- **Zero Warning Policy:** All warnings treated as errors
-- **Code Formatting:** clang-format with project-specific style checked
-- **Static Analysis:** clang-tidy configuration checked
-- **Coverage:** Code coverage reports generated
-- **Valgrind:** Tests and examples run under valgrind
-- **Sanitizers:** Address, leak, thread, and undefined behavior sanitizers checked
+- **Zero Warning Policy**: All warnings treated as errors
+- **Code Formatting**: clang-format with project-specific style checked
+- **Static Analysis**: clang-tidy configuration checked
+- **Coverage**: Code coverage reports generated
+- **Valgrind**: Tests and examples run under valgrind
+- **Sanitizers**: Address, leak, thread, and undefined behavior sanitizers checked
 
 ### Important Notes
 
