@@ -17,6 +17,22 @@
       }
     },
     {
+      "name": "baremetal-armv7-m4-gcc",
+      "hidden": true,
+      "inherits": "baremetal-armv7-m4",
+      "cacheVariables": {
+        "TOOLCHAIN": "arm-none-eabi-gcc"
+      }
+    },
+    {
+      "name": "baremetal-armv7-m4-clang",
+      "hidden": true,
+      "inherits": "baremetal-armv7-m4",
+      "cacheVariables": {
+        "TOOLCHAIN": "arm-none-eabi-clang"
+      }
+    },
+    {
       "name": "freertos-armv7-m4",
       "hidden": true,
       "cacheVariables": {
@@ -26,6 +42,22 @@
         "APP_CXX_FLAGS": "-mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mthumb",
         "FREERTOS_VERSION": "freertos-10.2.1",
         "FREERTOS_PORTABLE": "ARM_CM4F"
+      }
+    },
+    {
+      "name": "freertos-armv7-m4-gcc",
+      "hidden": true,
+      "inherits": "freertos-armv7-m4",
+      "cacheVariables": {
+        "TOOLCHAIN": "arm-none-eabi-gcc"
+      }
+    },
+    {
+      "name": "freertos-armv7-m4-clang",
+      "hidden": true,
+      "inherits": "freertos-armv7-m4",
+      "cacheVariables": {
+        "TOOLCHAIN": "arm-none-eabi-clang"
       }
     }
   ]

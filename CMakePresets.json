@@ -77,48 +77,36 @@
       "inherits": ["yocto-sdk-clang", "release"]
     },
     {
-      "name": "baremetal-armv7-m4-debug",
-      "inherits": ["baremetal-armv7-m4", "debug"]
+      "name": "baremetal-armv7-m4-gcc-debug",
+      "inherits": ["baremetal-armv7-m4-gcc", "debug"]
     },
     {
-      "name": "baremetal-armv7-m4-release",
-      "inherits": ["baremetal-armv7-m4", "release"]
+      "name": "baremetal-armv7-m4-gcc-release",
+      "inherits": ["baremetal-armv7-m4-gcc", "release"]
     },
     {
       "name": "baremetal-armv7-m4-clang-debug",
-      "inherits": ["baremetal-armv7-m4", "debug"],
-      "cacheVariables": {
-        "TOOLCHAIN": "arm-none-eabi-clang"
-      }
+      "inherits": ["baremetal-armv7-m4-clang", "debug"]
     },
     {
       "name": "baremetal-armv7-m4-clang-release",
-      "inherits": ["baremetal-armv7-m4", "release"],
-      "cacheVariables": {
-        "TOOLCHAIN": "arm-none-eabi-clang"
-      }
+      "inherits": ["baremetal-armv7-m4-clang", "release"]
     },
     {
-      "name": "freertos-armv7-m4-debug",
-      "inherits": ["freertos-armv7-m4", "debug"]
+      "name": "freertos-armv7-m4-gcc-debug",
+      "inherits": ["freertos-armv7-m4-gcc", "debug"]
     },
     {
-      "name": "freertos-armv7-m4-release",
-      "inherits": ["freertos-armv7-m4", "release"]
+      "name": "freertos-armv7-m4-gcc-release",
+      "inherits": ["freertos-armv7-m4-gcc", "release"]
     },
     {
       "name": "freertos-armv7-m4-clang-debug",
-      "inherits": ["freertos-armv7-m4", "debug"],
-      "cacheVariables": {
-        "TOOLCHAIN": "arm-none-eabi-clang"
-      }
+      "inherits": ["freertos-armv7-m4-clang", "debug"]
     },
     {
       "name": "freertos-armv7-m4-clang-release",
-      "inherits": ["freertos-armv7-m4", "release"],
-      "cacheVariables": {
-        "TOOLCHAIN": "arm-none-eabi-clang"
-      }
+      "inherits": ["freertos-armv7-m4-clang", "release"]
     }
   ]
 }
