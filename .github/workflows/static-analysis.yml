@@ -33,9 +33,9 @@ jobs:
           - PRESET: linux-native-clang-debug
             DOCKER_IMAGE: kubasejdak/clang:18-24.04
           - PRESET: baremetal-armv7-m4-clang-debug
-            DOCKER_IMAGE: arm-none-eabi-clang:18-24.04
+            DOCKER_IMAGE: kubasejdak/arm-none-eabi-clang:18-24.04
           - PRESET: freertos-armv7-m4-clang-debug
-            DOCKER_IMAGE: arm-none-eabi-clang:18-24.04
+            DOCKER_IMAGE: kubasejdak/arm-none-eabi-clang:18-24.04
     steps:
       - uses: actions/checkout@v6
 
