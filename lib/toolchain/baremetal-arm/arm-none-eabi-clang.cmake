@@ -16,7 +16,9 @@ set(CMAKE_STRIP                     llvm-strip CACHE FILEPATH "")
 set(CMAKE_GCOV                      llvm-cov CACHE FILEPATH "")
 
 if (DEFINED BAREMETAL_ARM_TOOLCHAIN_PATH)
-    set(GCC_TOOLCHAIN_FLAG          "--gcc-toolchain=${BAREMETAL_ARM_TOOLCHAIN_PATH}")
+    file(GLOB _gcc_install_dirs LIST_DIRECTORIES true "${BAREMETAL_ARM_TOOLCHAIN_PATH}/lib/gcc/arm-none-eabi/*")
+    list(GET _gcc_install_dirs 0 _gcc_install_dir)
+    set(GCC_TOOLCHAIN_FLAG          "--gcc-install-dir=${_gcc_install_dir}")
 endif ()
 
 set(COMMON_FLAGS                    "-target arm-none-eabi ${GCC_TOOLCHAIN_FLAG} -fdata-sections -ffunction-sections" CACHE INTERNAL "")
