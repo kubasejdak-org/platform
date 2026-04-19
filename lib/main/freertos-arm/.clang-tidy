@@ -1,6 +1,7 @@
 ---
 InheritParentConfig: true
 Checks: '
+  -misc-include-cleaner,
   -readability-identifier-naming
 '
 ...

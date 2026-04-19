@@ -49,6 +49,7 @@ extern "C" void vApplicationGetIdleTaskMemory(StaticTask_t** ppxIdleTaskTCBBuffe
     *ppxIdleTaskTCBBuffer = &xIdleTaskTCB;
 
     /* Pass out the array that will be used as the Idle task’s stack. */
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
     *ppxIdleTaskStackBuffer = uxIdleTaskStack;
 
     /* Pass out the size of the array pointed to by *ppxIdleTaskStackBuffer.
