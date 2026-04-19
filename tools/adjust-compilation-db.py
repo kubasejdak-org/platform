@@ -3,7 +3,7 @@
 import json
 
 COMPILATION_DB_FILE = "compile_commands.json"
-PATTERNS_TO_REMOVE = ["_deps", "examples/init", "freertos-"]
+PATTERNS_TO_REMOVE = ["_deps", "examples/init", "freertos-10.2.1"]
 
 with open(COMPILATION_DB_FILE) as file:
     compilation_db = json.load(file)
