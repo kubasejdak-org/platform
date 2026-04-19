@@ -195,13 +195,19 @@ target_link_libraries(my-app
 - **Cross-compilation**:
     - **Generic ARM64**: `linux-arm64-{gcc,clang}-{debug,release}`
     - **Yocto (via SDK)**: `yocto-sdk-{gcc,clang}-{debug,release}`
-    - **Baremetal ARMv7**: `baremetal-armv7-*-gcc-{debug,release}`
-    - **FreeRTOS ARMv7**: `freertos-armv7-*-gcc-{debug,release}`
+    - **Baremetal ARMv7**: `baremetal-armv7-*-{gcc,clang}-{debug,release}`
+    - **FreeRTOS ARMv7**: `freertos-armv7-*-{gcc,clang}-{debug,release}`
 - **Sanitizers**: `*-{asan,lsan,tsan,ubsan}` variants
 
 > [!NOTE]
 >
 > For local development use `linux-native-conan-gcc-debug` preset.
+
+---
+
+> [!WARNING]
+>
+> `clang` variants for baremetal platforms are only to allow static analysis via `clang-tidy`.
 
 ### Code Quality
 
