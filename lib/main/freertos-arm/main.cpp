@@ -30,8 +30,8 @@
 #include <freertos/task.h>
 
 #include <array>
+#include <cstdint>
 #include <cstdlib>
-#include <type_traits>
 
 #if configSUPPORT_STATIC_ALLOCATION
 extern "C" void vApplicationGetIdleTaskMemory(StaticTask_t** ppxIdleTaskTCBBuffer,
@@ -90,15 +90,17 @@ extern "C" void vApplicationGetTimerTaskMemory(StaticTask_t** ppxTimerTaskTCBBuf
 /// @note This function should be provided/implemented by the application.
 extern int appMain(int argc, char** argv);
 
-/// Default name that is passed to the application as argv[0].
-constexpr const char* cMainThreadName = "appMain";
+namespace {
 
 /// Wrapper thread that will execute the main application code.
-static void mainThread(void* /*unused*/)
+void mainThread(void* /*unused*/)
 {
-    std::array<char*, 1> appArgv = {std::remove_const_t<char*>(cMainThreadName)};
+    static auto argv0 = std::to_array("appMain");
+    std::array<char*, 1> appArgv = {argv0.data()};
     appMain(appArgv.size(), appArgv.data());
 }
+
+} // namespace
 
 /// Main executable entry point.
 /// @return Exit code of the application.
@@ -115,7 +117,7 @@ int main()
     static std::array<StackType_t, APPMAIN_STACK_SIZE> stack{};
 
     thread = xTaskCreateStatic(mainThread,
-                               cMainThreadName,
+                               "appMain",
                                stack.size(),
                                nullptr,
                                tskIDLE_PRIORITY,
@@ -125,7 +127,7 @@ int main()
         return EXIT_FAILURE;
 
 #elif configSUPPORT_DYNAMIC_ALLOCATION
-    auto result = xTaskCreate(mainThread, cMainThreadName, APPMAIN_STACK_SIZE, nullptr, tskIDLE_PRIORITY, &thread);
+    auto result = xTaskCreate(mainThread, "appMain", APPMAIN_STACK_SIZE, nullptr, tskIDLE_PRIORITY, &thread);
     if (result != pdPASS)
         return EXIT_FAILURE;
 #endif
