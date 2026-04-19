@@ -17,13 +17,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - PRESET: baremetal-armv7-m4-debug
+          - PRESET: baremetal-armv7-m4-gcc-debug
             DOCKER_IMAGE: kubasejdak/arm-none-eabi-gcc:13-24.04
-          - PRESET: baremetal-armv7-m4-release
+          - PRESET: baremetal-armv7-m4-gcc-release
             DOCKER_IMAGE: kubasejdak/arm-none-eabi-gcc:13-24.04
-          - PRESET: freertos-armv7-m4-debug
+          - PRESET: freertos-armv7-m4-gcc-debug
             DOCKER_IMAGE: kubasejdak/arm-none-eabi-gcc:13-24.04
-          - PRESET: freertos-armv7-m4-release
+          - PRESET: freertos-armv7-m4-gcc-release
             DOCKER_IMAGE: kubasejdak/arm-none-eabi-gcc:13-24.04
     steps:
       - uses: actions/checkout@v6
