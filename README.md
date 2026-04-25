@@ -207,7 +207,7 @@ target_link_libraries(my-app
 
 > [!WARNING]
 >
-> `clang` variants for baremetal platforms are only to allow static analysis via `clang-tidy`.
+> `clang` variants for baremetal platforms support full cross-compilation when ARM GNU toolchain runtime libraries are available (for example, via official ARM toolchain package or distro `arm-none-eabi` packages).
 
 ### Code Quality
 
