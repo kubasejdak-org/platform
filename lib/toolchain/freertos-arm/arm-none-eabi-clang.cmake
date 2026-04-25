@@ -3,6 +3,12 @@ set(CMAKE_SYSTEM_PROCESSOR          armv7)
 
 # Without this flag CMake is not able to pass the compiler sanity check.
 set(CMAKE_TRY_COMPILE_TARGET_TYPE   STATIC_LIBRARY)
+set(CMAKE_TRY_COMPILE_PLATFORM_VARIABLES
+    BAREMETAL_ARM_TOOLCHAIN_PATH
+    APP_C_FLAGS
+    APP_CXX_FLAGS
+    APP_ASM_FLAGS
+)
 
 set(CMAKE_AR                        llvm-ar CACHE FILEPATH "")
 set(CMAKE_ASM_COMPILER              clang CACHE FILEPATH "")
@@ -24,7 +30,7 @@ if (DEFINED BAREMETAL_ARM_TOOLCHAIN_PATH)
     set(ARM_GCC_COMPILER            "${BAREMETAL_ARM_TOOLCHAIN_PATH}/bin/${ARM_TARGET_TRIPLE}-gcc")
 endif ()
 
-if (NOT EXISTS "${ARM_GCC_COMPILER}")
+if (NOT EXISTS ${ARM_GCC_COMPILER})
     find_program(ARM_GCC_COMPILER NAMES ${ARM_TARGET_TRIPLE}-gcc)
 endif ()
 
@@ -46,26 +52,55 @@ execute_process(
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
+separate_arguments(ARM_MULTILIB_FLAGS NATIVE_COMMAND "${APP_C_FLAGS}")
+
 execute_process(
-    COMMAND                         ${ARM_GCC_COMPILER} -print-libgcc-file-name
+    COMMAND                         ${ARM_GCC_COMPILER} ${ARM_MULTILIB_FLAGS} -print-libgcc-file-name
     OUTPUT_VARIABLE                 ARM_LIBGCC
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+execute_process(
+    COMMAND                         ${ARM_GCC_COMPILER} ${ARM_MULTILIB_FLAGS} -print-multi-directory
+    OUTPUT_VARIABLE                 ARM_MULTILIB_DIR
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+execute_process(
+    COMMAND                         ${ARM_GCC_COMPILER} -dumpfullversion
+    OUTPUT_VARIABLE                 GCC_VERSION
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
 if (ARM_LIBGCC)
     cmake_path(GET ARM_LIBGCC PARENT_PATH ARM_LIBGCC_DIR)
-    cmake_path(GET ARM_LIBGCC_DIR FILENAME GCC_VERSION)
 endif ()
 
 if (ARM_SYSROOT)
     set(SYSROOT_FLAG                "--sysroot=${ARM_SYSROOT}")
 endif ()
 
-set(GCC_TOOLCHAIN_FLAG              "--gcc-toolchain=${ARM_GCC_TOOLCHAIN_ROOT}")
-set(CXX_STDLIB_FLAG                 "-stdlib=libstdc++")
-set(COMMON_FLAGS                    "--target=${ARM_TARGET_TRIPLE} ${GCC_TOOLCHAIN_FLAG} ${SYSROOT_FLAG} -fdata-sections -ffunction-sections" CACHE INTERNAL "")
+set(ARM_SYSROOT_LIB_DIR             "${ARM_SYSROOT}/lib")
+if (ARM_MULTILIB_DIR AND NOT ARM_MULTILIB_DIR STREQUAL ".")
+    string(APPEND ARM_SYSROOT_LIB_DIR "/${ARM_MULTILIB_DIR}")
+endif ()
+
+set(ARM_LIBRARY_PATH_FLAGS          "-L${ARM_LIBGCC_DIR} -L${ARM_SYSROOT_LIB_DIR}")
+set(ARM_CRT0                        "${ARM_SYSROOT_LIB_DIR}/crt0.o")
+set(ARM_CRTBEGIN                    "${ARM_LIBGCC_DIR}/crtbegin.o")
+set(ARM_CRTEND                      "${ARM_LIBGCC_DIR}/crtend.o")
+set(ARM_CRTI                        "${ARM_LIBGCC_DIR}/crti.o")
+set(ARM_CRTN                        "${ARM_LIBGCC_DIR}/crtn.o")
+set(ARM_CXX_INCLUDE_DIR             "${ARM_SYSROOT}/include/c++/${GCC_VERSION}/${ARM_TARGET_TRIPLE}")
+if (ARM_MULTILIB_DIR AND NOT ARM_MULTILIB_DIR STREQUAL ".")
+    string(APPEND ARM_CXX_INCLUDE_DIR "/${ARM_MULTILIB_DIR}")
+endif ()
+
+set(ARM_CXX_INCLUDE_FLAGS           "-isystem ${ARM_CXX_INCLUDE_DIR}")
+set(CXX_STDLIB_FLAG                 "-stdlib=libstdc++ -nostdlib++")
+set(COMMON_FLAGS                    "--target=${ARM_TARGET_TRIPLE} ${SYSROOT_FLAG} ${ARM_LIBRARY_PATH_FLAGS} -fdata-sections -ffunction-sections -Wno-unused-command-line-argument" CACHE INTERNAL "")
 set(PLATFORM_C_FLAGS                "${COMMON_FLAGS} ${APP_C_FLAGS}" CACHE INTERNAL "")
-set(PLATFORM_CXX_FLAGS              "${COMMON_FLAGS} ${CXX_STDLIB_FLAG} ${APP_CXX_FLAGS} -fno-exceptions" CACHE INTERNAL "")
+set(PLATFORM_CXX_FLAGS              "${COMMON_FLAGS} ${CXX_STDLIB_FLAG} ${ARM_CXX_INCLUDE_FLAGS} ${APP_CXX_FLAGS} -fno-exceptions" CACHE INTERNAL "")
 set(PLATFORM_ASM_FLAGS              "${COMMON_FLAGS} ${APP_C_FLAGS} ${APP_ASM_FLAGS}" CACHE INTERNAL "")
 set(CMAKE_C_FLAGS                   "${PLATFORM_C_FLAGS}" CACHE INTERNAL "")
 set(CMAKE_CXX_FLAGS                 "${PLATFORM_CXX_FLAGS}" CACHE INTERNAL "")
@@ -78,6 +113,8 @@ set(CMAKE_CXX_FLAGS_RELEASE         "${CMAKE_C_FLAGS_RELEASE}" CACHE INTERNAL ""
 
 set(PLATFORM_EXE_LINKER_FLAGS       "${COMMON_FLAGS} -fuse-ld=lld -Wl,--gc-sections" CACHE INTERNAL "")
 set(CMAKE_EXE_LINKER_FLAGS          "${PLATFORM_EXE_LINKER_FLAGS}" CACHE INTERNAL "")
+set(CMAKE_C_STANDARD_LIBRARIES      "${ARM_CRTI} ${ARM_CRTBEGIN} ${ARM_CRT0} -lm -Wl,--start-group -lgcc -lc_nano -lnosys -Wl,--end-group ${ARM_CRTEND} ${ARM_CRTN}" CACHE INTERNAL "")
+set(CMAKE_CXX_STANDARD_LIBRARIES    "${ARM_CRTI} ${ARM_CRTBEGIN} ${ARM_CRT0} -lstdc++_nano -lsupc++_nano -lm -Wl,--start-group -lgcc -lc_nano -lnosys -Wl,--end-group ${ARM_CRTEND} ${ARM_CRTN}" CACHE INTERNAL "")
 
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
