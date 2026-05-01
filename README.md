@@ -203,12 +203,6 @@ target_link_libraries(my-app
 >
 > For local development use `linux-native-conan-gcc-debug` preset.
 
----
-
-> [!WARNING]
->
-> `clang` variants for baremetal platforms support full cross-compilation when ARM GNU toolchain runtime libraries are available (for example, via official ARM toolchain package or distro `arm-none-eabi` packages).
-
 ### Code Quality
 
 - **Zero Warning Policy**: All warnings treated as errors
