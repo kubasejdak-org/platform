@@ -34,20 +34,19 @@
 #include <cstdint>
 #include <type_traits>
 
-// NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
 UART_HandleTypeDef uart{};
 
 extern "C" {
 
 void HAL_MspInit()
 {
-    __HAL_RCC_SYSCFG_CLK_ENABLE(); // NOLINT
-    __HAL_RCC_PWR_CLK_ENABLE();    // NOLINT
+    __HAL_RCC_SYSCFG_CLK_ENABLE();
+    __HAL_RCC_PWR_CLK_ENABLE();
 }
 
 void HAL_UART_MspInit(UART_HandleTypeDef* /*unused*/)
 {
-    __HAL_RCC_GPIOC_CLK_ENABLE(); // NOLINT
+    __HAL_RCC_GPIOC_CLK_ENABLE();
 
     GPIO_InitTypeDef config{};
     config.Pin = GPIO_PIN_10;
@@ -55,7 +54,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* /*unused*/)
     config.Pull = GPIO_PULLUP;
     config.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     config.Alternate = GPIO_AF8_UART4;
-    HAL_GPIO_Init(GPIOC, &config); // NOLINT
+    HAL_GPIO_Init(GPIOC, &config);
 }
 
 } // extern "C"
@@ -69,9 +68,9 @@ int consolePrint(const char* message, std::size_t size)
 
 static bool consoleInitUart()
 {
-    __HAL_RCC_UART4_CLK_ENABLE(); // NOLINT
+    __HAL_RCC_UART4_CLK_ENABLE();
 
-    uart.Instance = UART4; // NOLINT
+    uart.Instance = UART4;
     constexpr std::uint32_t cConsoleBaudrate = 115200;
     uart.Init.BaudRate = cConsoleBaudrate;
     uart.Init.WordLength = UART_WORDLENGTH_8B;
