@@ -5,7 +5,7 @@ target_sources(platform-init PRIVATE
 find_package(stm32f4xx)
 
 target_include_directories(stm32f4xx
-    PUBLIC
+    SYSTEM PUBLIC
         .
 )
 
@@ -23,7 +23,7 @@ target_link_options(platform-init
 add_library(freertos-config INTERFACE)
 
 target_include_directories(freertos-config
-    INTERFACE
+    SYSTEM INTERFACE
         .
 )
 

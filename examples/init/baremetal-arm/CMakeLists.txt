@@ -5,7 +5,7 @@ target_sources(platform-init PRIVATE
 find_package(stm32f4xx)
 
 target_include_directories(stm32f4xx
-    PUBLIC
+    SYSTEM PUBLIC
         .
 )
 
