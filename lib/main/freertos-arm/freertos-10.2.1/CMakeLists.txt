@@ -1,5 +1,4 @@
 add_library(freertos EXCLUDE_FROM_ALL
-    portable/Common/mpu_wrappers.c
     croutine.c
     event_groups.c
     list.c
@@ -8,6 +7,12 @@ add_library(freertos EXCLUDE_FROM_ALL
     tasks.c
     timers.c
 )
+
+if (FREERTOS_PORTABLE MATCHES "MPU|ARM_CM23|ARM_CM33")
+    target_sources(freertos PRIVATE
+        portable/Common/mpu_wrappers.c
+    )
+endif ()
 
 add_subdirectory(portable)
 

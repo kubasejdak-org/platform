@@ -203,12 +203,6 @@ target_link_libraries(my-app
 >
 > For local development use `linux-native-conan-gcc-debug` preset.
 
----
-
-> [!WARNING]
->
-> `clang` variants for baremetal platforms are only to allow static analysis via `clang-tidy`.
-
 ### Code Quality
 
 - **Zero Warning Policy**: All warnings treated as errors
