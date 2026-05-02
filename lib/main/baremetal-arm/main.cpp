@@ -27,7 +27,6 @@
 /////////////////////////////////////////////////////////////////////////////////////
 
 #include <array>
-#include <type_traits>
 
 /// Main application entry point.
 /// @param argc         Number of the commandline arguments.
@@ -36,15 +35,13 @@
 /// @note This function should be provided/implemented by the application.
 extern int appMain(int argc, char** argv);
 
-/// Default name that is passed to the application as argv[0].
-constexpr const char* cMainThreadName = "appMain";
-
 /// Main executable entry point.
 /// @return Exit code of the application.
 /// @note This function passes one hardcoded commandline argument to the application, to fulfill the requirement
 /// that argv[0] contains the name of the binary.
 int main()
 {
-    std::array<char*, 1> argv = {std::remove_const_t<char*>(cMainThreadName)};
+    static auto argv0 = std::to_array("appMain");
+    std::array<char*, 1> argv = {argv0.data()};
     return appMain(argv.size(), argv.data());
 }

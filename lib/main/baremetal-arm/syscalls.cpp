@@ -58,12 +58,12 @@ caddr_t _sbrk(intptr_t increment)
         return nullptr;
 
     offset += increment;
-    return reinterpret_cast<caddr_t>(&buffer.at(prevOffset));
+    return static_cast<caddr_t>(&buffer.at(prevOffset));
 }
 
 int _write(int /*unused*/, const void* buf, size_t count)
 {
-    return consolePrint(reinterpret_cast<const char*>(buf), count);
+    return consolePrint(static_cast<const char*>(buf), count);
 }
 
 int _open(const char* /*unused*/, int /*unused*/, int /*unused*/)
@@ -106,9 +106,9 @@ int _kill(int /*unused*/, int /*unused*/)
     return -1; // Not supported
 }
 
-size_t fwrite(const void* ptr, size_t /*unused*/, size_t nmemb, FILE* /*unused*/)
+size_t fwrite(const void* ptr, size_t /*unused*/, size_t _n, FILE* /*unused*/)
 {
-    return _write(0, std::remove_const_t<char*>(ptr), nmemb);
+    return _write(0, std::remove_const_t<char*>(ptr), _n);
 }
 
 int _gettimeofday(struct timeval* tp, void* /*unused*/)
@@ -124,6 +124,11 @@ int _gettimeofday(struct timeval* tp, void* /*unused*/)
 time_t timegm(struct tm* tm)
 {
     return mktime(tm);
+}
+
+int _unlink(const char* /*unused*/)
+{
+    return -1; // Not supported
 }
 
 } // extern "C"

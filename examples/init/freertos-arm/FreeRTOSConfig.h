@@ -28,8 +28,8 @@
 
 #pragma once
 
-#include <stdint.h>              // NOLINT
-extern uint32_t SystemCoreClock; // NOLINT
+#include <stdint.h>
+extern uint32_t SystemCoreClock;
 
 #define configUSE_PREEMPTION                    1
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION 0

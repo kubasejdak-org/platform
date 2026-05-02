@@ -17,14 +17,22 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - PRESET: baremetal-armv7-m4-debug
+          - PRESET: baremetal-armv7-m4-gcc-debug
             DOCKER_IMAGE: kubasejdak/arm-none-eabi-gcc:13-24.04
-          - PRESET: baremetal-armv7-m4-release
+          - PRESET: baremetal-armv7-m4-gcc-release
             DOCKER_IMAGE: kubasejdak/arm-none-eabi-gcc:13-24.04
-          - PRESET: freertos-armv7-m4-debug
+          - PRESET: baremetal-armv7-m4-clang-debug
+            DOCKER_IMAGE: kubasejdak/arm-none-eabi-clang:18-24.04
+          - PRESET: baremetal-armv7-m4-clang-release
+            DOCKER_IMAGE: kubasejdak/arm-none-eabi-clang:18-24.04
+          - PRESET: freertos-armv7-m4-gcc-debug
             DOCKER_IMAGE: kubasejdak/arm-none-eabi-gcc:13-24.04
-          - PRESET: freertos-armv7-m4-release
+          - PRESET: freertos-armv7-m4-gcc-release
             DOCKER_IMAGE: kubasejdak/arm-none-eabi-gcc:13-24.04
+          - PRESET: freertos-armv7-m4-clang-debug
+            DOCKER_IMAGE: kubasejdak/arm-none-eabi-clang:18-24.04
+          - PRESET: freertos-armv7-m4-clang-release
+            DOCKER_IMAGE: kubasejdak/arm-none-eabi-clang:18-24.04
     steps:
       - uses: actions/checkout@v6
 
@@ -57,8 +65,10 @@ jobs:
 
   check-all-baremetal:
     runs-on: [self-hosted, build]
+    if: always()
     needs:
       - build-stm32f4
       # - examples-stm32f4
     steps:
-      - run: echo "Success"
+      - name: Check all jobs
+        run: '! echo ''${{ toJSON(needs.*.result) }}'' | grep -qE ''"(failure|cancelled|skipped)"'''
