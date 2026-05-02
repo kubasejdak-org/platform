@@ -45,8 +45,10 @@ jobs:
 
   check-all-static:
     runs-on: [self-hosted, build]
+    if: always()
     needs:
       - formatting
       - linting
     steps:
-      - run: echo "Success"
+      - name: Check all jobs
+        run: echo '${{ toJSON(needs.*.result) }}' | grep -qvE '"(failure|cancelled|skipped)"'

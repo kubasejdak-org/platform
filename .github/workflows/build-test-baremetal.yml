@@ -65,8 +65,10 @@ jobs:
 
   check-all-baremetal:
     runs-on: [self-hosted, build]
+    if: always()
     needs:
       - build-stm32f4
       # - examples-stm32f4
     steps:
-      - run: echo "Success"
+      - name: Check all jobs
+        run: echo '${{ toJSON(needs.*.result) }}' | grep -qvE '"(failure|cancelled|skipped)"'

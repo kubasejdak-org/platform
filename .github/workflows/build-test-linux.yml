@@ -169,6 +169,7 @@ jobs:
 
   check-all-linux:
     runs-on: [self-hosted, build]
+    if: always()
     needs:
       - build-x64
       - build-arm64
@@ -177,4 +178,5 @@ jobs:
       - valgrind-x64
       - sanitizers-x64
     steps:
-      - run: echo "Success"
+      - name: Check all jobs
+        run: echo '${{ toJSON(needs.*.result) }}' | grep -qvE '"(failure|cancelled|skipped)"'
