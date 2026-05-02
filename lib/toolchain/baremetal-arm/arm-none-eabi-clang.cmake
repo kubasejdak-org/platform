@@ -98,7 +98,7 @@ endif ()
 
 set(COMMON_FLAGS                    "--target=${ARM_TARGET_TRIPLE} ${SYSROOT_FLAG} -fdata-sections -ffunction-sections" CACHE INTERNAL "")
 set(PLATFORM_C_FLAGS                "${COMMON_FLAGS} ${APP_C_FLAGS}" CACHE INTERNAL "")
-set(PLATFORM_CXX_FLAGS              "${COMMON_FLAGS} -isystem ${ARM_CXX_INCLUDE_DIR} -stdlib=libstdc++ -nostdlib++ -fno-exceptions ${APP_CXX_FLAGS}" CACHE INTERNAL "")
+set(PLATFORM_CXX_FLAGS              "${COMMON_FLAGS} -isystem ${ARM_CXX_INCLUDE_DIR} -nostdlib++ -fno-exceptions ${APP_CXX_FLAGS}" CACHE INTERNAL "")
 set(PLATFORM_ASM_FLAGS              "${COMMON_FLAGS} ${APP_C_FLAGS} ${APP_ASM_FLAGS}" CACHE INTERNAL "")
 set(CMAKE_C_FLAGS                   "${PLATFORM_C_FLAGS}" CACHE INTERNAL "")
 set(CMAKE_CXX_FLAGS                 "${PLATFORM_CXX_FLAGS}" CACHE INTERNAL "")
