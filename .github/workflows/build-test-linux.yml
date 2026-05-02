@@ -179,4 +179,4 @@ jobs:
       - sanitizers-x64
     steps:
       - name: Check all jobs
-        run: echo '${{ toJSON(needs.*.result) }}' | grep -qvE '"(failure|cancelled|skipped)"'
+        run: '! echo ''${{ toJSON(needs.*.result) }}'' | grep -qE ''"(failure|cancelled|skipped)"'''
