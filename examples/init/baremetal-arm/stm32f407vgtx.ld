@@ -69,8 +69,9 @@ FLASH (rx)     : ORIGIN = 0x8000000, LENGTH = 1024K
 /* Define program headers */
 PHDRS
 {
-  flash PT_LOAD FLAGS(5); /* Read + Execute */
-  ram PT_LOAD FLAGS(6);   /* Read + Write */
+  flash  PT_LOAD FLAGS(5); /* Read + Execute */
+  ccmram PT_LOAD FLAGS(6); /* Read + Write */
+  ram    PT_LOAD FLAGS(6); /* Read + Write */
 }
 
 /* Define output sections */
@@ -138,24 +139,9 @@ SECTIONS
     PROVIDE_HIDDEN (__fini_array_end = .);
   } >FLASH :flash
 
-  /* used by the startup to initialize data */
-  _sidata = LOADADDR(.data);
-
-  /* Initialized data sections goes into RAM, load LMA copy after code */
-  .data :
-  {
-    . = ALIGN(4);
-    _sdata = .;        /* create a global symbol at data start */
-    *(.data)           /* .data sections */
-    *(.data*)          /* .data* sections */
-
-    . = ALIGN(4);
-    _edata = .;        /* define a global symbol at data end */
-  } >RAM AT> FLASH :ram
-
   _siccmram = LOADADDR(.ccmram);
 
-  /* CCM-RAM section
+  /* CCM-RAM section (VMA 0x10000000 — placed before .data for ascending VMA order)
   *
   * IMPORTANT NOTE!
   * If initialized variables will be placed in this section,
@@ -170,7 +156,22 @@ SECTIONS
 
     . = ALIGN(4);
     _eccmram = .;       /* create a global symbol at ccmram end */
-  } >CCMRAM AT> FLASH :ram
+  } >CCMRAM AT> FLASH :ccmram
+
+  /* used by the startup to initialize data */
+  _sidata = LOADADDR(.data);
+
+  /* Initialized data sections goes into RAM, load LMA copy after code */
+  .data :
+  {
+    . = ALIGN(4);
+    _sdata = .;        /* create a global symbol at data start */
+    *(.data)           /* .data sections */
+    *(.data*)          /* .data* sections */
+
+    . = ALIGN(4);
+    _edata = .;        /* define a global symbol at data end */
+  } >RAM AT> FLASH :ram
 
 
   /* Uninitialized data section */
