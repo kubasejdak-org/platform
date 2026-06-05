@@ -14,6 +14,7 @@ Checks: '
   -misc-const-correctness,
   -modernize-use-trailing-return-type,
   -performance-enum-size,
+  -portability-avoid-pragma-once,
   -readability-identifier-length,
   -readability-redundant-access-specifiers
 '
