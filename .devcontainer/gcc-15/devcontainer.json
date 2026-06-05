@@ -1,6 +1,6 @@
 {
-  "name": "kubasejdak arm-none-eabi-gcc:13-24.04",
-  "image": "kubasejdak/arm-none-eabi-gcc:13-24.04",
+  "name": "kubasejdak gcc:15-26.04",
+  "image": "kubasejdak/gcc:15-26.04",
   "mounts": [
     "source=${localEnv:HOME}/.gitconfig,target=/home/ubuntu/.gitconfig,type=bind,consistency=cached",
     "source=${localEnv:HOME}/.gitconfig-private,target=/home/ubuntu/.gitconfig-private,type=bind,consistency=cached",

@@ -1,5 +1,5 @@
 AccessModifierOffset: -4
-AlignAfterOpenBracket: Align
+AlignAfterOpenBracket: true
 AlignArrayOfStructures: Left
 AlignConsecutiveAssignments: None
 AlignConsecutiveBitFields: Consecutive
@@ -17,6 +17,7 @@ AllowAllArgumentsOnNextLine: false
 AllowAllParametersOfDeclarationOnNextLine: false
 AllowBreakBeforeNoexceptSpecifier: OnlyWithParen
 AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseExpressionOnASingleLine: true
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortCompoundRequirementOnASingleLine: true
 AllowShortEnumsOnASingleLine: false
@@ -24,10 +25,10 @@ AllowShortFunctionsOnASingleLine: InlineOnly
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: false
-AlwaysBreakAfterReturnType: None
+AllowShortNamespacesOnASingleLine: false
 AlwaysBreakBeforeMultilineStrings: false
-AlwaysBreakTemplateDeclarations: Yes
 BinPackArguments: false
+BinPackLongBracedList: false
 BinPackParameters: false
 BitFieldColonSpacing: Both
 BraceWrapping:
@@ -51,45 +52,61 @@ BraceWrapping:
 BracedInitializerIndentWidth: 4
 BreakAdjacentStringLiterals: true
 BreakAfterAttributes: Never
+BreakAfterOpenBracketBracedList: true
+BreakAfterOpenBracketFunction: false
+BreakAfterOpenBracketIf: false
+BreakAfterOpenBracketLoop: false
+BreakAfterOpenBracketSwitch: false
+BreakAfterReturnType: Automatic
 BreakArrays: false
 BreakBeforeBinaryOperators: All
 BreakBeforeBraces: Custom
+BreakBeforeCloseBracketBracedList: true
+BreakBeforeCloseBracketFunction: false
+BreakBeforeCloseBracketIf: false
+BreakBeforeCloseBracketLoop: false
+BreakBeforeCloseBracketSwitch: false
 BreakBeforeConceptDeclarations: true
 BreakBeforeInlineASMColon: OnlyMultiline
+BreakBeforeTemplateCloser: true
 BreakBeforeTernaryOperators: true
+BreakBinaryOperations: Never
 BreakConstructorInitializers: BeforeComma
+BreakFunctionDefinitionParameters: false
 BreakInheritanceList: BeforeComma
 BreakStringLiterals: true
+BreakTemplateDeclarations: Yes
 ColumnLimit: 120
 CompactNamespaces: false
 ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 4
 Cpp11BracedListStyle: true
-DeriveLineEnding: false
 DerivePointerAlignment: false
 DisableFormat: false
 EmptyLineAfterAccessModifier: Never
 EmptyLineBeforeAccessModifier: Always
+EnumTrailingComma: Remove
 ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: true
 IncludeBlocks: Regroup
 IncludeCategories:
   # Headers in <> without extension.
-  - Regex:           '<([A-Za-z0-9\/_-])+>'
-    Priority:        4
+  - Regex: '<([A-Za-z0-9\/_-])+>'
+    Priority: 4
   # Headers in <> from specific external libraries.
-  - Regex:           '<(boost|catch2|cxxopts|fakeit|fmt|glaze|magic_enum|range|spdlog|toml\+\+)([A-Za-z0-9.\/_-])+>'
-    Priority:        3
+  - Regex: '<(boost|catch2|cxxopts|fakeit|fmt|glaze|magic_enum|range|spdlog|toml\+\+)([A-Za-z0-9.\/_-])+>'
+    Priority: 3
   # Headers in <> with extension.
-  - Regex:           '<([A-Za-z0-9.\/_-])+>'
-    Priority:        2
+  - Regex: '<([A-Za-z0-9.\/_-])+>'
+    Priority: 2
   # Headers in "" with extension.
-  - Regex:           '"([A-Za-z0-9.\/_-])+"'
-    Priority:        1
-IncludeIsMainRegex: '(Test)?$'
+  - Regex: '"([A-Za-z0-9.\/_-])+"'
+    Priority: 1
+IncludeIsMainRegex: "(Test)?$"
 IndentAccessModifiers: false
 IndentCaseBlocks: false
 IndentCaseLabels: true
+IndentExportBlock: false
 IndentExternBlock: NoIndent
 IndentGotoLabels: true
 IndentPPDirectives: BeforeHash
@@ -103,13 +120,20 @@ IntegerLiteralSeparator:
   Binary: 4
   Decimal: -1
   Hex: -1
-KeepEmptyLinesAtEOF: false
-KeepEmptyLinesAtTheStartOfBlocks: false
+KeepEmptyLines:
+  AtEndOfFile: false
+  AtStartOfBlock: false
 LambdaBodyIndentation: Signature
 Language: Cpp
 LineEnding: LF
+MainIncludeChar: Quote
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: None
+NumericLiteralCase:
+  ExponentLetter: Lower
+  HexDigit: Upper
+  Prefix: Lower
+  Suffix: Upper
 PPIndentWidth: 4
 PackConstructorInitializers: Never
 PenaltyBreakAssignment: 2
@@ -121,10 +145,11 @@ PenaltyExcessCharacter: 1000000
 PenaltyReturnTypeOnItsOwnLine: 60
 PointerAlignment: Left
 QualifierAlignment: Custom
-QualifierOrder: ['static', 'constexpr', 'inline', 'const', 'volatile', 'type']
+QualifierOrder: ["static", "constexpr", "inline", "const", "volatile", "type"]
 ReferenceAlignment: Left
 ReflowComments: true
 RemoveBracesLLVM: true
+RemoveEmptyLinesInUnwrappedLines: true
 RemoveParentheses: ReturnStatement
 RemoveSemicolon: true
 RequiresClausePosition: OwnLine
@@ -132,10 +157,13 @@ RequiresExpressionIndentation: OuterScope
 SeparateDefinitionBlocks: Always
 ShortNamespaceLines: 0
 SkipMacroDefinitionBody: false
-SortIncludes: CaseSensitive
+SortIncludes:
+  Enabled: true
+  IgnoreCase: false
 SortUsingDeclarations: true
 SpaceAfterCStyleCast: true
 SpaceAfterLogicalNot: false
+SpaceAfterOperatorKeyword: false
 SpaceAfterTemplateKeyword: true
 SpaceAroundPointerQualifiers: Both
 SpaceBeforeAssignmentOperators: true
@@ -158,6 +186,7 @@ SpaceBeforeParensOptions:
 SpaceBeforeRangeBasedForLoopColon: true
 SpaceBeforeSquareBrackets: false
 SpaceInEmptyBlock: false
+SpaceInEmptyBraces: Never
 SpacesBeforeTrailingComments: 1
 SpacesInAngles: Never
 SpacesInContainerLiterals: false
@@ -169,3 +198,4 @@ SpacesInSquareBrackets: false
 Standard: c++20
 TabWidth: 4
 UseTab: Never
+WrapNamespaceBodyWithEmptyLines: Always
