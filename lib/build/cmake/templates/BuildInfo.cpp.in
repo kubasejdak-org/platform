@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright MIT License
 ///
-/// Copyright (c) 2024 Kuba Sejdak (kuba.sejdak@gmail.com)
+/// Copyright (c) 2026 Kuba Sejdak (kuba.sejdak@gmail.com)
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -24,83 +24,102 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 ///
+/// THIS FILE IS GENERATED — DO NOT EDIT
+///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#include <@PACKAGE_INCLUDE_PREFIX@/BuildInfo.h>
 
-#include <sstream>
 #include <string>
 #include <string_view>
 
-namespace platform {
+#if __has_include("git.h")
+    #include "git.h"
+#else
+    #define GIT_TAG    "N/A" // NOLINT
+    #define GIT_BRANCH "N/A" // NOLINT
+    #define GIT_COMMIT "N/A" // NOLINT
+    #define BUILD_DATE "N/A" // NOLINT
+#endif
 
-/// Returns compiler vendor name (gcc/clang/unsupported).
-/// @return Compiler vendor name (gcc/clang/unsupported).
-constexpr std::string_view compilerVendor()
+namespace @PACKAGE_NAMESPACE@ {
+
+std::string_view BuildInfo::getVersion()
+{
+    return GIT_TAG;
+}
+
+std::string_view BuildInfo::getBuildBranch()
+{
+    return GIT_BRANCH;
+}
+
+std::string_view BuildInfo::getBuildCommit()
+{
+    return GIT_COMMIT;
+}
+
+std::string_view BuildInfo::getBuildDate()
+{
+    return BUILD_DATE;
+}
+
+std::string_view BuildInfo::getCompilerVendor()
 {
 #if defined(__GNUC__) || defined(__GNUG__)
     return "gcc";
-#elifdef __clang__
+#elif defined(__clang__)
     return "clang";
 #else
     return "unsupported";
 #endif
 }
 
-/// Returns compiler major version.
-/// @return Compiler major version.
-constexpr int compilerMajor()
+int BuildInfo::getCompilerMajor()
 {
 #if defined(__GNUC__) || defined(__GNUG__)
     return __GNUC__;
-#elifdef __clang__
+#elif defined(__clang__)
     return __clang_major__;
 #else
     return 0;
 #endif
 }
 
-/// Returns compiler minor version.
-/// @return compiler minor version.
-constexpr int compilerMinor()
+int BuildInfo::getCompilerMinor()
 {
 #if defined(__GNUC__) || defined(__GNUG__)
     return __GNUC_MINOR__;
-#elifdef __clang__
+#elif defined(__clang__)
     return __clang_minor__;
 #else
     return 0;
 #endif
 }
 
-/// Returns compiler patch version.
-/// @return compiler patch version.
-constexpr int compilerPatch()
+int BuildInfo::getCompilerPatch()
 {
 #if defined(__GNUC__) || defined(__GNUG__)
     return __GNUC_PATCHLEVEL__;
-#elifdef __clang__
+#elif defined(__clang__)
     return __clang_patchlevel__;
 #else
     return 0;
 #endif
 }
 
-/// Return compiler name with version.
-/// @return Compiler name with version.
-inline std::string compiler()
+std::string_view BuildInfo::getCompiler()
 {
-    if (compilerVendor() == "unsupported")
-        return "unsupported";
-
-    std::stringstream ss;
-    ss << compilerVendor() << "-" << compilerMajor() << "." << compilerMinor() << "." << compilerPatch();
-    return ss.str();
+    static const std::string value = (getCompilerVendor() == "unsupported")
+        ? std::string{"unsupported"}
+        : std::string{getCompilerVendor()} + "-"
+          + std::to_string(getCompilerMajor()) + "."
+          + std::to_string(getCompilerMinor()) + "."
+          + std::to_string(getCompilerPatch());
+    return value;
 }
 
-/// Returns build type (debug/release).
-/// @return Build type (debug/release).
-constexpr std::string_view buildType()
+std::string_view BuildInfo::getBuildType()
 {
 #ifdef NDEBUG
     return "release";
@@ -109,10 +128,4 @@ constexpr std::string_view buildType()
 #endif
 }
 
-/// Prints version string to standard output.
-void printVersion();
-
-/// Prints build information to standard output.
-void printBuildInfo();
-
-} // namespace platform
+} // namespace @PACKAGE_NAMESPACE@
