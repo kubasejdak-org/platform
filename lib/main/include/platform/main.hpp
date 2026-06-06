@@ -4,7 +4,7 @@
 /// @author Kuba Sejdak
 /// @copyright MIT License
 ///
-/// Copyright (c) 2019 Kuba Sejdak (kuba.sejdak@gmail.com)
+/// Copyright (c) 2026 Kuba Sejdak (kuba.sejdak@gmail.com)
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -26,17 +26,11 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include <platform/main.hpp>
+#pragma once
 
-#include <array>
-
-/// Main executable entry point.
+/// Main application entry point.
+/// @param argc         Number of the commandline arguments.
+/// @param argv         Array of commandline arguments containing argc strings.
 /// @return Exit code of the application.
-/// @note This function passes one hardcoded commandline argument to the application, to fulfill the requirement
-/// that argv[0] contains the name of the binary.
-int main()
-{
-    static auto argv0 = std::to_array("appMain");
-    std::array<char*, 1> argv = {argv0.data()};
-    return appMain(argv.size(), argv.data());
-}
+/// @note This function should be provided/implemented by the application.
+int appMain(int argc, char** argv);

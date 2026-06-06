@@ -26,12 +26,7 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-/// Main application entry point.
-/// @param argc         Number of the commandline arguments.
-/// @param argv         Array of commandline arguments containing argc strings.
-/// @return Exit code of the application.
-/// @note This function should be provided/implemented by the application.
-extern int appMain(int argc, char** argv);
+#include <platform/main.hpp>
 
 /// Main executable entry point.
 /// @param argc         Number of the commandline arguments.

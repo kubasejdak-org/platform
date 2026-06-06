@@ -10,6 +10,7 @@ Checks: '
   -google-default-arguments,
   -llvm-header-guard,
   -llvm-include-order,
+  -llvm-prefer-static-over-anonymous-namespace,
   -llvmlibc-*,
   -misc-const-correctness,
   -modernize-use-trailing-return-type,
