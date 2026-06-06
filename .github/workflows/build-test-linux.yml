@@ -18,21 +18,21 @@ jobs:
       matrix:
         include:
           - PRESET: linux-native-gcc-debug
-            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+            DOCKER_IMAGE: kubasejdak/gcc:15-26.04
           - PRESET: linux-native-gcc-release
-            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+            DOCKER_IMAGE: kubasejdak/gcc:15-26.04
           - PRESET: linux-native-clang-debug
-            DOCKER_IMAGE: kubasejdak/clang:18-24.04
+            DOCKER_IMAGE: kubasejdak/clang:22-26.04
           - PRESET: linux-native-clang-release
-            DOCKER_IMAGE: kubasejdak/clang:18-24.04
+            DOCKER_IMAGE: kubasejdak/clang:22-26.04
           - PRESET: linux-native-gcc-debug-asan
-            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+            DOCKER_IMAGE: kubasejdak/gcc:15-26.04
           - PRESET: linux-native-gcc-debug-lsan
-            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+            DOCKER_IMAGE: kubasejdak/gcc:15-26.04
           - PRESET: linux-native-gcc-debug-tsan
-            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+            DOCKER_IMAGE: kubasejdak/gcc:15-26.04
           - PRESET: linux-native-gcc-debug-ubsan
-            DOCKER_IMAGE: kubasejdak/gcc:13-24.04
+            DOCKER_IMAGE: kubasejdak/gcc:15-26.04
     steps:
       - uses: actions/checkout@v6
 
@@ -51,13 +51,13 @@ jobs:
       matrix:
         include:
           - PRESET: linux-arm64-gcc-debug
-            DOCKER_IMAGE: kubasejdak/aarch64-none-linux-gnu-gcc:13-24.04
+            DOCKER_IMAGE: kubasejdak/aarch64-none-linux-gnu-gcc:15-26.04
           - PRESET: linux-arm64-gcc-release
-            DOCKER_IMAGE: kubasejdak/aarch64-none-linux-gnu-gcc:13-24.04
+            DOCKER_IMAGE: kubasejdak/aarch64-none-linux-gnu-gcc:15-26.04
           - PRESET: linux-arm64-clang-debug
-            DOCKER_IMAGE: kubasejdak/aarch64-none-linux-gnu-clang:18-24.04
+            DOCKER_IMAGE: kubasejdak/aarch64-none-linux-gnu-clang:22-26.04
           - PRESET: linux-arm64-clang-release
-            DOCKER_IMAGE: kubasejdak/aarch64-none-linux-gnu-clang:18-24.04
+            DOCKER_IMAGE: kubasejdak/aarch64-none-linux-gnu-clang:22-26.04
     steps:
       - uses: actions/checkout@v6
 
@@ -69,7 +69,7 @@ jobs:
     runs-on: [self-hosted, X64, docker]
     needs: build-x64
     container:
-      image: kubasejdak/gcc:13-24.04
+      image: kubasejdak/gcc:15-26.04
       options: --user root
     strategy:
       fail-fast: false
@@ -90,7 +90,7 @@ jobs:
     runs-on: [self-hosted, ARM64, docker]
     needs: build-arm64
     container:
-      image: kubasejdak/tests-sbc:13-24.04
+      image: kubasejdak/tests-sbc:15-26.04
     strategy:
       fail-fast: false
       matrix:
@@ -131,7 +131,7 @@ jobs:
     runs-on: [self-hosted, X64, docker]
     needs: build-x64
     container:
-      image: kubasejdak/gcc:13-24.04
+      image: kubasejdak/gcc:15-26.04
       options: --user root --cap-add=SYS_PTRACE --security-opt seccomp=unconfined
     strategy:
       fail-fast: false

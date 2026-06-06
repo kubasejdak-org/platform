@@ -28,6 +28,8 @@
 
 #include "platform/init.hpp"
 
+#include <platform/main.hpp>
+
 #include <cstdlib>
 #include <iostream>
 

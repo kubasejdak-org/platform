@@ -40,7 +40,7 @@ constexpr std::string_view compilerVendor()
 {
 #if defined(__GNUC__) || defined(__GNUG__)
     return "gcc";
-#elif defined(__clang__)
+#elifdef __clang__
     return "clang";
 #else
     return "unsupported";
@@ -53,7 +53,7 @@ constexpr int compilerMajor()
 {
 #if defined(__GNUC__) || defined(__GNUG__)
     return __GNUC__;
-#elif defined(__clang__)
+#elifdef __clang__
     return __clang_major__;
 #else
     return 0;
@@ -66,7 +66,7 @@ constexpr int compilerMinor()
 {
 #if defined(__GNUC__) || defined(__GNUG__)
     return __GNUC_MINOR__;
-#elif defined(__clang__)
+#elifdef __clang__
     return __clang_minor__;
 #else
     return 0;
@@ -79,7 +79,7 @@ constexpr int compilerPatch()
 {
 #if defined(__GNUC__) || defined(__GNUG__)
     return __GNUC_PATCHLEVEL__;
-#elif defined(__clang__)
+#elifdef __clang__
     return __clang_patchlevel__;
 #else
     return 0;

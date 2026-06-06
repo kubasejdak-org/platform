@@ -28,6 +28,7 @@
 
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
+#include <platform/main.hpp>
 
 #include <array>
 #include <cstdint>
@@ -83,13 +84,6 @@ extern "C" void vApplicationGetTimerTaskMemory(StaticTask_t** ppxTimerTaskTCBBuf
 }
     #endif
 #endif
-
-/// Main application entry point.
-/// @param argc         Number of the commandline arguments.
-/// @param argv         Array of commandline arguments containing argc strings.
-/// @return Exit code of the application.
-/// @note This function should be provided/implemented by the application.
-extern int appMain(int argc, char** argv);
 
 namespace {
 

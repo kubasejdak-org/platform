@@ -28,6 +28,7 @@
 
 #include "platform/init.hpp"
 
+#include <platform/main.hpp>
 #include <platform/package/build.hpp>
 #include <platform/package/git.hpp>
 

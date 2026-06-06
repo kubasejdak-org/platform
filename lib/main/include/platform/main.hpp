@@ -26,41 +26,11 @@
 ///
 /////////////////////////////////////////////////////////////////////////////////////
 
-#include "platform/package/build.hpp"
+#pragma once
 
-#include "platform/package/git.hpp"
-
-#include <format>
-#include <iostream>
-
-namespace platform {
-
-void printVersion()
-{
-    std::cout << gitTag() << "\n";
-}
-
-void printBuildInfo()
-{
-#ifdef __clang__
-    auto compiler = std::format("clang-{}.{}.{}", __clang_major__, __clang_minor__, __clang_patchlevel__);
-#elif defined(__GNUC__) || defined(__GNUG__)
-    auto compiler = std::format("gcc-{}.{}.{}", __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
-#endif
-
-#ifdef NDEBUG
-    const auto* buildType = "release";
-#else
-    const auto* buildType = "debug";
-#endif
-
-    std::cout << "Build info:\n";
-    std::cout << std::format("    compiler : {}\n", compiler);
-    std::cout << std::format("    type     : {}\n", buildType);
-    std::cout << std::format("    tag      : {}\n", gitTag());
-    std::cout << std::format("    branch   : {}\n", gitBranch());
-    std::cout << std::format("    user     : {} ({})\n", gitUserName(), gitUserEmail());
-    std::cout << std::format("    date     : {} {}\n", __DATE__, __TIME__);
-}
-
-} // namespace platform
+/// Main application entry point.
+/// @param argc         Number of the commandline arguments.
+/// @param argv         Array of commandline arguments containing argc strings.
+/// @return Exit code of the application.
+/// @note This function should be provided/implemented by the application.
+int appMain(int argc, char** argv);
