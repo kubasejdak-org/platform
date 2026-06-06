@@ -109,7 +109,7 @@ set(CMAKE_C_FLAGS_RELEASE           "-Os -DNDEBUG" CACHE INTERNAL "")
 set(CMAKE_CXX_FLAGS_DEBUG           "${CMAKE_C_FLAGS_DEBUG}" CACHE INTERNAL "")
 set(CMAKE_CXX_FLAGS_RELEASE         "${CMAKE_C_FLAGS_RELEASE}" CACHE INTERNAL "")
 
-set(PLATFORM_EXE_LINKER_FLAGS       "${COMMON_FLAGS} ${ARM_LIBRARY_PATH_FLAGS} -fuse-ld=lld -Wl,--gc-sections" CACHE INTERNAL "")
+set(PLATFORM_EXE_LINKER_FLAGS       "${COMMON_FLAGS} ${ARM_LIBRARY_PATH_FLAGS} -fuse-ld=lld -Wl,--gc-sections --unwindlib=none -nostartfiles" CACHE INTERNAL "")
 set(CMAKE_EXE_LINKER_FLAGS          "${PLATFORM_EXE_LINKER_FLAGS}" CACHE INTERNAL "")
 set(CMAKE_C_STANDARD_LIBRARIES      "${ARM_CRTI} ${ARM_CRTBEGIN} ${ARM_CRT0} -lm -Wl,--start-group -lgcc -lc_nano -lnosys -Wl,--end-group ${ARM_CRTEND} ${ARM_CRTN}" CACHE INTERNAL "")
 set(CMAKE_CXX_STANDARD_LIBRARIES    "${ARM_CRTI} ${ARM_CRTBEGIN} ${ARM_CRT0} -lstdc++_nano -lsupc++_nano -lm -Wl,--start-group -lgcc -lc_nano -lnosys -Wl,--end-group ${ARM_CRTEND} ${ARM_CRTN}" CACHE INTERNAL "")
