@@ -49,7 +49,6 @@ int appMain([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
     std::cout << "    git branch  : " << platform::BuildInfo::getBuildBranch() << "\n";
     std::cout << "    git commit  : " << platform::BuildInfo::getBuildCommit() << "\n";
 
-
     std::cout << "PASSED\n";
     return EXIT_SUCCESS;
 }
