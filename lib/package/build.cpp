@@ -42,7 +42,7 @@ void printVersion()
 
 void printBuildInfo()
 {
-#if defined(__clang__)
+#ifdef __clang__
     auto compiler = std::format("clang-{}.{}.{}", __clang_major__, __clang_minor__, __clang_patchlevel__);
 #elif defined(__GNUC__) || defined(__GNUG__)
     auto compiler = std::format("gcc-{}.{}.{}", __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
