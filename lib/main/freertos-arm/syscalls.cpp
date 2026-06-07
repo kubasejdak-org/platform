@@ -37,7 +37,6 @@
 #include <cstdint>
 #include <cstdio>
 #include <ctime>
-#include <type_traits>
 
 /// Implements the console capability by defining what should happen with messages intended for stdout.
 /// @param message      Message to be printed.
@@ -110,7 +109,7 @@ int _kill(int /*unused*/, int /*unused*/)
 
 size_t fwrite(const void* ptr, size_t /*unused*/, size_t _n, FILE* /*unused*/)
 {
-    return _write(0, std::remove_const_t<char*>(ptr), _n);
+    return _write(0, ptr, _n);
 }
 
 int _gettimeofday(struct timeval* tp, void* /*unused*/)
