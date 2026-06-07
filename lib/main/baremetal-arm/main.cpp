@@ -38,5 +38,5 @@ int main()
 {
     static auto argv0 = std::to_array("appMain");
     std::array<char*, 1> argv = {argv0.data()};
-    return appMain(argv.size(), argv.data());
+    return appMain(static_cast<int>(argv.size()), argv.data());
 }
